@@ -45,8 +45,8 @@
 	   ))
     (substitute #\e #\d (format nil "~,vG" digits a))))
 
-
-;(print-sufficient-digits-f64 1d0)
+#+nil
+(print-sufficient-digits-f64 1d-12)
 
 
 (defparameter *env-functions* nil)
@@ -71,7 +71,7 @@
 			(format nil "0o~B" (car args))))
 	      (hex (let ((args (cdr code)))
 			(format nil "0x~B" (car args))))
-	      (atom (let ((args (cdr code)))
+	      #+nil (atom (let ((args (cdr code)))
 		      (format nil ":~a" (emit (car args)))))
 	      (tuple (let ((args (cdr code)))
 		       (format nil "{~{~a,~}}" (mapcar #'emit args))))
@@ -318,6 +318,8 @@
 						  (loop for e in props collect
 						       `(= ,(format nil "~a" e) ,(getf plist e))))))))))))
 	    (cond
+	      ((keywordp code) ;; print an atom
+	       (format nil ":~a" code))
 	      ((symbolp code) ;; print variable
 	       (format nil "~a" code))
 	      ((stringp code)

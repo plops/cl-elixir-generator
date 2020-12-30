@@ -42,7 +42,12 @@
 			      date
 			      (- tz)))))
 		 )
-	    (IO.puts (string "hello world from elixir")))
+
+	    (setf thing :world)
+	    (IO.puts (string "hello #{thing} from elixir"))
+	    
+	    (IO.puts (== :apple
+			 :orange)))
 	   ))
     (write-source (format nil "~a/source/~a" *path* *code-file*) code)))
 

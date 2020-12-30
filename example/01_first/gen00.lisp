@@ -66,8 +66,9 @@
 	    ,(lprint `((inspect (++ (list 1 2 3) (list 1 2 true 3)))))
 	    ,(lprint `((length (list 1 2 3))))
 	    ,(lprint `((tuple_size (tuple :hello  1 2 3))))
-	    ,(lprint `((File.read __ENV__.file)))
-
+	    ;,(lprint `((File.read __ENV__.file)))
+	    ;; size .. constant time
+	    ;; length .. linear time
 	    )
 	  
 	  

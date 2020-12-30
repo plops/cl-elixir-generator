@@ -225,7 +225,7 @@
 		   (format nil "(~{(~a)~^ & ~})" (mapcar #'emit args))))
 	      (logand (let ((args (cdr code)))
 			(format nil "(~{(~a)~^ & ~})" (mapcar #'emit args))))
-	      (logxor (let ((args (cdr code)))
+	      #+nil (logxor (let ((args (cdr code)))
 		   (format nil "(~{(~a)~^ ^ ~})" (mapcar #'emit args))))
 	      (|\|| (let ((args (cdr code)))
 		      (format nil "(~{(~a)~^ | ~})" (mapcar #'emit args))))

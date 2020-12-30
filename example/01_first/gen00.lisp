@@ -75,6 +75,10 @@
 		       ))
 	    ,(lprint `(hhead
 		       htail))
+	    (do0
+	     (setf x 1)
+	     ,(lprint `((inspect (= (tuple y (^ x)) (tuple 2 1)))))
+	     ,(lprint `( (inspect (= (tuple y y) (tuple 1 1))))))
 	    )
 	  
 	  

@@ -5,5 +5,6 @@
 sudo dnf install elixir
 #+end_example
 
-- start elixir `iex`
+- start interactive elixir session `iex`
 - quit elixir `press C-c twice`
+- run elixir from file `elixir sample.exs`

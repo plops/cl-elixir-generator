@@ -79,6 +79,15 @@
 	     (setf x 1)
 	     ,(lprint `((inspect (= (tuple y (^ x)) (tuple 2 1)))))
 	     ,(lprint `( (inspect (= (tuple y y) (tuple 1 1))))))
+
+	    (setf case_test
+	     (case (tuple 1 2 3)
+	       ((tuple 4 5 6)
+		(string "won't match"))
+	       ((tuple 1 x 3)
+		(string "will match and bind x=#{x}"))
+	       (t (string "match otherwise"))))
+	    ,(lprint `(case_test))
 	    )
 	  
 	  

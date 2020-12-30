@@ -162,7 +162,7 @@
 					       `(= ,a ,b))))))))
 	      (aref (destructuring-bind (name &rest indices) (cdr code)
 		      (format nil "~a[~{~a~^,~}]" (emit name) (mapcar #'emit indices))))
-	      (slice (let ((args (cdr code)))
+	      #+nil (slice (let ((args (cdr code)))
 		       (if (null args)
 			   (format nil ":")
 			   (format nil "~{~a~^:~}" (mapcar #'emit args)))))
@@ -239,12 +239,36 @@
 	      (comments (let ((args (cdr code)))
 			  (format nil "~{# ~a~%~}" args)))
 	      (string (format nil "\"~a\"" (cadr code)))
-	      (string-b (format nil "b\"~a\"" (cadr code)))
-	      (string3 (format nil "\"\"\"~a\"\"\"" (cadr code)))
-	      (rstring3 (format nil "r\"\"\"~a\"\"\"" (cadr code)))
+	      ;(string-b (format nil "b\"~a\"" (cadr code)))
+	      ;(string3 (format nil "\"\"\"~a\"\"\"" (cadr code)))
+	      ;(rstring3 (format nil "r\"\"\"~a\"\"\"" (cadr code)))
 	      (return_ (format nil "return ~a" (emit (caadr code))))
 	      (return (let ((args (cdr code)))
 			(format nil "~a" (emit `(return_ ,args)))))
+	      (case
+		  ;; case keyform {normal-clause}* [otherwise-clause]
+		  ;; normal-clause::= (keys form*) 
+		  ;; otherwise-clause::= (t form*) 
+		  
+		  (destructuring-bind (keyform &rest clauses)
+		      (cdr code)
+		    (format
+		     nil "case (~a) do~%~a~&end"
+		     (emit keyform)
+		     (emit
+		      `(do0
+			 ,@(loop for c in clauses collect
+						  (destructuring-bind (key &rest forms) c
+							(if (eq key t)
+							    (format nil "~&_ -> ~a"
+								    (emit
+								     `(do0
+								       ,@forms)))
+							    (format nil "~&~a -> ~a"
+								    (emit key)
+								    (emit
+								     `(do0
+								       ,@forms)))))))))))
 	      (for (destructuring-bind ((vs ls) &rest body) (cdr code)
 		     (with-output-to-string (s)
 		       ;(format s "~a" (emit '(indent)))
@@ -334,13 +358,14 @@
 						  positional
 						  (loop for e in props collect
 						       `(= ,(format nil "~a" e) ,(getf plist e))))))))))))
+	    
 	    (cond
 	      ((keywordp code) ;; print an atom
 	       (format nil ":~a" code))
 	      ((symbolp code) ;; print variable
 	       (format nil "~a" code))
-	      ((stringp code)
-		(substitute #\: #\- (format nil "~a" code)))
+	      #+nil ((stringp code)
+	       (substitute #\: #\- (format nil "~a" code)))
 	      ((numberp code) ;; print constants
 	       (cond ((integerp code) (format str "~a" code))
 		     ((floatp code)

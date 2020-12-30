@@ -34,7 +34,7 @@
 		  (string ,(let ((str (with-output-to-string (s)
 					(sb-ext:run-program "/usr/bin/git" (list "rev-parse" "HEAD") :output s))))
 			     (subseq str 0 (1- (length str)))))
-		  _code_repository (string ,(format nil "https://github.com/plops/cl-py-generator/tree/master/example/28_dask_test/source/run_00_start.py")
+		  _code_repository (string ,(format nil "https://github.com/plops/cl-elixir-generator/tree/master/example/01_first/source/run_00_start.py")
 					   )
 
 		  _code_generation_time
@@ -63,9 +63,12 @@
 	    ,(lprint `((add. 1 2)))
 	    (setf double (lambda (a) (add. a a)))
 	    ,(lprint `((double.  2)))
-	    ,(lprint `((inspect (list 1 2 true 3))))
+	    ,(lprint `((inspect (++ (list 1 2 3) (list 1 2 true 3)))))
 	    ,(lprint `((length (list 1 2 3))))
-	    ,(lprint `((tuple_size (tuple :hello  1 2 3)))))
+	    ,(lprint `((tuple_size (tuple :hello  1 2 3))))
+	    ,(lprint `((File.read __ENV__.file)))
+
+	    )
 	  
 	  
 	   ))

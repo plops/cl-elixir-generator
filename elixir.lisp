@@ -253,22 +253,18 @@
 		  (destructuring-bind (keyform &rest clauses)
 		      (cdr code)
 		    (format
-		     nil "case (~a) do~%~a~&end"
+		     nil "case (~a) do~%~{~a~%~}~&end"
 		     (emit keyform)
-		     (emit
-		      `(do0
-			 ,@(loop for c in clauses collect
-						  (destructuring-bind (key &rest forms) c
-							(if (eq key t)
-							    (format nil "~&_ -> ~a"
-								    (emit
-								     `(do0
-								       ,@forms)))
-							    (format nil "~&~a -> ~a"
-								    (emit key)
-								    (emit
-								     `(do0
-								       ,@forms)))))))))))
+		     (loop for c in clauses
+			      collect
+			      (destructuring-bind (key &rest forms) c
+				(format nil "~&~a -> ~a"
+					(if (eq key t)
+					    "_"
+					    (emit key))
+					(emit
+					 `(do0
+					   ,@forms))))))))
 	      (for (destructuring-bind ((vs ls) &rest body) (cdr code)
 		     (with-output-to-string (s)
 		       ;(format s "~a" (emit '(indent)))

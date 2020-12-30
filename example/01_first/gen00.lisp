@@ -52,7 +52,9 @@
 			      date
 			      (- tz)))))
 		 )
-
+	    ,(lprint `(code_git_version
+		       code_repository
+		       code_generation_time))
 	    (setf thing :world)
 	    (IO.puts (string "hello #{thing} from elixir"))
 	    

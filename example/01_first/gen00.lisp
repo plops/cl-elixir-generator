@@ -14,7 +14,7 @@
       "Sunday"))
   (defun lprint (rest)
      `(IO.puts (string
-                ,(format nil "~{~a~^ ~}"
+                ,(format nil "#{__ENV__.file}:#{__ENV__.line} ~{~a~^ ~}"
 
 			 (loop for e in rest
 			       collect
@@ -56,12 +56,15 @@
 	    (setf thing :world)
 	    (IO.puts (string "hello #{thing} from elixir"))
 	    
-	    (IO.puts (== :apple
-			 :orange))
+	    ,(lprint `((== :apple
+			   :orange)))
 	    (setf add (lambda (a b)
 			(+ a b)))
-	    (IO.puts (add. 1 2))
-	    ,(lprint `((add. 1 2))))
+	    ,(lprint `((add. 1 2)))
+	    (setf double (lambda (a) (add. a a)))
+	    ,(lprint `((double.  2)))
+	    ,(lprint `((list 1 2 true 3)))
+	    ,(lprint `((length (list 1 2 3)))))
 
 	  
 	   ))

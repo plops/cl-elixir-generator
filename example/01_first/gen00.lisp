@@ -12,6 +12,16 @@
     '("Monday" "Tuesday" "Wednesday"
       "Thursday" "Friday" "Saturday"
       "Sunday"))
+  (defun lprint (rest)
+     `(IO.puts (string
+                ,(format nil "~{~a~^ ~}"
+
+			 (loop for e in rest
+			       collect
+			       (format nil "~a=#{~a}"
+				       (emit-elixir :code e)
+				       (emit-elixir :code e)
+				       ))))))
   (let* (
 	 
 	 (code
@@ -50,7 +60,10 @@
 			 :orange))
 	    (setf add (lambda (a b)
 			(+ a b)))
-	    (IO.puts (add. 1 2)))
+	    (IO.puts (add. 1 2))
+	    ,(lprint `((add. 1 2))))
+
+	  
 	   ))
     (write-source (format nil "~a/source/~a" *path* *code-file*) code)))
 

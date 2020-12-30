@@ -269,6 +269,55 @@
 					(emit
 					 `(do0
 					   ,@forms))))))))
+	      (case
+		  ;; case keyform {normal-clause}* [otherwise-clause]
+		  ;; normal-clause::= (keys form*) 
+		  ;; otherwise-clause::= (t form*)
+
+		  ;; case <keyform> do
+		  ;; key -> form
+		  ;; _ -> form
+		  ;; not supported yet: key when condition -> form
+		  
+		  (destructuring-bind (keyform &rest clauses)
+		      (cdr code)
+		    (format
+		     nil "case (~a) do~%~{~a~%~}~&end"
+		     (emit keyform)
+		     (loop for c in clauses
+			      collect
+			      (destructuring-bind (key &rest forms) c
+				(format nil "~&~a -> ~a"
+					(if (eq key t)
+					    "_"
+					    (emit key))
+					(emit
+					 `(do0
+					   ,@forms))))))))
+	      (cond
+		  ;; cond {normal-condition}* [otherwise-condition]
+		  ;; normal-condition::= (condition form*) 
+		  ;; otherwise-condtion::= (t form*)
+
+		  ;; cond do
+		  ;; condition -> form
+		  ;; true -> form
+		  
+		  (destructuring-bind (keyform &rest clauses)
+		      (cdr code)
+		    (format
+		     nil "cond do~%~{~a~%~}~&end"
+		     
+		     (loop for c in clauses
+			      collect
+			      (destructuring-bind (key &rest forms) c
+				(format nil "~&~a -> ~a"
+					(if (eq key t)
+					    "true"
+					    (emit key))
+					(emit
+					 `(do0
+					   ,@forms))))))))
 	      (for (destructuring-bind ((vs ls) &rest body) (cdr code)
 		     (with-output-to-string (s)
 		       ;(format s "~a" (emit '(indent)))

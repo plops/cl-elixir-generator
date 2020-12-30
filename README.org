@@ -8,3 +8,5 @@ sudo dnf install elixir
 - start interactive elixir session `iex`
 - quit elixir `press C-c twice`
 - run elixir from file `elixir sample.exs`
+
+- format elixir file `mix format sample.exs`

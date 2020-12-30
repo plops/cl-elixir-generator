@@ -42,7 +42,8 @@
 			      month
 			      date
 			      (- tz)))))
-		 ))
+		 )
+	    (IO.puts (string "hello world from elixir")))
 	   ))
     (write-source (format nil "~a/source/~a" *path* *code-file*) code)))
 

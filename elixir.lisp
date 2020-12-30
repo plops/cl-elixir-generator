@@ -1,4 +1,4 @@
-(in-package :cl-py-generator)
+(in-package :cl-elixir-generator)
 (setf (readtable-case *readtable*) :invert)
 
 (defparameter *file-hashes* (make-hash-table))
@@ -7,7 +7,7 @@
 				 ignore-hash)
   (let* ((fn (merge-pathnames (format nil "~a.exs" name)
 			      dir))
-	(code-str (emit-py
+	(code-str (emit-elixir
 		   :clear-env t
 		   :code code))
 	(fn-hash (sxhash fn))
@@ -23,10 +23,9 @@
 			  :if-exists :supersede
 			  :if-does-not-exist :create)
 	 (write-sequence code-str s))
-       #+nil
-
-       (sb-ext:run-program "/usr/bin/autopep8" (list "--max-line-length 80" (namestring fn)))
-       #+sbcl (sb-ext:run-program "/usr/bin/yapf" (list (namestring fn)))))))
+       
+       #+sbcl (sb-ext:run-program "/usr/bin/mix" (list "format"
+						       (namestring fn)))))))
 
 (defun print-sufficient-digits-f64 (f)
   "print a double floating point number as a string with a given nr. of                                                                                                                                             
@@ -55,14 +54,14 @@
 
 
 
-(defun emit-py (&key code (str nil) (clear-env nil) (level 0))
+(defun emit-elixir (&key code (str nil) (clear-env nil) (level 0))
   ;(format t "emit ~a ~a~%" level code)
   (when clear-env
     (setf *env-functions* nil
 	  *env-macros* nil))
   (flet ((emit (code &optional (dl 0))
-	   (emit-py :code code :clear-env nil :level (+ dl level))))
-    (format nil "emit-py ~a" level)
+	   (emit-elixir :code code :clear-env nil :level (+ dl level))))
+    ;(format nil "emit-elixir ~a" level)
     (if code
 	(if (listp code)
 	    (case (car code)

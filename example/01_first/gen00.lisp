@@ -30,14 +30,14 @@
 		 
 
 		 (setf
-	       _code_git_version
+	       code_git_version
 		  (string ,(let ((str (with-output-to-string (s)
 					(sb-ext:run-program "/usr/bin/git" (list "rev-parse" "HEAD") :output s))))
 			     (subseq str 0 (1- (length str)))))
-		  _code_repository (string ,(format nil "https://github.com/plops/cl-elixir-generator/tree/master/example/01_first/source/run_00_start.py")
+		  code_repository (string ,(format nil "https://github.com/plops/cl-elixir-generator/tree/master/example/01_first/source/run_00_start.py")
 					   )
 
-		  _code_generation_time
+		  code_generation_time
 		  (string ,(multiple-value-bind
 				 (second minute hour date month year day-of-week dst-p tz)
 			       (get-decoded-time)
@@ -69,6 +69,12 @@
 	    ;,(lprint `((File.read __ENV__.file)))
 	    ;; size .. constant time
 	    ;; length .. linear time
+	    ,(lprint `((inspect (= (tuple _a _b _c) (tuple :hello  1 2)))))
+	    ,(lprint `((inspect (= (list (logior hhead htail))
+				      (list 1 2 3)))
+		       ))
+	    ,(lprint `(hhead
+		       htail))
 	    )
 	  
 	  

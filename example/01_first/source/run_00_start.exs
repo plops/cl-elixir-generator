@@ -1,10 +1,10 @@
 nil
-code_git_version = "a6bdd57672453826a9d1aca645e5c53cdd9b65dd"
+code_git_version = "011f9b96fc743d6e5cdac1f90a5936d73fdb1079"
 
 code_repository =
   "https://github.com/plops/cl-elixir-generator/tree/master/example/01_first/source/run_00_start.py"
 
-code_generation_time = "22:22:13 of Wednesday, 2020-12-30 (GMT+1)"
+code_generation_time = "22:28:23 of Wednesday, 2020-12-30 (GMT+1)"
 
 IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} code_git_version=#{code_git_version} code_repository=#{

@@ -248,7 +248,11 @@
 	      (case
 		  ;; case keyform {normal-clause}* [otherwise-clause]
 		  ;; normal-clause::= (keys form*) 
-		  ;; otherwise-clause::= (t form*) 
+		  ;; otherwise-clause::= (t form*)
+
+		  ;; case <keyform> do
+		  ;; key -> form
+		  ;; not supported yet: key when condition -> form
 		  
 		  (destructuring-bind (keyform &rest clauses)
 		      (cdr code)

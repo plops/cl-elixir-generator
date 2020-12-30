@@ -1,1 +1,9 @@
 - https://elixir-lang.org/getting-started/introduction.html
+
+- install elixir on fedora
+#+begin_example
+sudo dnf install elixir
+#+end_example
+
+- start elixir `iex`
+- quit elixir `press C-c twice`

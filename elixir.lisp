@@ -1,6 +1,3 @@
-;(ql:quickload "optima")
-;(ql:quickload "alexandria")
-
 (in-package :cl-py-generator)
 (setf (readtable-case *readtable*) :invert)
 
@@ -8,7 +5,7 @@
 
 (defun write-source (name code &optional (dir (user-homedir-pathname))
 				 ignore-hash)
-  (let* ((fn (merge-pathnames (format nil "~a.py" name)
+  (let* ((fn (merge-pathnames (format nil "~a.exs" name)
 			      dir))
 	(code-str (emit-py
 		   :clear-env t

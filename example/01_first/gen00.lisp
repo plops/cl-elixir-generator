@@ -64,8 +64,9 @@
 	    (setf double (lambda (a) (add. a a)))
 	    ,(lprint `((double.  2)))
 	    ,(lprint `((inspect (list 1 2 true 3))))
-	    ,(lprint `((length (list 1 2 3)))))
-
+	    ,(lprint `((length (list 1 2 3))))
+	    ,(lprint `((tuple_size (tuple :hello  1 2 3)))))
+	  
 	  
 	   ))
     (write-source (format nil "~a/source/~a" *path* *code-file*) code)))

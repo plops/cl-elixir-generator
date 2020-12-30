@@ -176,6 +176,10 @@
 		   (format nil "(~{(~a)~^*~})" (mapcar #'emit args))))
 	      (== (let ((args (cdr code)))
 		    (format nil "(~{(~a)~^==~})" (mapcar #'emit args))))
+	      (<> (let ((args (cdr code)))
+		    (format nil "(~{(~a)~^<>~})" (mapcar #'emit args))))
+	      (++ (let ((args (cdr code)))
+		    (format nil "(~{(~a)~^++~})" (mapcar #'emit args))))
 	      (<< (let ((args (cdr code)))
 		    (format nil "(~{(~a)~^<<~})" (mapcar #'emit args))))
 	      (!= (let ((args (cdr code)))

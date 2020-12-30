@@ -101,6 +101,18 @@
 		      (string "never true"))
 		     (t (string "else"))))
 	     ,(lprint `(cond_test)))
+
+
+	    (do0
+	     (if nil
+		 (string "won't be seen")
+		 (string "this will"))
+	     (if true
+		 (string "this works"))
+	     (unless true
+	       (string "never"))
+	     (when true
+	       (string "always")))
 	    )
 	  
 	  

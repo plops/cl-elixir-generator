@@ -339,21 +339,24 @@
 
 	      (if (destructuring-bind (condition true-statement &optional false-statement) (cdr code)
 		    (with-output-to-string (s)
-		      (format s "if ( ~a ):~%~a"
+		      (format s "if ( ~a ) do~%~a"
 			      (emit condition)
-			      (emit `(do ,true-statement)))
+			      (emit `(do0 ,true-statement)))
 		      (when false-statement
-			(format s "~&~a:~%~a"
-				(emit `(indent "else"))
-				(emit `(do ,false-statement)))))))
+			(format s "~&else~%~a"
+				
+				(emit `(do0 ,false-statement))))
+		      (format s "~&end~%"))))
 	      (when (destructuring-bind (condition &rest forms) (cdr code)
                       (emit `(if ,condition
                                  (do0
                                   ,@forms)))))
               (unless (destructuring-bind (condition &rest forms) (cdr code)
-                        (emit `(if (not ,condition)
-                                   (do0
-                                    ,@forms)))))
+                        (with-output-to-string (s)
+		      (format s "unless ( ~a ) do~%~a~&end"
+			      (emit condition)
+			      (emit `(do0 ,@forms)))
+		      )))
 	      (import (destructuring-bind (args) (cdr code)
 			(if (listp args)
 			    (format nil "import ~a as ~a~%" (second args) (first args))

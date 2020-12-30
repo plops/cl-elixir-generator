@@ -63,7 +63,7 @@
 	    ,(lprint `((add. 1 2)))
 	    (setf double (lambda (a) (add. a a)))
 	    ,(lprint `((double.  2)))
-	    ,(lprint `((list 1 2 true 3)))
+	    ,(lprint `((inspect (list 1 2 true 3))))
 	    ,(lprint `((length (list 1 2 3)))))
 
 	  

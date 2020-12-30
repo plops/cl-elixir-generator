@@ -47,7 +47,10 @@
 	    (IO.puts (string "hello #{thing} from elixir"))
 	    
 	    (IO.puts (== :apple
-			 :orange)))
+			 :orange))
+	    (setf add (lambda (a b)
+			(+ a b)))
+	    (IO.puts (add. 1 2)))
 	   ))
     (write-source (format nil "~a/source/~a" *path* *code-file*) code)))
 

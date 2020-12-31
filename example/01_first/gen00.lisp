@@ -1,8 +1,12 @@
 (eval-when (:compile-toplevel :execute :load-toplevel)
   (ql:quickload "cl-elixir-generator")
-  (ql:quickload "alexandria"))
+  (ql:quickload "alexandria")
+  (ql:quickload "cl-ppcre"))
 (in-package :cl-elixir-generator)
 
+#+nil
+(let ((a "<<head,rest::binary>>=\"banana\"="))
+  (format t "~a~%" (cl-ppcre:regex-replace-all "\"" a "\\\"")))
 
 (progn
   (defparameter *path* "/home/martin/stage/cl-elixir-generator/example/01_first")
@@ -19,7 +23,8 @@
 			 (loop for e in rest
 			       collect
 			       (format nil "~a=#{~a}"
-				       (emit-elixir :code e)
+				       ;(substitute  #\' #\" (emit-elixir :code e))
+				       (cl-ppcre:regex-replace-all "\"" (emit-elixir :code e) "\\\"")
 				       (emit-elixir :code e)
 				       ))))))
   (let* (
@@ -133,6 +138,10 @@
 	    (do0 ,(lprint `((= (bitstring (head (binary-size 2))
 					  (rest binary))
 			       (bitstring 0 1 2 3))))
+		 ,(lprint `(head rest)))
+	    (do0 ,(lprint `((= (bitstring head
+					  (rest binary))
+			       (string "banana"))))
 		 ,(lprint `(head rest)))
 	    
 	    )

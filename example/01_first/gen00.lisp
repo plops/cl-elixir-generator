@@ -26,7 +26,7 @@
 	 
 	 (code
 	  `(do0
-	    (do0 "# %% imports"
+	    (do0 (comments " comment")
 		 
 
 		 (setf
@@ -87,7 +87,7 @@
 		   (case (tuple 1 2 3)
 		     ((tuple 4 5 6)
 		      (string "won't match"))
-		     ((tuple 1 x 3)
+		     ((tuple 1  x 3)
 		      (string "will match and bind x=#{x}"))
 		     (t (string "match otherwise"))))
 	     ,(lprint `(case_test)))
@@ -113,6 +113,18 @@
 	       (string "never"))
 	     (when true
 	       (string "always")))
+
+
+	    (do0
+	     (comments "bitstring")
+	     ,(lprint `((=== (bitstring 42)
+			     (bitstring (42 8)))))
+	     ,(lprint `((== (bitstring (0 1)
+				       (0 1)
+				       (1 1)
+				       (1 1))
+			    (bitstring 3 4)))))
+	    
 	    )
 	  
 	  

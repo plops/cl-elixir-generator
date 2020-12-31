@@ -226,6 +226,12 @@
 			      (Enum.map (lambda (x) (* x 3))
 					)
 			      (Enum.filter odd?)
+			      Enum.sum)))
+	     ,(lprint `(
+			(pipe "1..100_000"
+			      (Stream.map (lambda (x) (* x 3))
+					)
+			      (Stream.filter odd?)
 			      Enum.sum))))
 	    
 	    

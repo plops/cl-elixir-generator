@@ -10,3 +10,10 @@ sudo dnf install elixir
 - run elixir from file `elixir sample.exs`
 
 - format elixir file `mix format sample.exs`
+
+- https://www.youtube.com/watch?v=OR2Gc6_Le2U&feature=youtu.be
+  - sys:trace
+  - sys:log 27:40
+  - sys:get_status
+  - microstate accounting
+

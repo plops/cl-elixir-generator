@@ -161,8 +161,15 @@
 	     (comments "map")
 	     (setf map (map :a 1
 			    2 :b)))
-	    )
 
+
+	    (do0
+	     (comments "module")
+	     (defmodule Math
+		 (def sum (a b)
+		   (+ a b))))
+	    )
+	  
 	  
 
 	  

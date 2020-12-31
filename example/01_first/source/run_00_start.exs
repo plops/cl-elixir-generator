@@ -1,10 +1,10 @@
 #  comment
-code_git_version = "284aa48a594ccfe37162de1761a859a647f6a129"
+code_git_version = "2168f57c725a9eace8b91807f751502761058730"
 
 code_repository =
   "https://github.com/plops/cl-elixir-generator/tree/master/example/01_first/source/run_00_start.py"
 
-code_generation_time = "16:07:24 of Thursday, 2020-12-31 (GMT+1)"
+code_generation_time = "17:40:02 of Thursday, 2020-12-31 (GMT+1)"
 
 IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} code_git_version=#{code_git_version} code_repository=#{
@@ -125,3 +125,9 @@ IO.puts(
 
 # map
 map = %{:a => 1, 2 => :b}
+# module
+defmodule Math do
+  def sum(nil, nil) do
+    a + b
+  end
+end

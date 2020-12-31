@@ -138,6 +138,11 @@
 				    (if (cdr body)
 					(emit `(do0 ,@body)) ; (break "body ~a should have only one entry" body)
 					(emit (car body))))))))
+	      (defmodule (let* ((args (cdr code)))
+			   (with-output-to-string (s)
+			     (format s "defmodule ~a do~%" (car args))
+			     (format s "~a" (emit `(do0 ,@(cdr args))))
+			     (format s "~&end"))))
 	      (def (destructuring-bind (name lambda-list &rest body) (cdr code)
 		     (multiple-value-bind (req-param opt-param res-param
 					   key-param other-key-p aux-param key-exist-p)
@@ -145,7 +150,7 @@
 		       (declare (ignorable req-param opt-param res-param
 					   key-param other-key-p aux-param key-exist-p))
 		       (with-output-to-string (s)
-			 (format s "def ~a~a:~%"
+			 (format s "def ~a~a do~%"
 				 name
 				 (emit `(paren
 					 ,@(append (mapcar #'emit req-param)
@@ -156,7 +161,8 @@
 									      (if init
 										  `(= ,name ,init)
 										  `(= ,name "None"))))))))
-			 (format s "~a" (emit `(do ,@body)))))))
+			 (format s "~a" (emit `(do ,@body)))
+			 (format s "~&end")))))
 	      (= (destructuring-bind (a b) (cdr code)
 		   (format nil "~a=~a" (emit a) (emit b))))
 	      (in (destructuring-bind (a b) (cdr code)

@@ -82,48 +82,50 @@ return the body without them and a hash table with an environment"
     (values (reverse new-body) env when-conditions)))
 
 (defun parse-def (code &key (private nil))
-		 (destructuring-bind (name lambda-list &rest body) (cdr code)
-				     ;; def <name> ( a, b ) do ..
-				     ;; def <name> ( [head|tail], accumulator ) do ..
-				     ;;    (def name ((list (logior head tail)) accumulator) ...
-				     ;; def <name> ( var \\ default ) do ..
-				     ;;    (def name (&optional (var default)) ...
-				     (multiple-value-bind (body env conditions) (consume-declare body) 
-				       (let* ((pos-opt (position '&optional lambda-list))
+  (flet ((emit (code &optional (dl 0))
+	   (emit-elixir :code code :clear-env nil :level (+ dl 0))))
+   (destructuring-bind (name lambda-list &rest body) (cdr code)
+     ;; def <name> ( a, b ) do ..
+     ;; def <name> ( [head|tail], accumulator ) do ..
+     ;;    (def name ((list (logior head tail)) accumulator) ...
+     ;; def <name> ( var \\ default ) do ..
+     ;;    (def name (&optional (var default)) ...
+     (multiple-value-bind (body env conditions) (consume-declare body) 
+       (let* ((pos-opt (position '&optional lambda-list))
 			      
-					      (req-param (if pos-opt
-							     (subseq lambda-list 0 pos-opt)
-							     lambda-list))
-					      (opt-param (when pos-opt
-							   (subseq lambda-list (+ 1 pos-opt))))
-					      )
-					 (format t "pos-opt: ~a req-param: ~a opt-param: ~a ~%" pos-opt req-param opt-param)
-					 #+nil(multiple-value-bind
-						    (req-param opt-param res-param
-						     key-param other-key-p aux-param key-exist-p)
-						  (parse-ordinary-lambda-list lambda-list)
-						(declare (ignorable req-param opt-param res-param
-								    key-param other-key-p aux-param key-exist-p)))
-					 (with-output-to-string (s)
+	      (req-param (if pos-opt
+			     (subseq lambda-list 0 pos-opt)
+			     lambda-list))
+	      (opt-param (when pos-opt
+			   (subseq lambda-list (+ 1 pos-opt))))
+	      )
+	 (format t "pos-opt: ~a req-param: ~a opt-param: ~a ~%" pos-opt req-param opt-param)
+	 #+nil(multiple-value-bind
+		    (req-param opt-param res-param
+		     key-param other-key-p aux-param key-exist-p)
+		  (parse-ordinary-lambda-list lambda-list)
+		(declare (ignorable req-param opt-param res-param
+				    key-param other-key-p aux-param key-exist-p)))
+	 (with-output-to-string (s)
 			   
-					   (format s "~a ~a~a~@[ when ~a~]"
-						   (if private
-						       "defp"
-						       "def")
-						   name
-						   (emit `(paren
-							   ,@req-param
-							   ,@(loop for e in opt-param
-								   collect
-								   (destructuring-bind (var &optional default) e
+	   (format s "~a ~a~a~@[ when ~a~]"
+		   (if private
+		       "defp"
+		       "def")
+		   name
+		   (emit `(paren
+			   ,@req-param
+			   ,@(loop for e in opt-param
+				   collect
+				   (destructuring-bind (var &optional default) e
 								   
-								     (format nil "~a \\\\ ~a"
-									     (emit var)
-									     (emit default))))))
-						   (when conditions (emit `(and ,@conditions))))
-					   (when body
-					     (format s " do~%~a" (emit `(do ,@body)))
-					     (format s "~&end")))))))
+				     (format nil "~a \\\\ ~a"
+					     (emit var)
+					     (emit default))))))
+		   (when conditions (emit `(and ,@conditions))))
+	   (when body
+	     (format s " do~%~a" (emit `(do ,@body)))
+	     (format s "~&end"))))))))
 
 (defun emit-elixir (&key code (str nil) (clear-env nil) (level 0))
   ;(format t "emit ~a ~a~%" level code)

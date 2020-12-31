@@ -253,7 +253,27 @@
 	     (receive ()
 		      (-> (tuple :hello pid)
 			  ,(lprint `((string "got hello from #{inspect pid}"))))
-	      ))
+		      ))
+
+	    (do0
+	     (comments "state")
+	     (defmodule KV
+		 (def start_link ()
+		   (Task.start_link (lambda ()
+				      (loop (map))))
+		   )
+	       (defp loop (map)
+		 (receive ()
+		  (-> (tuple :get key caller)
+		      (do0 (send caller (Map.get map key))
+			   (loop map)))
+		  (-> (tuple :put key value)
+		      (loop (Map.put map key value))))))
+	     ,(lprint `((inspect (setf (tuple :ok pid)
+			       (KV.start_link)))))
+	     ,(lprint `((inspect (send pid (tuple :get :hello (self))))))
+	     
+	    )
 	    
 	    )
 	  

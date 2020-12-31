@@ -1,10 +1,10 @@
 #  comment
-code_git_version = "6c1a66f89eea5f3cf898b0560ac354bc358eab6a"
+code_git_version = "2226d5cfd6fed85d253ff78feb207aed0981347e"
 
 code_repository =
   "https://github.com/plops/cl-elixir-generator/tree/master/example/01_first/source/run_00_start.py"
 
-code_generation_time = "21:31:10 of Thursday, 2020-12-31 (GMT+1)"
+code_generation_time = "21:41:11 of Thursday, 2020-12-31 (GMT+1)"
 
 IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} code_git_version=#{code_git_version} code_repository=#{
@@ -237,3 +237,33 @@ receive do
       }"
     )
 end
+
+# state
+defmodule KV do
+  def start_link() do
+    Task.start_link(fn -> loop(%{}) end)
+  end
+
+  defp loop(map) do
+    receive do
+      {:get, key, caller} ->
+        send(caller, Map.get(map, key))
+        loop(map)
+
+      {:put, key, value} ->
+        loop(Map.put(map, key, value))
+    end
+  end
+end
+
+IO.puts(
+  "#{__ENV__.file}:#{__ENV__.line} inspect({:ok,pid,}=KV.start_link())=#{
+    inspect({:ok, pid} = KV.start_link())
+  }"
+)
+
+IO.puts(
+  "#{__ENV__.file}:#{__ENV__.line} inspect(send(pid, {:get,:hello,self(),}))=#{
+    inspect(send(pid, {:get, :hello, self()}))
+  }"
+)

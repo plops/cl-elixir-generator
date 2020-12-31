@@ -234,7 +234,14 @@
 			      (Stream.filter odd?)
 			      Enum.sum))))
 	    
-	    
+
+	    (do0
+	     (setf pid
+		   (spawn (lambda () (+ 1 2))))
+	     ,(lprint `((inspect pid) (Process.alive? pid)
+				      ))
+	     ,(lprint `((inspect (self))
+			(Process.alive? (self)))))
 	    )
 	  
 	  

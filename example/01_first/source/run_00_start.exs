@@ -1,10 +1,10 @@
 #  comment
-code_git_version = "01ab648700ae213f571d65ecf1cda5a776a67c3c"
+code_git_version = "69d3df0b92ee51a3a1478cead234952e53bd0bd2"
 
 code_repository =
   "https://github.com/plops/cl-elixir-generator/tree/master/example/01_first/source/run_00_start.py"
 
-code_generation_time = "20:58:47 of Thursday, 2020-12-31 (GMT+1)"
+code_generation_time = "21:02:59 of Thursday, 2020-12-31 (GMT+1)"
 
 IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} code_git_version=#{code_git_version} code_repository=#{
@@ -207,5 +207,19 @@ IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} ((1..100_000)|>(Stream.map(fn x -> ((x)*(3))
 end))|>(Stream.filter(odd?))|>(Enum.sum))=#{
     1..100_000 |> Stream.map(fn x -> x * 3 end) |> Stream.filter(odd?) |> Enum.sum()
+  }"
+)
+
+pid = spawn(fn -> 1 + 2 end)
+
+IO.puts(
+  "#{__ENV__.file}:#{__ENV__.line} inspect(pid)=#{inspect(pid)} Process.alive?(pid)=#{
+    Process.alive?(pid)
+  }"
+)
+
+IO.puts(
+  "#{__ENV__.file}:#{__ENV__.line} inspect(self())=#{inspect(self())} Process.alive?(self())=#{
+    Process.alive?(self())
   }"
 )

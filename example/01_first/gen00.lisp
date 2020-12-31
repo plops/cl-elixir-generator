@@ -236,14 +236,24 @@
 	    
 
 	    (do0
+	     (comments "spawn")
 	     (setf pid
 		   (spawn (lambda () (+ 1 2))))
 	     ,(lprint `((inspect pid) (Process.alive? pid)
 				      ))
 	     ,(lprint `((inspect (self))
 			(Process.alive? (self)))))
+
+
+	    (do0
+	     (comments "messages")
+	     (send (self)
+		   (tuple :hello (string "world")))
+	     (receive))
+	    
 	    )
 	  
+
 	  
 	  
 

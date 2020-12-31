@@ -344,6 +344,17 @@ return the body without them and a hash table with an environment"
 	      (return_ (format nil "return ~a" (emit (caadr code))))
 	      (return (let ((args (cdr code)))
 			(format nil "~a" (emit `(return_ ,args)))))
+	      (receive (let ((args (cdr code)))
+			 ;; receive do
+			 ;;   {:bla, foo} -> foo
+			 ;; after
+			 ;;   1_000 -> "nothing"
+			 ;; end
+
+			 ;; receive <after_body> <body>
+			 ;; (receive (1_000 "nothing") (-> (tuple :bla foo) foo))
+			 
+			 ))
 	      (case
 		  ;; case keyform {normal-clause}* [otherwise-clause]
 		  ;; normal-clause::= (keys form*) 

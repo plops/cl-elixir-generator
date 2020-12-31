@@ -124,7 +124,7 @@
 											    `(= ,(emit name) ,init)
 											    `(= ,(emit name) "None")))))))
 				    (if (cdr body)
-					(break "body ~a should have only one entry" body)
+					(emit `(do0 ,@body)) ; (break "body ~a should have only one entry" body)
 					(emit (car body))))))))
 	      (def (destructuring-bind (name lambda-list &rest body) (cdr code)
 		     (multiple-value-bind (req-param opt-param res-param

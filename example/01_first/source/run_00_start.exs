@@ -1,10 +1,10 @@
 #  comment
-code_git_version = "54f95c2248fc0b85674be905ca6b50e5479cb9bf"
+code_git_version = "1e7c9bacac257f809091a375839a45b5db0a8c9b"
 
 code_repository =
   "https://github.com/plops/cl-elixir-generator/tree/master/example/01_first/source/run_00_start.py"
 
-code_generation_time = "14:52:04 of Thursday, 2020-12-31 (GMT+1)"
+code_generation_time = "14:57:41 of Thursday, 2020-12-31 (GMT+1)"
 
 IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} code_git_version=#{code_git_version} code_repository=#{
@@ -92,3 +92,7 @@ IO.puts(
     <<0::1, 0::1, 1::1, 1::1>> == <<3, 4>>
   }"
 )
+
+IO.puts("#{__ENV__.file}:#{__ENV__.line} ((<<1>>)===(<<257>>))=#{<<1>> === <<257>>}")
+IO.puts("#{__ENV__.file}:#{__ENV__.line} <<0,1,x>>=<<0,1,2>>=#{<<0, 1, x>> = <<0, 1, 2>>}")
+IO.puts("#{__ENV__.file}:#{__ENV__.line} x=#{x}")

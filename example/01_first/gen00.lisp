@@ -123,7 +123,13 @@
 				       (0 1)
 				       (1 1)
 				       (1 1))
-			    (bitstring 3 4)))))
+			    (bitstring 3 4))))
+	     ,(lprint `((=== (bitstring 1)
+			     (bitstring 257))))
+	     ,(lprint `((= (bitstring 0 1 x)
+			   (bitstring 0 1 2))
+			))
+	     ,(lprint `(x)))
 	    
 	    )
 	  

@@ -181,12 +181,18 @@ return the body without them and a hash table with an environment"
 				   name
 				   (emit `(paren ,@(loop for e in req-param
 							 collect
-							 (if (listp e) ;; handle default argument
-							     (destructuring-bind (var &optional default) e
-							       (format t "argument with default: ~a ~a" var default)
-							       (format nil "~a \\\\ ~a"
-								       (emit var)
-								       (emit default)))
+							 (if (listp e) 
+							     (if (and (eq 2 (length e))
+								      (atom (first e)))
+								 ;; handle default argument
+								 
+								 (destructuring-bind (var &optional default) e
+								   
+								   (format nil "~a \\\\ ~a"
+									   (emit var)
+									   (emit default)))
+								 ;; complex expression instead of variable
+								 e)
 							     e))))
 				   (when conditions (emit `(and ,@conditions))))
 			   (when body

@@ -201,6 +201,19 @@
 				     (string "_"))))
 	     ,(lprint `((Concat.join (string "hello")
 				     ))))
+
+	    (do0
+	     (defmodule MathRec
+		 (def sum_list ((list (logior head tail))
+				accumulator)
+		   (sum_list tail (+ head accumulator)))
+	       (def sum_list ([] accumulator)
+		 accumulator))
+	     ,(lprint `((MathRec.sum_list (list 1 2 3)
+					  0)))
+	     )
+	    
+	    
 	    )
 	  
 	  

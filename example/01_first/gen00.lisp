@@ -219,8 +219,14 @@
 
 	    (do0
 	     (comment "pipe operator")
-	     (pipe "1..100_000"
-		   (Enum.map (& (lambda (x) (* x 3))))))
+	     (setf odd? (lambda (x)
+			  (!= 0 (rem x 2))))
+	     ,(lprint `(
+			(pipe "1..100_000"
+			      (Enum.map (lambda (x) (* x 3))
+					)
+			      (Enum.filter odd?)
+			      Enum.sum))))
 	    
 	    
 	    )

@@ -1,10 +1,10 @@
 #  comment
-code_git_version = "665aff271e1efe4462f87efded5a2a887ba054b0"
+code_git_version = "3a3587b576df1cb2e3d68ab575584e6cb681680c"
 
 code_repository =
   "https://github.com/plops/cl-elixir-generator/tree/master/example/01_first/source/run_00_start.py"
 
-code_generation_time = "20:54:24 of Thursday, 2020-12-31 (GMT+1)"
+code_generation_time = "20:57:39 of Thursday, 2020-12-31 (GMT+1)"
 
 IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} code_git_version=#{code_git_version} code_repository=#{
@@ -194,4 +194,11 @@ IO.puts(
 )
 
 # pipe operator
-1..100_000 |> Enum.map(fn x -> x * 3 end)
+odd? = fn x -> 0 != rem(x, 2) end
+
+IO.puts(
+  "#{__ENV__.file}:#{__ENV__.line} ((1..100_000)|>(Enum.map(fn x -> ((x)*(3))
+end))|>(Enum.filter(odd?))|>(Enum.sum))=#{
+    1..100_000 |> Enum.map(fn x -> x * 3 end) |> Enum.filter(odd?) |> Enum.sum()
+  }"
+)

@@ -126,10 +126,14 @@
 			    (bitstring 3 4))))
 	     ,(lprint `((=== (bitstring 1)
 			     (bitstring 257))))
-	     ,(lprint `((= (bitstring 0 1 x)
-			   (bitstring 0 1 2))
-			))
-	     ,(lprint `(x)))
+	     (do0 ,(lprint `((= (bitstring 0 1 x)
+			    (bitstring 0 1 2))
+			     ))
+		  ,(lprint `(x))))
+	    (do0 ,(lprint `((= (bitstring (head (binary-size 2))
+					  (rest binary))
+			       (bitstring 0 1 2 3))))
+		 ,(lprint `(head rest)))
 	    
 	    )
 	  

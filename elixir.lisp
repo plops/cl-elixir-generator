@@ -247,7 +247,7 @@
 							   collect
 							   (if (listp e)
 							       (destructuring-bind (value bitsize) e
-								 (format nil "~a::~a" value bitsize))
+								 (format nil "~a::~a" value (emit bitsize)))
 							       e))))
 	      (string (format nil "\"~a\"" (cadr code)))
 					;(string-b (format nil "b\"~a\"" (cadr code)))

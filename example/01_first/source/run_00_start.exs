@@ -1,10 +1,10 @@
 #  comment
-code_git_version = "1e7c9bacac257f809091a375839a45b5db0a8c9b"
+code_git_version = "c3125faa9425ae0af7a7bf75e00ec9ecfa8b2978"
 
 code_repository =
   "https://github.com/plops/cl-elixir-generator/tree/master/example/01_first/source/run_00_start.py"
 
-code_generation_time = "14:57:41 of Thursday, 2020-12-31 (GMT+1)"
+code_generation_time = "15:01:16 of Thursday, 2020-12-31 (GMT+1)"
 
 IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} code_git_version=#{code_git_version} code_repository=#{
@@ -96,3 +96,11 @@ IO.puts(
 IO.puts("#{__ENV__.file}:#{__ENV__.line} ((<<1>>)===(<<257>>))=#{<<1>> === <<257>>}")
 IO.puts("#{__ENV__.file}:#{__ENV__.line} <<0,1,x>>=<<0,1,2>>=#{<<0, 1, x>> = <<0, 1, 2>>}")
 IO.puts("#{__ENV__.file}:#{__ENV__.line} x=#{x}")
+
+IO.puts(
+  "#{__ENV__.file}:#{__ENV__.line} <<head::binary-size(2),rest::binary>>=<<0,1,2,3>>=#{
+    <<head::binary-size(2), rest::binary>> = <<0, 1, 2, 3>>
+  }"
+)
+
+IO.puts("#{__ENV__.file}:#{__ENV__.line} head=#{head} rest=#{rest}")

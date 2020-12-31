@@ -186,13 +186,21 @@
 	    (do0
 	     (comments "named function with default argument")
 	     (defmodule Concat
-		 (def join (a b (sep (string " ")))
+		 
+		 (def join (a (b "nil") (sep (string " ")))
+		  )
+	       (def join (a b _sep)
+		 (declare (when (is_nil b)))
+		 a)
+	       (def join (a b sep)
 		   (<> a sep b)))
 	     ,(lprint `((Concat.join (string "hello")
 				     (string "world"))))
 	     ,(lprint `((Concat.join (string "hello")
 				     (string "world")
-				     (string "_")))))
+				     (string "_"))))
+	     ,(lprint `((Concat.join (string "hello")
+				     ))))
 	    )
 	  
 	  

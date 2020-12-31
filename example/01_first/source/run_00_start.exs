@@ -1,10 +1,10 @@
 #  comment
-code_git_version = "34dfdde0075fdedddcc2d7c5e126a91347ff6e73"
+code_git_version = "7bed324f5a06f1accf988364725b1a7a76251ead"
 
 code_repository =
   "https://github.com/plops/cl-elixir-generator/tree/master/example/01_first/source/run_00_start.py"
 
-code_generation_time = "18:19:27 of Thursday, 2020-12-31 (GMT+1)"
+code_generation_time = "18:23:18 of Thursday, 2020-12-31 (GMT+1)"
 
 IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} code_git_version=#{code_git_version} code_repository=#{
@@ -152,7 +152,13 @@ IO.puts(
 
 # named function with default argument
 defmodule Concat do
-  def join(a, b, sep \\ " ") do
+  def join(a, b \\ nil, sep \\ " ")
+
+  def join(a, b, _sep) when is_nil(b) do
+    a
+  end
+
+  def join(a, b, sep) do
     a <> sep <> b
   end
 end
@@ -168,3 +174,5 @@ IO.puts(
     Concat.join("hello", "world", "_")
   }"
 )
+
+IO.puts("#{__ENV__.file}:#{__ENV__.line} Concat.join(\"hello\")=#{Concat.join("hello")}")

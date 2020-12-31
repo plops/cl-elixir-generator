@@ -177,7 +177,7 @@ return the body without them and a hash table with an environment"
 					       key-param other-key-p aux-param key-exist-p)))
 			 (with-output-to-string (s)
 			   (format t "req-param: ~a~%" req-param)
-			   (format s "def ~a~a~@[ when ~a~] do~%"
+			   (format s "def ~a~a~@[ when ~a~]"
 				   name
 				   (emit `(paren ,@(loop for e in req-param
 							 collect
@@ -189,8 +189,9 @@ return the body without them and a hash table with an environment"
 								       (emit default)))
 							     e))))
 				   (when conditions (emit `(and ,@conditions))))
-			   (format s "~a" (emit `(do ,@body)))
-			   (format s "~&end")))))
+			   (when body
+			     (format s " do~%~a" (emit `(do ,@body)))
+			     (format s "~&end"))))))
 	       )
 	      (defp (destructuring-bind (name lambda-list &rest body) (cdr code)
 		     (multiple-value-bind (req-param opt-param res-param

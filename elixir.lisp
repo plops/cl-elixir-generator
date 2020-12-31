@@ -238,6 +238,7 @@
 	      (comment (format nil "# ~a~%" (cadr code)))
 	      (comments (let ((args (cdr code)))
 			  (format nil "~{# ~a~%~}" args)))
+	      (charlist (format nil "'~a'" (cadr code)))
 	      ;; bitstring .. contiguous sequence of bits in memory
 	      ;; <<42>>
 	      ;; <<42::8>>

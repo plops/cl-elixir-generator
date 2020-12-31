@@ -84,16 +84,24 @@
 	      (keyword-list (let ((args (cdr code)))
 			      (format nil "[~{~a~^, ~}]"
 				      (loop for (e f) on args by #'cddr collect
-					    (format nil "~a: ~a" (emit e) (emit f))))))
+									(format nil "~a: ~a" (emit e) (emit f))))))
+	      
 	      (curly (let ((args (cdr code)))
 		       (format nil "{~{~a~^, ~}}" (mapcar #'emit args))))
-              (dict (let* ((args (cdr code)))
+              #+nil (dict (let* ((args (cdr code)))
 		      (let ((str (with-output-to-string (s)
 				   (loop for (e f) in args
 					 do
 					    (format s "(~a):(~a)," (emit e) (emit f))))))
 			(format nil "{~a}" ;; remove trailing comma
 				(subseq str 0 (- (length str) 1))))))
+	      (map (let* ((args (cdr code)))
+		     (format nil "%{~{~a~^,~}}"
+			     (loop for (e f) on args by #'cddr
+				   collect
+				   (format nil "~a => ~a"
+					   (emit e)
+					   (emit f))))))
 	      (indent (format nil "~{~a~}~a"
 			      (loop for i below level collect "    ")
 			      (emit (cadr code))))

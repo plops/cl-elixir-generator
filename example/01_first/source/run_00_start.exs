@@ -1,10 +1,10 @@
 #  comment
-code_git_version = "75cdb3dde37d207864b9dd7a44eeff818261bce6"
+code_git_version = "284aa48a594ccfe37162de1761a859a647f6a129"
 
 code_repository =
   "https://github.com/plops/cl-elixir-generator/tree/master/example/01_first/source/run_00_start.py"
 
-code_generation_time = "16:01:26 of Thursday, 2020-12-31 (GMT+1)"
+code_generation_time = "16:07:24 of Thursday, 2020-12-31 (GMT+1)"
 
 IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} code_git_version=#{code_git_version} code_repository=#{
@@ -122,3 +122,6 @@ IO.puts(
     [{:a, 1}, {:b, 2}] == [a: 1, b: 2]
   }"
 )
+
+# map
+map = %{:a => 1, 2 => :b}

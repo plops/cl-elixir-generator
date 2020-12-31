@@ -156,7 +156,11 @@
 	     ,(lprint `((== (list (tuple :a 1)
 				  (tuple :b 2))
 			    (keyword-list a 1
-					     b 2)))))
+					  b 2)))))
+	    (do0
+	     (comments "map")
+	     (setf map (map :a 1
+			    2 :b)))
 	    )
 
 	  

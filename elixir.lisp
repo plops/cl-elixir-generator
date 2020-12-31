@@ -81,6 +81,10 @@
 			(format nil "~{~a~^, ~}" (mapcar #'emit args))))
 	      (list (let ((args (cdr code)))
 		      (format nil "[~{~a~^, ~}]" (mapcar #'emit args))))
+	      (keyword-list (let ((args (cdr code)))
+			      (format nil "[~{~a~^, ~}]"
+				      (loop for (e f) on args by #'cddr collect
+					    (format nil "~a: ~a" (emit e) (emit f))))))
 	      (curly (let ((args (cdr code)))
 		       (format nil "{~{~a~^, ~}}" (mapcar #'emit args))))
               (dict (let* ((args (cdr code)))

@@ -1,10 +1,10 @@
 #  comment
-code_git_version = "486f473f73d136749d1e22d5a5f4e7bf26f30a27"
+code_git_version = "07df0c845d2f48589a162b9e79e907ef5dac076a"
 
 code_repository =
   "https://github.com/plops/cl-elixir-generator/tree/master/example/01_first/source/run_00_start.py"
 
-code_generation_time = "15:12:28 of Thursday, 2020-12-31 (GMT+1)"
+code_generation_time = "15:58:30 of Thursday, 2020-12-31 (GMT+1)"
 
 IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} code_git_version=#{code_git_version} code_repository=#{
@@ -112,3 +112,11 @@ IO.puts(
 )
 
 IO.puts("#{__ENV__.file}:#{__ENV__.line} head=#{head} rest=#{rest}")
+# charlist
+q = 'hello'
+# keyword lists
+IO.puts(
+  "#{__ENV__.file}:#{__ENV__.line} (([{:a,1,}, {:b,2,}])==([a: 1, b: 2]))=#{
+    [{:a, 1}, {:b, 2}] == [a: 1, b: 2]
+  }"
+)

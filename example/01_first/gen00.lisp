@@ -144,7 +144,20 @@
 			       (string "banana"))))
 		 ,(lprint `(head rest)))
 	    
+	    (do0
+	   (comments "charlist")
+	   (setf q (charlist "hello")))
+
+	    (do0
+	     (comments "keyword lists")
+	     ,(lprint `((== (list (tuple :a 1)
+				  (tuple :b 2))
+			    (keyword-list a 1
+					     b 2)))))
 	    )
+
+	  
+
 	  
 	  
 	   ))

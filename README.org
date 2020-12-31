@@ -16,4 +16,8 @@ sudo dnf install elixir
   - sys:log 27:40
   - sys:get_status
   - microstate accounting
+  - recon_trace:calls
+  - sudo perf top -p `pgrep beam`
+  - dtrace, systemtap
+    - dyntrace module
 

@@ -12,6 +12,7 @@ sudo dnf install elixir
 - format elixir file `mix format sample.exs`
 
 - https://www.youtube.com/watch?v=OR2Gc6_Le2U&feature=youtu.be
+  - 2019 fred herbert
   - sys:trace
   - sys:log 27:40
   - sys:get_status
@@ -20,4 +21,11 @@ sudo dnf install elixir
   - sudo perf top -p `pgrep beam`
   - dtrace, systemtap
     - dyntrace module
+  - property-based testing with PropEr, Erlang and Elixir
+  - rebar3 shell
+  - iex -S mix test
+  - IEx.pry()
 
+- https://www.youtube.com/watch?v=JvBT4XBdoUE
+  - sasa juric
+  - shows how erlang/beam can be debugged

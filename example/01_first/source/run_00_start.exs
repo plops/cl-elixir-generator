@@ -1,10 +1,10 @@
 #  comment
-code_git_version = "72b75277c749a1e5bd635e16ab9ece0baba7b25e"
+code_git_version = "34dfdde0075fdedddcc2d7c5e126a91347ff6e73"
 
 code_repository =
   "https://github.com/plops/cl-elixir-generator/tree/master/example/01_first/source/run_00_start.py"
 
-code_generation_time = "18:06:36 of Thursday, 2020-12-31 (GMT+1)"
+code_generation_time = "18:19:27 of Thursday, 2020-12-31 (GMT+1)"
 
 IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} code_git_version=#{code_git_version} code_repository=#{
@@ -150,4 +150,21 @@ IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} Math.zero?(0)=#{Math.zero?(0)} Math.zero?(1)=#{Math.zero?(1)}"
 )
 
-IO.puts("#{__ENV__.file}:#{__ENV__.line} Math.do_sum(1, 2)=#{Math.do_sum(1, 2)}")
+# named function with default argument
+defmodule Concat do
+  def join(a, b, sep \\ " ") do
+    a <> sep <> b
+  end
+end
+
+IO.puts(
+  "#{__ENV__.file}:#{__ENV__.line} Concat.join(\"hello\", \"world\")=#{
+    Concat.join("hello", "world")
+  }"
+)
+
+IO.puts(
+  "#{__ENV__.file}:#{__ENV__.line} Concat.join(\"hello\", \"world\", \"_\")=#{
+    Concat.join("hello", "world", "_")
+  }"
+)

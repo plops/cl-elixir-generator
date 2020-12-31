@@ -180,8 +180,21 @@
 	     ,(lprint `((Math.sum 1 2)))
 	     ,(lprint `((Math.zero? 0)
 			(Math.zero? 1)))
-	     ,(lprint `((Math.do_sum 1 2))))
+	     ;,(lprint `((Math.do_sum 1 2)))
+	     )
+
+	    (do0
+	     (comments "named function with default argument")
+	     (defmodule Concat
+		 (def join (a b (sep (string " ")))
+		   (<> a sep b)))
+	     ,(lprint `((Concat.join (string "hello")
+				     (string "world"))))
+	     ,(lprint `((Concat.join (string "hello")
+				     (string "world")
+				     (string "_")))))
 	    )
+	  
 	  
 	  
 

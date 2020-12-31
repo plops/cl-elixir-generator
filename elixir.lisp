@@ -176,13 +176,19 @@ return the body without them and a hash table with an environment"
 			   (declare (ignorable req-param opt-param res-param
 					       key-param other-key-p aux-param key-exist-p)))
 			 (with-output-to-string (s)
-			   
+			   (format t "req-param: ~a~%" req-param)
 			   (format s "def ~a~a~@[ when ~a~] do~%"
 				   name
-				   (emit `(paren ,@req-param))
-				   (when conditions (emit `(and ,@conditions)))
-				   
-				   )
+				   (emit `(paren ,@(loop for e in req-param
+							 collect
+							 (if (listp e) ;; handle default argument
+							     (destructuring-bind (var &optional default) e
+							       (format t "argument with default: ~a ~a" var default)
+							       (format nil "~a \\\\ ~a"
+								       (emit var)
+								       (emit default)))
+							     e))))
+				   (when conditions (emit `(and ,@conditions))))
 			   (format s "~a" (emit `(do ,@body)))
 			   (format s "~&end")))))
 	       )
@@ -485,8 +491,9 @@ return the body without them and a hash table with an environment"
 	       (format nil ":~a" code))
 	      ((symbolp code) ;; print variable
 	       (format nil "~a" code))
-	      #+nil ((stringp code)
-	       (substitute #\: #\- (format nil "~a" code)))
+	      ((stringp code)
+	       code
+	       #+nil (substitute #\: #\- (format nil "~a" code)))
 	      ((numberp code) ;; print constants
 	       (cond ((integerp code) (format str "~a" code))
 		     ((floatp code)

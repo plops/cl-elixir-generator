@@ -1,10 +1,10 @@
 #  comment
-code_git_version = "69d3df0b92ee51a3a1478cead234952e53bd0bd2"
+code_git_version = "6c1a66f89eea5f3cf898b0560ac354bc358eab6a"
 
 code_repository =
   "https://github.com/plops/cl-elixir-generator/tree/master/example/01_first/source/run_00_start.py"
 
-code_generation_time = "21:02:59 of Thursday, 2020-12-31 (GMT+1)"
+code_generation_time = "21:31:10 of Thursday, 2020-12-31 (GMT+1)"
 
 IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} code_git_version=#{code_git_version} code_repository=#{
@@ -210,6 +210,7 @@ end))|>(Stream.filter(odd?))|>(Enum.sum))=#{
   }"
 )
 
+# spawn
 pid = spawn(fn -> 1 + 2 end)
 
 IO.puts(
@@ -223,3 +224,16 @@ IO.puts(
     Process.alive?(self())
   }"
 )
+
+# messages
+parent = self()
+spawn(fn -> send(parent, {:hello, self()}) end)
+
+receive do
+  {:hello, pid} ->
+    IO.puts(
+      "#{__ENV__.file}:#{__ENV__.line} \"got hello from #{inspect(pid)}\"=#{
+        "got hello from #{inspect(pid)}"
+      }"
+    )
+end

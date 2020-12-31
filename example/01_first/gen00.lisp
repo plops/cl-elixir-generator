@@ -247,9 +247,13 @@
 
 	    (do0
 	     (comments "messages")
-	     (send (self)
-		   (tuple :hello (string "world")))
-	     (receive))
+	     (setf parent (self))
+	     (spawn (lambda ()
+		      (send parent (tuple :hello (self)))))
+	     (receive ()
+		      (-> (tuple :hello pid)
+			  ,(lprint `((string "got hello from #{inspect pid}"))))
+	      ))
 	    
 	    )
 	  

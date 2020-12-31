@@ -344,6 +344,17 @@ return the body without them and a hash table with an environment"
 	      (return_ (format nil "return ~a" (emit (caadr code))))
 	      (return (let ((args (cdr code)))
 			(format nil "~a" (emit `(return_ ,args)))))
+	      (-> (let ((args (cdr code)))
+		    ;; s-expression: (-> a b)
+		    ;; elixir: a -> b
+		    ;; s-expression: (-> a b c d)
+		    ;; elixir: a -> b
+		    ;;         c -> d
+		    (with-output-to-string (s)
+		      (loop for (e f) on args by #'cddr
+			    collect
+			    (format s   "~&~a -> ~a~%" (emit e) (emit f)))
+		    )))
 	      (receive (let ((args (cdr code)))
 			 ;; receive do
 			 ;;   {:bla, foo} -> foo
@@ -353,7 +364,15 @@ return the body without them and a hash table with an environment"
 
 			 ;; receive <after_body> <body>
 			 ;; (receive (1_000 "nothing") (-> (tuple :bla foo) foo))
-			 
+			 (destructuring-bind ((&rest after-body)
+					      &rest body) args
+			   (with-output-to-string (s)
+			     (format s "receive do~%")
+			     (format s "~a" (emit `(do ,@body)))
+			     (when after-body
+			       (format s "~&after~%")
+			       (format s "~a" (emit `(do ,@after-body))))
+			     (format s "~&end~%")))
 			 ))
 	      (case
 		  ;; case keyform {normal-clause}* [otherwise-clause]

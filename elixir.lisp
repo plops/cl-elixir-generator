@@ -259,6 +259,10 @@ return the body without them and a hash table with an environment"
 		     (format nil "(~{(~a)~^===~})" (mapcar #'emit args))))
 	      (<> (let ((args (cdr code))) ;; concatenation
 		    (format nil "(~{(~a)~^<>~})" (mapcar #'emit args))))
+	      (\|> (let ((args (cdr code))) ;; pipe
+		     (format nil "(~{(~a)~^|>~})" (mapcar #'emit args))))
+	      (pipe (let ((args (cdr code))) ;; pipe
+		    (format nil "(~{(~a)~^|>~})" (mapcar #'emit args))))
 	      ;; list manipulation
 	      (++ (let ((args (cdr code)))
 		    (format nil "(~{(~a)~^++~})" (mapcar #'emit args))))

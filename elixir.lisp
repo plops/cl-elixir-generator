@@ -1,3 +1,7 @@
+(declaim (optimize (debug 3)
+		   (speed 0)
+		   (safety 3)))
+
 (in-package :cl-elixir-generator)
 (setf (readtable-case *readtable*) :invert)
 
@@ -167,8 +171,21 @@ return the body without them and a hash table with an environment"
 			     (format s "~a" (emit `(do0 ,@(cdr args))))
 			     (format s "~&end"))))
 	      (def (destructuring-bind (name lambda-list &rest body) (cdr code)
+		     ;; def <name> ( a, b ) do ..
+		     ;; def <name> ( [head|tail], accumulator ) do ..
+		     ;;    (def name ((list (logior head tail)) accumulator) ...
+		     ;; def <name> ( var \\ default ) do ..
+		     ;;    (def name (&optional (var default)) ...
 		     (multiple-value-bind (body env conditions) (consume-declare body) 
-		       (let ((req-param lambda-list))
+		       (let* ((pos-opt (position '&optional lambda-list))
+			      
+			      (req-param (if pos-opt
+					     (subseq lambda-list 0 pos-opt)
+					     lambda-list))
+			      (opt-param (when pos-opt
+					   (subseq lambda-list (+ 1 pos-opt))))
+			      )
+			 (format t "pos-opt: ~a req-param: ~a opt-param: ~a ~%" pos-opt req-param opt-param)
 			 #+nil(multiple-value-bind
 			       (req-param opt-param res-param
 				key-param other-key-p aux-param key-exist-p)
@@ -176,24 +193,18 @@ return the body without them and a hash table with an environment"
 			   (declare (ignorable req-param opt-param res-param
 					       key-param other-key-p aux-param key-exist-p)))
 			 (with-output-to-string (s)
-			   (format t "req-param: ~a~%" req-param)
-			   (format s "def ~a~a~@[ when ~a~]"
+			   
+			    (format s "def ~a~a~@[ when ~a~]"
 				   name
-				   (emit `(paren ,@(loop for e in req-param
-							 collect
-							 (if (listp e) 
-							     (if (and (eq 2 (length e))
-								      (atom (first e)))
-								 ;; handle default argument
-								 
-								 (destructuring-bind (var &optional default) e
+				   (emit `(paren
+					   ,@req-param
+					   ,@(loop for e in opt-param
+						   collect
+						   (destructuring-bind (var &optional default) e
 								   
 								   (format nil "~a \\\\ ~a"
 									   (emit var)
-									   (emit default)))
-								 ;; complex expression instead of variable
-								 e)
-							     e))))
+									   (emit default))))))
 				   (when conditions (emit `(and ,@conditions))))
 			   (when body
 			     (format s " do~%~a" (emit `(do ,@body)))
@@ -510,4 +521,6 @@ return the body without them and a hash table with an environment"
 			      (print-sufficient-digits-f64 (realpart code))
 			      (print-sufficient-digits-f64 (imagpart code))))))))
 	"")))
+
+
 

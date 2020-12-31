@@ -1,10 +1,10 @@
 #  comment
-code_git_version = "dd18d74c8e79e065076d9d8cec45c55d8a52967e"
+code_git_version = "553d324fe101b876b825ea07a0064f488ed6dfc9"
 
 code_repository =
   "https://github.com/plops/cl-elixir-generator/tree/master/example/01_first/source/run_00_start.py"
 
-code_generation_time = "19:42:54 of Thursday, 2020-12-31 (GMT+1)"
+code_generation_time = "20:49:47 of Thursday, 2020-12-31 (GMT+1)"
 
 IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} code_git_version=#{code_git_version} code_repository=#{
@@ -178,7 +178,7 @@ IO.puts(
 IO.puts("#{__ENV__.file}:#{__ENV__.line} Concat.join(\"hello\")=#{Concat.join("hello")}")
 
 defmodule MathRec do
-  def sum_list(list \\ head | tail, accumulator) do
+  def sum_list([head | tail], accumulator) do
     sum_list(tail, head + accumulator)
   end
 

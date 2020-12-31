@@ -1,3 +1,7 @@
+(declaim (optimize (debug 3)
+		   (speed 0)
+		   (safety 3)))
+
 (eval-when (:compile-toplevel :execute :load-toplevel)
   (ql:quickload "cl-elixir-generator")
   (ql:quickload "alexandria")
@@ -6,7 +10,7 @@
 
 #+nil
 (let ((a "<<head,rest::binary>>=\"banana\"="))
-  (format t "~a~%" (cl-ppcre:regex-replace-all "\"" a "\\\"")))
+  (format t "~a~%" (cl-ppcre:regex-replace-all "" a "\\\"")))
 
 (progn
   (defparameter *path* "/home/martin/stage/cl-elixir-generator/example/01_first")
@@ -183,11 +187,11 @@
 	     ;,(lprint `((Math.do_sum 1 2)))
 	     )
 
-	    (do0
+	     (do0
 	     (comments "named function with default argument")
 	     (defmodule Concat
 		 
-		 (def join (a (b "nil") (sep (string " ")))
+		 (def join (a &optional (b "nil") (sep (string " ")))
 		  )
 	       (def join (a b _sep)
 		 (declare (when (is_nil b)))
@@ -207,7 +211,7 @@
 		 (def sum_list ((list (logior head tail))
 				accumulator)
 		   (sum_list tail (+ head accumulator)))
-	       (def sum_list ([] accumulator)
+	       (def sum_list ("[]" accumulator)
 		 accumulator))
 	     ,(lprint `((MathRec.sum_list (list 1 2 3)
 					  0)))

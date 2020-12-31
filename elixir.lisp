@@ -150,8 +150,11 @@
 		       (declare (ignorable req-param opt-param res-param
 					   key-param other-key-p aux-param key-exist-p))
 		       (with-output-to-string (s)
+			 
 			 (format s "def ~a~a do~%"
 				 name
+				 (emit `(paren ,@req-param))
+				 #+nil
 				 (emit `(paren
 					 ,@(append (mapcar #'emit req-param)
 						   (loop for e in key-param collect 

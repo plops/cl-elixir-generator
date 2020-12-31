@@ -1,10 +1,10 @@
 #  comment
-code_git_version = "35578db5f889b09e8b431b50e39e76b8b88eaf62"
+code_git_version = "72b75277c749a1e5bd635e16ab9ece0baba7b25e"
 
 code_repository =
   "https://github.com/plops/cl-elixir-generator/tree/master/example/01_first/source/run_00_start.py"
 
-code_generation_time = "17:49:08 of Thursday, 2020-12-31 (GMT+1)"
+code_generation_time = "18:06:36 of Thursday, 2020-12-31 (GMT+1)"
 
 IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} code_git_version=#{code_git_version} code_repository=#{
@@ -134,7 +134,20 @@ defmodule Math do
   defp do_sum(a, b) do
     a + b
   end
+
+  def zero?(0) do
+    true
+  end
+
+  def zero?(x) when is_integer(x) do
+    false
+  end
 end
 
 IO.puts("#{__ENV__.file}:#{__ENV__.line} Math.sum(1, 2)=#{Math.sum(1, 2)}")
+
+IO.puts(
+  "#{__ENV__.file}:#{__ENV__.line} Math.zero?(0)=#{Math.zero?(0)} Math.zero?(1)=#{Math.zero?(1)}"
+)
+
 IO.puts("#{__ENV__.file}:#{__ENV__.line} Math.do_sum(1, 2)=#{Math.do_sum(1, 2)}")

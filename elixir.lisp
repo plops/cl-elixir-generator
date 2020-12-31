@@ -52,7 +52,30 @@
 (defparameter *env-functions* nil)
 (defparameter *env-macros* nil)
 
-
+(defun consume-declare (body)
+  "take a list of instructions from body, parse type declarations,
+return the body without them and a hash table with an environment"
+  (let ((env (make-hash-table))
+	(when-conditions nil)
+	(looking-p t) 
+	(new-body nil))
+    (loop for e in body do
+	 (if looking-p
+	     (if (listp e)
+		 (if (eq (car e) 'declare)
+		     (loop for declaration in (cdr e) do
+			  (when (eq (first declaration) 'when)
+			    (destructuring-bind (instr &rest conditions) declaration
+			      (setf when-conditions conditions)))
+			  )
+		     (progn
+		       (push e new-body)
+		       (setf looking-p nil)))
+		 (progn
+		   (setf looking-p nil)
+		   (push e new-body)))
+	     (push e new-body)))
+    (values (reverse new-body) env when-conditions)))
 
 (defun emit-elixir (&key code (str nil) (clear-env nil) (level 0))
   ;(format t "emit ~a ~a~%" level code)
@@ -144,28 +167,25 @@
 			     (format s "~a" (emit `(do0 ,@(cdr args))))
 			     (format s "~&end"))))
 	      (def (destructuring-bind (name lambda-list &rest body) (cdr code)
-		     (multiple-value-bind (req-param opt-param res-param
-					   key-param other-key-p aux-param key-exist-p)
-			 (parse-ordinary-lambda-list lambda-list)
-		       (declare (ignorable req-param opt-param res-param
-					   key-param other-key-p aux-param key-exist-p))
-		       (with-output-to-string (s)
-			 
-			 (format s "def ~a~a do~%"
-				 name
-				 (emit `(paren ,@req-param))
-				 #+nil
-				 (emit `(paren
-					 ,@(append (mapcar #'emit req-param)
-						   (loop for e in key-param collect 
-									    (destructuring-bind ((keyword-name name) init suppliedp)
-										e
-									      (declare (ignorable keyword-name suppliedp))
-									      (if init
-										  `(= ,name ,init)
-										  `(= ,name "None"))))))))
-			 (format s "~a" (emit `(do ,@body)))
-			 (format s "~&end")))))
+		     (multiple-value-bind (body env conditions) (consume-declare body) 
+		       (let ((req-param lambda-list))
+			 #+nil(multiple-value-bind
+			       (req-param opt-param res-param
+				key-param other-key-p aux-param key-exist-p)
+			     (parse-ordinary-lambda-list lambda-list)
+			   (declare (ignorable req-param opt-param res-param
+					       key-param other-key-p aux-param key-exist-p)))
+			 (with-output-to-string (s)
+			   
+			   (format s "def ~a~a~@[ when ~a~] do~%"
+				   name
+				   (emit `(paren ,@req-param))
+				   (when conditions (emit `(and ,@conditions)))
+				   
+				   )
+			   (format s "~a" (emit `(do ,@body)))
+			   (format s "~&end")))))
+	       )
 	      (defp (destructuring-bind (name lambda-list &rest body) (cdr code)
 		     (multiple-value-bind (req-param opt-param res-param
 					   key-param other-key-p aux-param key-exist-p)

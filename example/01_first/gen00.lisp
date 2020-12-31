@@ -178,6 +178,8 @@
 		 false)
 	       )
 	     ,(lprint `((Math.sum 1 2)))
+	     ,(lprint `((Math.zero? 0)
+			(Math.zero? 1)))
 	     ,(lprint `((Math.do_sum 1 2))))
 	    )
 	  

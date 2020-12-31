@@ -167,8 +167,12 @@
 	     (comments "module")
 	     (defmodule Math
 		 (def sum (a b)
-		   (+ a b)))
-	     ,(lprint `((Math.sum 1 2))))
+		   (+ a b))
+	       (defp do_sum (a b)
+		 (+ a b))
+	       )
+	     ,(lprint `((Math.sum 1 2)))
+	     ,(lprint `((Math.do_sum 1 2))))
 	    )
 	  
 	  

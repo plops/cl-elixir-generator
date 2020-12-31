@@ -166,6 +166,20 @@
 										  `(= ,name "None"))))))))
 			 (format s "~a" (emit `(do ,@body)))
 			 (format s "~&end")))))
+	      (defp (destructuring-bind (name lambda-list &rest body) (cdr code)
+		     (multiple-value-bind (req-param opt-param res-param
+					   key-param other-key-p aux-param key-exist-p)
+			 (parse-ordinary-lambda-list lambda-list)
+		       (declare (ignorable req-param opt-param res-param
+					   key-param other-key-p aux-param key-exist-p))
+		       (with-output-to-string (s)
+			 
+			 (format s "defp ~a~a do~%"
+				 name
+				 (emit `(paren ,@req-param))
+				 )
+			 (format s "~a" (emit `(do ,@body)))
+			 (format s "~&end")))))
 	      (= (destructuring-bind (a b) (cdr code)
 		   (format nil "~a=~a" (emit a) (emit b))))
 	      (in (destructuring-bind (a b) (cdr code)

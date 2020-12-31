@@ -1,10 +1,10 @@
 #  comment
-code_git_version = "553d324fe101b876b825ea07a0064f488ed6dfc9"
+code_git_version = "665aff271e1efe4462f87efded5a2a887ba054b0"
 
 code_repository =
   "https://github.com/plops/cl-elixir-generator/tree/master/example/01_first/source/run_00_start.py"
 
-code_generation_time = "20:49:47 of Thursday, 2020-12-31 (GMT+1)"
+code_generation_time = "20:54:24 of Thursday, 2020-12-31 (GMT+1)"
 
 IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} code_git_version=#{code_git_version} code_repository=#{
@@ -192,3 +192,6 @@ IO.puts(
     MathRec.sum_list([1, 2, 3], 0)
   }"
 )
+
+# pipe operator
+1..100_000 |> Enum.map(fn x -> x * 3 end)

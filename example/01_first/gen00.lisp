@@ -216,6 +216,11 @@
 	     ,(lprint `((MathRec.sum_list (list 1 2 3)
 					  0)))
 	     )
+
+	    (do0
+	     (comment "pipe operator")
+	     (pipe "1..100_000"
+		   (Enum.map (& (lambda (x) (* x 3))))))
 	    
 	    
 	    )

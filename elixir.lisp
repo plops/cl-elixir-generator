@@ -280,6 +280,8 @@ return the body without them and a hash table with an environment"
 			   (format nil "(~{(~a)~^||~})" (mapcar #'emit args))))
 	      (! (let ((args (cdr code)))
 		   (format nil "!(~a)" (emit (car args)))))
+	      (& (let ((args (cdr code))) ;; capture operator
+		   (format nil "&(~a)" (emit (car args)))))
 	      (< (let ((args (cdr code)))
 		   (format nil "(~{(~a)~^<~})" (mapcar #'emit args))))
 	      (<= (let ((args (cdr code)))
@@ -304,7 +306,7 @@ return the body without them and a hash table with an environment"
 			   (emit (second args)))))
 	      (and (let ((args (cdr code)))
 		     (format nil "(~{(~a)~^ and ~})" (mapcar #'emit args))))
-	      (& (let ((args (cdr code)))
+	      #+nil (& (let ((args (cdr code)))
 		   (format nil "(~{(~a)~^ & ~})" (mapcar #'emit args))))
 	      (logand (let ((args (cdr code)))
 			(format nil "(~{(~a)~^ & ~})" (mapcar #'emit args))))

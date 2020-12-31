@@ -258,6 +258,7 @@
 	    (do0
 	     (comments "state")
 	     (defmodule KV
+		 (space @moduledoc (string3 "module example for state"))
 		 (def start_link ()
 		   (Task.start_link (lambda ()
 				      (loop (map))))

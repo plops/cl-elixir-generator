@@ -150,6 +150,10 @@ return the body without them and a hash table with an environment"
 		       (format nil "{~{~a,~}}" (mapcar #'emit args))))
 	      (paren (let ((args (cdr code)))
 		       (format nil "(~{~a~^, ~})" (mapcar #'emit args))))
+	      (space
+		   ;; space {args}*
+		   (let ((args (cdr code)))
+		     (format nil "~{~a~^ ~}" (mapcar #'emit args))))
 	      (ntuple (let ((args (cdr code)))
 			(format nil "~{~a~^, ~}" (mapcar #'emit args))))
 	      (list (let ((args (cdr code)))
@@ -333,7 +337,7 @@ return the body without them and a hash table with an environment"
 							       e))))
 	      (string (format nil "\"~a\"" (cadr code)))
 					;(string-b (format nil "b\"~a\"" (cadr code)))
-	      (string3 (format nil "\"\"\"~a\"\"\"" (cadr code))) ;; string3 and heredoc are the same
+	      (string3 (format nil "\"\"\"~&~a~%\"\"\"" (cadr code))) ;; string3 and heredoc are the same
 	      (heredoc (format nil "\"\"\"~a\"\"\"" (cadr code)))
 	      (regex (format nil "~~r/~a/" (cadr code)))
 					;(rstring3 (format nil "r\"\"\"~a\"\"\"" (cadr code)))

@@ -1,10 +1,10 @@
 #  comment
-code_git_version = "2226d5cfd6fed85d253ff78feb207aed0981347e"
+code_git_version = "1a3484da4795a93ef355b9f698a0747a63a7e6a8"
 
 code_repository =
   "https://github.com/plops/cl-elixir-generator/tree/master/example/01_first/source/run_00_start.py"
 
-code_generation_time = "21:41:11 of Thursday, 2020-12-31 (GMT+1)"
+code_generation_time = "22:04:49 of Thursday, 2020-12-31 (GMT+1)"
 
 IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} code_git_version=#{code_git_version} code_repository=#{
@@ -240,6 +240,9 @@ end
 
 # state
 defmodule KV do
+  @moduledoc """
+  module example for state
+  """
   def start_link() do
     Task.start_link(fn -> loop(%{}) end)
   end

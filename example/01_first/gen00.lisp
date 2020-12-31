@@ -117,7 +117,9 @@
 	     (unless true
 	       (string "never"))
 	     (when true
-	       (string "always")))
+	       (string "always"))
+	     ("if" false (keyword-list do :this
+				     else :that)))
 
 
 	    (do0
@@ -146,8 +148,9 @@
 	    
 	    (do0
 	   (comments "charlist")
-	   (setf q (charlist "hello")))
-
+	   (setf q (charlist "hello"))
+	   ,(lprint `(q)))
+	    
 	    (do0
 	     (comments "keyword lists")
 	     ,(lprint `((== (list (tuple :a 1)

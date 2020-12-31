@@ -1,10 +1,10 @@
 #  comment
-code_git_version = "07df0c845d2f48589a162b9e79e907ef5dac076a"
+code_git_version = "75cdb3dde37d207864b9dd7a44eeff818261bce6"
 
 code_repository =
   "https://github.com/plops/cl-elixir-generator/tree/master/example/01_first/source/run_00_start.py"
 
-code_generation_time = "15:58:30 of Thursday, 2020-12-31 (GMT+1)"
+code_generation_time = "16:01:26 of Thursday, 2020-12-31 (GMT+1)"
 
 IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} code_git_version=#{code_git_version} code_repository=#{
@@ -84,6 +84,7 @@ if true do
   "always"
 end
 
+if(false, do: :this, else: :that)
 # bitstring
 IO.puts("#{__ENV__.file}:#{__ENV__.line} ((<<42>>)===(<<42::8>>))=#{<<42>> === <<42::8>>}")
 
@@ -114,6 +115,7 @@ IO.puts(
 IO.puts("#{__ENV__.file}:#{__ENV__.line} head=#{head} rest=#{rest}")
 # charlist
 q = 'hello'
+IO.puts("#{__ENV__.file}:#{__ENV__.line} q=#{q}")
 # keyword lists
 IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} (([{:a,1,}, {:b,2,}])==([a: 1, b: 2]))=#{

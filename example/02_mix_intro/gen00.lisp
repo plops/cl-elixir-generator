@@ -83,6 +83,18 @@
 			    (KV.Registry.lookup registry (string "shopping"))))
 		 (KV.Bucket.put bucket (string "milk") 1)
 		 (assert (== 1 (KV.Bucket.get bucket (string "milk"))))
+		 ))
+       (space test
+	      (ntuple (string "remove buckets on exit")
+		      (map :registry registry)
+		      )
+	      (progn
+		
+		 (KV.Registry.create registry (string "shopping"))
+		 (assert (= (tuple :ok bucket)
+			    (KV.Registry.lookup registry (string "shopping"))))
+		 (Agent.stop bucket)
+		 (assert (== :error (KV.Registry.lookup registry (string "shopping"))))
 		))
        )))
    

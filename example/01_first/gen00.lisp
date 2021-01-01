@@ -287,16 +287,18 @@
 	      (defprotocol Utility
 		  (space @spec (type "t") "::" (String.t))
 		(def type (value)))
-	      ,@(loop for (e f) in `((BitString string)
-				     (Integer integer))
+	      ,@(loop for e ; (e f)
+			in `(;(BitString string)
+				     ;(Integer integer)
+				     Atom BitString Float Function Integer List Map PID Port Reference Tuple)
 		      collect
 		      `(defimpl Utility ,e
 			 (def type (_value)
-			   (string ,f))))
+			   (string ,e))))
 	      ,(lprint `((inspect (Utility.type (string "foo")))))
 	      ,(lprint `((inspect (Utility.type 123))))
 
-	      ;; Atom BitString Float Function Integer List Map PID Port Reference Tuple
+	       
 	      )
 	    )
 	    

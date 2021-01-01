@@ -1,10 +1,10 @@
 #  comment
-code_git_version = "1695c110a3f5fa2e2df853de8dc17e0600aac865"
+code_git_version = "5eca90c23668cfcf7619c20ad956b133b7c4a2fc"
 
 code_repository =
   "https://github.com/plops/cl-elixir-generator/tree/master/example/01_first/source/run_00_start.py"
 
-code_generation_time = "08:27:18 of Friday, 2021-01-01 (GMT+1)"
+code_generation_time = "08:30:39 of Friday, 2021-01-01 (GMT+1)"
 
 IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} code_git_version=#{code_git_version} code_repository=#{
@@ -282,15 +282,69 @@ defprotocol Utility do
   def type(value)
 end
 
+defimpl Utility, for: Atom do
+  def type(_value) do
+    "Atom"
+  end
+end
+
 defimpl Utility, for: BitString do
   def type(_value) do
-    "string"
+    "BitString"
+  end
+end
+
+defimpl Utility, for: Float do
+  def type(_value) do
+    "Float"
+  end
+end
+
+defimpl Utility, for: Function do
+  def type(_value) do
+    "Function"
   end
 end
 
 defimpl Utility, for: Integer do
   def type(_value) do
-    "integer"
+    "Integer"
+  end
+end
+
+defimpl Utility, for: List do
+  def type(_value) do
+    "List"
+  end
+end
+
+defimpl Utility, for: Map do
+  def type(_value) do
+    "Map"
+  end
+end
+
+defimpl Utility, for: PID do
+  def type(_value) do
+    "PID"
+  end
+end
+
+defimpl Utility, for: Port do
+  def type(_value) do
+    "Port"
+  end
+end
+
+defimpl Utility, for: Reference do
+  def type(_value) do
+    "Reference"
+  end
+end
+
+defimpl Utility, for: Tuple do
+  def type(_value) do
+    "Tuple"
   end
 end
 

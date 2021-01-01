@@ -1,0 +1,6 @@
+- compile
+#+begin_example
+cd source
+mix compile
+iex -S mix
+#+end_example

@@ -10,5 +10,7 @@ defmodule KV.BucketTest do
     assert(nil == KV.Bucket.get(bucket, "milk"))
     KV.Bucket.put(bucket, "milk", 3)
     assert(3 == KV.Bucket.get(bucket, "milk"))
+    KV.Bucket.delete(bucket, "milk")
+    assert(nil == KV.Bucket.get(bucket, "milk"))
   end
 end

@@ -40,7 +40,8 @@
 		(map :bucket bucket)))
        (space test
 	      (ntuple (string "stores values by key")
-		      (map :bucket bucket))
+		      (map :bucket bucket) ;; get the setup bucket into the test context
+		      )
 	      (progn
 	
 		(assert (== nil
@@ -49,6 +50,11 @@
 		     Bucket
 		     (put bucket (string "milk") 3))
 		(assert (== 3
+			    (KV.Bucket.get bucket (string "milk"))))
+		(dot KV
+		     Bucket
+		     (delete bucket (string "milk")))
+		(assert (== nil
 			    (KV.Bucket.get bucket (string "milk"))))
 		))
        )))
@@ -72,5 +78,10 @@
 	(space @doc
 	       (string3 Put value for given key into bucket))
 	(def put (bucket key value)
-	  (Agent.update bucket (&Map.put &1 key value))))))))
+	  (Agent.update bucket (&Map.put &1 key value))))
+       (do0
+	(space @doc
+	       (string3 Delete key from bucket. Returns value of key if it exists.))
+	(def delete (bucket key)
+	  (Agent.get_and_update bucket (&Map.pop &1 key))))))))
 

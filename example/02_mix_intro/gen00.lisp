@@ -83,5 +83,27 @@
 	(space @doc
 	       (string3 Delete key from bucket. Returns value of key if it exists.))
 	(def delete (bucket key)
-	  (Agent.get_and_update bucket (&Map.pop &1 key))))))))
+	  (Agent.get_and_update bucket (&Map.pop &1 key)))))))
+   (write-source
+   (format nil "~a/source/lib/kv/registry.ex" *path*)
+   `(do0
+     (defmodule KV.Registry
+       "use GenServer"
+       (do0
+	(space @impl true)
+	(def init (:ok)
+	  (tuple :ok (map))))
+       (do0
+	(space @impl true)
+	(def handle_call ((tuple :lookup name) _from names)
+	  (tuple :reply (MAp.fetch names name) names)))
+       (do0
+	(space @impl true)
+	(def handle_cast ((tuple :create name) names)
+	  (if (Map.has_key? names name)
+	      (tuple :noreply names)
+	      (do0
+	       (setf (tuple :ok bucket) (KV.Bucket.start_link (list)))
+	       (tuple :noreply (Map.put names name bucket))))))
+      ))))
 

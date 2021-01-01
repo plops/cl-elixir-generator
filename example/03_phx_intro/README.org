@@ -23,5 +23,15 @@ mix archive.install hex phx_new 1.5.7
 mix phx.new hello
 cd hello
 mix ecto.create
+mix phx.server
 #+end_example
  
+- don't put in repo, will be regenerated if deleted:
+  - _build
+  - deps
+- what about assets?
+
+- lib/hello_web/endpoint.ex is the entry-point for HTTP requests
+- lib/hello_web/router.ex defines the rules to dispatch requests to
+  "controllers", which then uses "views" and "templates" to render
+  HTML

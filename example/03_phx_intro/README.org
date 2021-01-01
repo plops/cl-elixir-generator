@@ -2,9 +2,15 @@
 - https://hexdocs.pm/phoenix/installation.html
 - installation on fedora
 #+begin_example 
-sudo dnf install npm postgresql-server postgresql-contrib
+sudo dnf install npm postgresql-server postgresql-contrib inotify-tools
+/usr/bin/postgresql-setup --initdb
 sudo systemctl enable postgresql
 sudo systemctl start postgresql
 #  sudo systemctl stop postgresql
 #  sudo systemctl disable postgresql
+
+mix archive.install hex phx_new 1.5.7
+mix phx.new hello
+cd hello
+mix ecto.create
 #+end_example

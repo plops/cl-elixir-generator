@@ -250,6 +250,9 @@ return the body without them and a hash table with an environment"
 					)
 				(format s "~a" (emit `(do0 ,@body)))
 				(format s "~&end")))))
+	      (defexception (let* ((args (cdr code)))
+			      (format nil "defexception message: \"~{~a~^ ~}\""
+				      args)))
 	      (def (parse-def code :private nil)
 	       
 	       )

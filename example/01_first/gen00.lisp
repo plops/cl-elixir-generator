@@ -365,6 +365,10 @@
 		  ;; %NativeDateTime{} ~N[2019-10-31 23:00:07]
 		  ;; %DateTime{} ~U[2019-10-31 23:00:07Z] has field for timezone
  		  )
+
+	     (do0 (comments "errors")
+		  (defmodule MyError
+		    (defexception default message)))
 	     )
 
 	    

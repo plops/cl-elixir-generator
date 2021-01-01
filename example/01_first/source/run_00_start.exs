@@ -1,10 +1,10 @@
 #  comment
-code_git_version = "2592f116cd2090447e8911f62bd2d52f38a4f013"
+code_git_version = "8134ffc53bab7b7f008bdba141efc5bd34766141"
 
 code_repository =
   "https://github.com/plops/cl-elixir-generator/tree/master/example/01_first/source/run_00_start.py"
 
-code_generation_time = "09:04:54 of Friday, 2021-01-01 (GMT+1)"
+code_generation_time = "09:52:27 of Friday, 2021-01-01 (GMT+1)"
 
 IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} code_git_version=#{code_git_version} code_repository=#{
@@ -388,4 +388,10 @@ end
 # into .. transform map
 for {key, val} <- %{"a" => 1, "b" => 2}, into: %{} do
   {key, val * val}
+end
+
+# sigils
+# errors
+defmodule MyError do
+  defexception message: "default message"
 end

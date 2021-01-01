@@ -219,7 +219,7 @@ return the body without them and a hash table with an environment"
 					      key-param other-key-p aux-param key-exist-p))
 			  (with-output-to-string (s)
 			    (format s "fn ~a -> ~a~%end"
-				    (emit `(ntuple ,@(append req-param
+				    (emit `(paren ,@(append req-param
 							     (loop for e in key-param collect 
 										      (destructuring-bind ((keyword-name name) init suppliedp)
 											  e
@@ -384,6 +384,13 @@ return the body without them and a hash table with an environment"
 		      (loop for (e f) on args by #'cddr
 			    collect
 			    (format s   "~&~a -> ~a~%" (emit e) (emit f)))
+		      )))
+	      (<- (let ((args (cdr code)))
+		 
+		    (with-output-to-string (s)
+		      (loop for (e f) on args by #'cddr
+			    collect
+			    (format s   "~a <- ~a" (emit e) (emit f)))
 		    )))
 	      (receive (let ((args (cdr code)))
 			 ;; receive do

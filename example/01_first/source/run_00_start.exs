@@ -1,10 +1,10 @@
 #  comment
-code_git_version = "434db19eb9c31b816047a482821aa03c679ae940"
+code_git_version = "2ebfed2fde3bc22ae146bf1cd9bdf296258ea3f5"
 
 code_repository =
   "https://github.com/plops/cl-elixir-generator/tree/master/example/01_first/source/run_00_start.py"
 
-code_generation_time = "08:42:43 of Friday, 2021-01-01 (GMT+1)"
+code_generation_time = "08:50:11 of Friday, 2021-01-01 (GMT+1)"
 
 IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} code_git_version=#{code_git_version} code_repository=#{
@@ -197,14 +197,14 @@ IO.puts(
 odd? = fn x -> 0 != rem(x, 2) end
 
 IO.puts(
-  "#{__ENV__.file}:#{__ENV__.line} ((1..100_000)|>(Enum.map(fn x -> ((x)*(3))
+  "#{__ENV__.file}:#{__ENV__.line} ((1..100_000)|>(Enum.map(fn (x) -> ((x)*(3))
 end))|>(Enum.filter(odd?))|>(Enum.sum))=#{
     1..100_000 |> Enum.map(fn x -> x * 3 end) |> Enum.filter(odd?) |> Enum.sum()
   }"
 )
 
 IO.puts(
-  "#{__ENV__.file}:#{__ENV__.line} ((1..100_000)|>(Stream.map(fn x -> ((x)*(3))
+  "#{__ENV__.file}:#{__ENV__.line} ((1..100_000)|>(Stream.map(fn (x) -> ((x)*(3))
 end))|>(Stream.filter(odd?))|>(Enum.sum))=#{
     1..100_000 |> Stream.map(fn x -> x * 3 end) |> Stream.filter(odd?) |> Enum.sum()
   }"
@@ -365,4 +365,10 @@ multiple_of_3? = fn n -> rem(n, 3) == 0 end
 
 for n <- [1, 2, 3, 4], multiple_of_3?.(n) do
   n * n
+end
+
+dirs = ["/home", "/tmp"]
+
+for dir <- dirs, file <- File.ls!(dir), path = Path.join(dir, file), File.regular?(path) do
+  File.stat!(path).size
 end

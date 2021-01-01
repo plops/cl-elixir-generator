@@ -307,8 +307,18 @@
 		   (* n n))
 	      (setf multiple_of_3? (lambda (n) (== (rem n 3) 0)))
 	      (for (n (list 1 2 3 4) (multiple_of_3?. n))
-		   (* n n)))
-	    )
+		   (* n n))
+
+	      (do0
+	       (setf dirs (list (string "/home")
+				(string "/tmp")))
+	       (for (dir dirs
+			 (<- file (File.ls! dir))
+			 (= path (Path.join dir file))
+			 (File.regular? path))
+		    (dot (File.stat! path)
+			 size))))
+	     )
 	    
 	    )
 	  

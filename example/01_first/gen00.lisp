@@ -363,6 +363,9 @@
  		  )
 
 	     (do0 (comments "errors")
+
+		  ;; else is run when no error occurs
+		  ;; after cleans up if something goes wrong or if no error occurs
 		  (defmodule MyError
 		      (defexception default message))
 					;(raise MyError)
@@ -372,7 +375,19 @@
 		   :rescue
 		   
 		   (-> (in e RuntimeError)
-			     e))
+		       e))
+
+		   (try
+		    (do0 (Enum.each "-50..50"
+				    (lambda (x)
+				      (when (== 0 (rem x 13))
+					(throw x))))
+			 (string "got nothing"))
+		    
+		   :catch
+		   
+		   (-> x 
+			     (string "got #{x}")))
 		  )
 	     )
 

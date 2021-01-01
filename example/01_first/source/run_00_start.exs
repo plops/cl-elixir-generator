@@ -1,10 +1,10 @@
 #  comment
-code_git_version = "7d297b48c9d8f06ffb58bd5b8e8a1e2f6c86cbb8"
+code_git_version = "dbb2f143dbebe38eaec4e23018bdc2e394d09452"
 
 code_repository =
   "https://github.com/plops/cl-elixir-generator/tree/master/example/01_first/source/run_00_start.py"
 
-code_generation_time = "10:55:50 of Friday, 2021-01-01 (GMT+1)"
+code_generation_time = "11:01:14 of Friday, 2021-01-01 (GMT+1)"
 
 IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} code_git_version=#{code_git_version} code_repository=#{
@@ -400,4 +400,16 @@ try do
   raise("oops")
 rescue
   e in RuntimeError -> e
+end
+
+try do
+  Enum.each(-50..50, fn x ->
+    if 0 == rem(x, 13) do
+      throw(x)
+    end
+  end)
+
+  "got nothing"
+catch
+  x -> "got #{x}"
 end

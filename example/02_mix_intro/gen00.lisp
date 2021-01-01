@@ -150,20 +150,38 @@
        
        
        (do0
+	(comments "server callbacks")
 	(space @impl true)
 	(def init (:ok)
-	  (tuple :ok (map))))
+	  (setf names (map)
+		refs (map))
+	  (tuple :ok (tuple names refs))))
        (do0
 	(space @impl true)
-	(def handle_call ((tuple :lookup name) _from names)
-	  (tuple :reply (Map.fetch names name) names)))
+	(def handle_call ((tuple :lookup name) _from state)
+	  (setf (tuple names _) state)
+	  (tuple :reply (Map.fetch names name) state)))
        (do0
 	(space @impl true)
-	(def handle_cast ((tuple :create name) names)
+	(def handle_cast ((tuple :create name) (tuple names refs))
 	  (if (Map.has_key? names name)
 	      (tuple :noreply names)
 	      (do0
-	       (setf (tuple :ok bucket) (KV.Bucket.start_link (list)))
-	       (tuple :noreply (Map.put names name bucket))))))
+	       (setf (tuple :ok bucket) (KV.Bucket.start_link (list))
+		     ref (Process.monitor bucket)
+		     refs (Map.put refs ref name)
+		     names (Map.put names name bucket))
+	       
+	       (tuple :noreply (tuple names refs))))))
+       (do0
+	(space @impl true)
+	(def handle_info ((tuple :DOWN ref :process _pid _reason) (tuple names refs))
+	  (setf (tuple name refs) (Map.pop refs ref)
+		names (Map.delete names name))
+	  (tuple :noreply (tuple names refs))))
+       (do0
+	(space @impl true)
+	(def handle_info (_msg state)
+	  (tuple :noreply state)))
       ))))
 

@@ -1,10 +1,10 @@
 #  comment
-code_git_version = "2ebfed2fde3bc22ae146bf1cd9bdf296258ea3f5"
+code_git_version = "3d6798bd23b19c1aaa6dd690121c0e639183240c"
 
 code_repository =
   "https://github.com/plops/cl-elixir-generator/tree/master/example/01_first/source/run_00_start.py"
 
-code_generation_time = "08:50:11 of Friday, 2021-01-01 (GMT+1)"
+code_generation_time = "08:59:31 of Friday, 2021-01-01 (GMT+1)"
 
 IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} code_git_version=#{code_git_version} code_repository=#{
@@ -371,4 +371,11 @@ dirs = ["/home", "/tmp"]
 
 for dir <- dirs, file <- File.ls!(dir), path = Path.join(dir, file), File.regular?(path) do
   File.stat!(path).size
+end
+
+# bitstring generator
+pixels = <<213, 45, 132, 64, 32, 12, 45, 31, 9, 0, 0, 231>>
+
+for <<r::8, g::8, b::8 <- pixels>> do
+  {r, g, b}
 end

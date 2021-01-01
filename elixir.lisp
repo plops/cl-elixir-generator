@@ -495,12 +495,20 @@ return the body without them and a hash table with an environment"
 			       (emit vs)
 			       (emit `(ntuple ,ls ,@filters)))
 		       (format s "~a~%end~%" (emit `(do ,@body))))))
-	      (for-generator
-	       (destructuring-bind ((vs ls) expr) (cdr code)
-		 (format nil "~a for ~a in ~a"
-			 (emit expr)
-			 (emit vs)
-			 (emit ls))))
+	      (for-bitstring (destructuring-bind ((vs ls &rest filters) &rest body) (cdr code)
+		     ;; for <<n <- <<1,2,3,4>>>>, odd?(n) do
+		     ;;   n*n
+		     ;; end
+		     ;; for (<var> <values> <filter0>) <body>
+		     (with-output-to-string (s)
+					
+		       (format s "for <<~a>>~@[~{~a~^,~}~] do~%"
+			       (emit `(<- ,vs
+					  ,ls)
+				     )
+			       (mapcar #'emit filters))
+		       (format s "~a~%end~%" (emit `(do ,@body))))))
+	      
 	      (while (destructuring-bind (vs &rest body) (cdr code)
 		       (with-output-to-string (s)
 			 (format s "while ~a:~%"

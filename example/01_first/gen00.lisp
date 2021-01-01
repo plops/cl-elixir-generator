@@ -318,6 +318,13 @@
 			 (File.regular? path))
 		    (dot (File.stat! path)
 			 size))))
+
+	     (do0
+	      (comments "bitstring generator")
+	      (setf pixels (bitstring 213 45 132 64 32 12 45 31 9 0 0 231))
+	      (for-bitstring ((ntuple "r::8" "g::8" "b::8")
+			      pixels)
+			     (tuple r g b)))
 	     )
 	    
 	    )

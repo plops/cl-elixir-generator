@@ -32,11 +32,17 @@
    `(do0
      (defmodule KV.BucketTest
        "use ExUnit.Case, async: true"
-       (space test
-	      (string "stores values by key")
+       (space setup
 	      (progn
 		(setf (tuple :ok bucket)
-		      (KV.Bucket.start_link (list)))
+		      (KV.Bucket.start_link (list))
+		      )
+		(map :bucket bucket)))
+       (space test
+	      (ntuple (string "stores values by key")
+		      (map :bucket bucket))
+	      (progn
+	
 		(assert (== nil
 			    (KV.Bucket.get bucket (string "milk"))))
 		(dot KV

@@ -9,7 +9,7 @@
 
 (defun write-source (name code &optional (dir (user-homedir-pathname))
 				 ignore-hash)
-  (let* ((fn (merge-pathnames (format nil "~a.exs" name)
+  (let* ((fn (merge-pathnames (format nil "~a" name)
 			      dir))
 	(code-str (emit-elixir
 		   :clear-env t
@@ -211,6 +211,9 @@ return the body without them and a hash table with an environment"
 	      (space (with-output-to-string (s)
 		       (format s "~{~a~^ ~}"
 			       (mapcar #'(lambda (x) (emit x)) (cdr code)))))
+	      (progn (let ((args (cdr code)))
+		       (format nil "do~%~{~a~%~}end~%"
+			       (mapcar #'emit args))))
 	      (lambda (destructuring-bind (lambda-list &rest body) (cdr code)
 			(multiple-value-bind (req-param opt-param res-param
 					      key-param other-key-p aux-param key-exist-p)

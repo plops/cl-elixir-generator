@@ -388,7 +388,25 @@
 		   
 		   (-> x 
 			     (string "got #{x}")))
-		  )
+		   )
+
+
+	     (do0
+	      (comments "types")
+	      ;; types may omit parens
+	      ;; @spec round( number() ) :: integer()
+	      ;; complex type:
+	      ;; @type number_with_remark :: {number, String.t}
+	      )
+
+	     (do0
+	      (comments "behaviours"))
+
+	     ;; @callback
+	     ;; @behaviour
+	     ;; @impl
+
+	     ;; dynamic dispatch
 	     )
 
 	    

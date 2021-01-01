@@ -70,14 +70,14 @@
 		(map :registry registry)))
        (space test
 	      (ntuple (string "spawn buckets")
-		      (map :registry regitry)
+		      (map :registry registry)
 		      )
 	      (progn
 	
 		(assert (== :error
 			    (KV.Registry.lookup registry (string "shopping"))))
 		(KV.Registry.create registry (string "shopping"))
-		(assert (== (tuple :ok bucket)
+		(assert (= (tuple :ok bucket)
 			    (KV.Registry.lookup registry (string "shopping"))))
 		(KV.Bucket.put bucket (string "milk") 1)
 		(assert (== 1 (KV.Bucket.get bucket (string "milk"))))

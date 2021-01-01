@@ -6,10 +6,10 @@ defmodule KV.RegistryTest do
     %{:registry => registry}
   end
 
-  test "spawn buckets", %{:registry => regitry} do
+  test "spawn buckets", %{:registry => registry} do
     assert(:error == KV.Registry.lookup(registry, "shopping"))
     KV.Registry.create(registry, "shopping")
-    assert({:ok, bucket} == KV.Registry.lookup(registry, "shopping"))
+    assert({:ok, bucket} = KV.Registry.lookup(registry, "shopping"))
     KV.Bucket.put(bucket, "milk", 1)
     assert(1 == KV.Bucket.get(bucket, "milk"))
   end

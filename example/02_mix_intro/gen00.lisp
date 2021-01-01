@@ -34,7 +34,8 @@
        "use ExUnit.Case, async: true"
        (space setup
 	      (progn
-		(setf (tuple :ok bucket)
+		(setf bucket (start_supervised! KV.Bucket))
+		#+nil (setf (tuple :ok bucket)
 		      (KV.Bucket.start_link (list))
 		      )
 		(map :bucket bucket)))
@@ -56,6 +57,30 @@
 		     (delete bucket (string "milk")))
 		(assert (== nil
 			    (KV.Bucket.get bucket (string "milk"))))
+		))
+       )))
+   (write-source
+   (format nil "~a/source/test/kv/registry_test.exs" *path*)
+   `(do0
+     (defmodule KV.RegistryTest
+       "use ExUnit.Case, async: true"
+       (space setup
+	      (progn
+		(setf registry (start_supervised! KV.Registry))
+		(map :registry registry)))
+       (space test
+	      (ntuple (string "spawn buckets")
+		      (map :registry regitry)
+		      )
+	      (progn
+	
+		(assert (== :error
+			    (KV.Registry.lookup registry (string "shopping"))))
+		(KV.Registry.create registry (string "shopping"))
+		(assert (== (tuple :ok bucket)
+			    (KV.Registry.lookup registry (string "shopping"))))
+		(KV.Bucket.put bucket (string "milk") 1)
+		(assert (== 1 (KV.Bucket.get bucket (string "milk"))))
 		))
        )))
    (write-source
@@ -89,6 +114,25 @@
    `(do0
      (defmodule KV.Registry
        "use GenServer"
+       (do0
+	(comments "client api")
+	(do0
+	 (space @doc
+		(string3 start registry))
+	 (def start_link (opts)
+	   (GenServer.start_link __MODULE__ :ok opts)))
+	(do0
+	 (space @doc
+		(string3 lookup bucket pit for name stored in server))
+	 (def lookup (server name)
+	   (GenServer.call server (tuple :lookup name))))
+	(do0
+	 (space @doc
+		(string3 ensure bucket exists with given name in server))
+	 (def create (server name)
+	   (GenServer.cast server (tuple :create name)))))
+       
+       
        (do0
 	(space @impl true)
 	(def init (:ok)

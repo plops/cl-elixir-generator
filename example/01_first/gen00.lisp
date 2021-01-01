@@ -294,7 +294,10 @@
 			 (def type (_value)
 			   (string ,f))))
 	      ,(lprint `((inspect (Utility.type (string "foo")))))
-	      ,(lprint `((inspect (Utility.type 123)))))
+	      ,(lprint `((inspect (Utility.type 123))))
+
+	      ;; Atom BitString Float Function Integer List Map PID Port Reference Tuple
+	      )
 	    )
 	    
 	    )

@@ -1,10 +1,10 @@
 #  comment
-code_git_version = "9dc34304a42158739d10096572744fdc9d556c3e"
+code_git_version = "2592f116cd2090447e8911f62bd2d52f38a4f013"
 
 code_repository =
   "https://github.com/plops/cl-elixir-generator/tree/master/example/01_first/source/run_00_start.py"
 
-code_generation_time = "09:02:50 of Friday, 2021-01-01 (GMT+1)"
+code_generation_time = "09:04:54 of Friday, 2021-01-01 (GMT+1)"
 
 IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} code_git_version=#{code_git_version} code_repository=#{
@@ -380,7 +380,12 @@ for <<r::8, g::8, b::8 <- pixels>> do
   {r, g, b}
 end
 
-# into
+# into .. remove whitespace
 for <<c <- "hello world ">>, c != ?\s, into: "" do
   <<c>>
+end
+
+# into .. transform map
+for {key, val} <- %{"a" => 1, "b" => 2}, into: %{} do
+  {key, val * val}
 end

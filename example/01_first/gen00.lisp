@@ -327,11 +327,19 @@
 			     (tuple r g b)))
 
 	     (do0
-	      (comments "into")
+	      (comments "into .. remove whitespace")
 	      (for-bitstring (c (string "hello world ")
 				(!= c "?\\s")
 				(space "into:" (string "")))
 			     (bitstring c)))
+
+	     (do0
+	      (comments "into .. transform map")
+	      (for ((tuple key val)
+		    (map (string "a") 1
+			 (string "b") 2)
+		    (space "into:" (map)))
+		   (tuple key (* val val))))
 	     )
 	    
 	    )

@@ -325,6 +325,13 @@
 	      (for-bitstring ((ntuple "r::8" "g::8" "b::8")
 			      pixels)
 			     (tuple r g b)))
+
+	     (do0
+	      (comments "into")
+	      (for-bitstring (c (string "hello world ")
+				(!= c "?\\s")
+				(space "into:" (string "")))
+			     (bitstring c)))
 	     )
 	    
 	    )

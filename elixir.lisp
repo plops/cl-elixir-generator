@@ -502,7 +502,7 @@ return the body without them and a hash table with an environment"
 		     ;; for (<var> <values> <filter0>) <body>
 		     (with-output-to-string (s)
 					
-		       (format s "for <<~a>>~@[~{~a~^,~}~] do~%"
+		       (format s "for <<~a>>~@[~{,~a~}~] do~%"
 			       (emit `(<- ,vs
 					  ,ls)
 				     )

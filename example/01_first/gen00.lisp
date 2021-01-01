@@ -343,6 +343,9 @@
 
 
 	     (do0 (comments "sigils")
+
+		  ;; ~r"foo"i is equivalent to sigil_r(<<"foo">>,'i')
+		  ;; get documentation with h sigil_r
 		  ;; regex ~r/hello/
 		  ;; allowed characters / | " ' ( [ { <
 		  ;; string ~s/this is a string/
@@ -350,6 +353,17 @@
 		  ;; word-list ~w/this is a word list/ => ["this", "is" ...]
 		  ;; word list as atoms ~w/foo bar bat/a
 		  ;;   allowed modifiers: c (char-list) s (string) a (atoms)
+
+		  ;; upper case sigil variants don't allow escape codes and interpolation
+		  ;; ~s/string with interpolation #{bla}/
+		  ;; escape codes: \ a b d e f n r s t v 0 xDD uDDDD "
+
+		  ;; ~S"""avoid double-escape with uppercase heredoc sigil"""
+
+		  ;; %Date{} ~D[2019-10-31]
+		  ;; %Time{} ~T[23:00:07.0]
+		  ;; %NativeDateTime{} ~N[2019-10-31 23:00:07]
+		  ;; %DateTime{} ~U[2019-10-31 23:00:07Z] has field for timezone
  		  )
 	     )
 

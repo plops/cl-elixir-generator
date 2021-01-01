@@ -477,13 +477,17 @@ return the body without them and a hash table with an environment"
 				   (emit
 				    `(do0
 				      ,@forms))))))))
-	      (for (destructuring-bind ((vs ls) &rest body) (cdr code)
+	      (for (destructuring-bind ((vs ls &rest filters) &rest body) (cdr code)
+		     ;; for n <- [1,2,3,4], odd?(n) do
+		     ;;   n*n
+		     ;; end
+		     ;; for (<var> <values> <filter0>) <body>
 		     (with-output-to-string (s)
 					;(format s "~a" (emit '(indent)))
-		       (format s "for ~a in ~a:~%"
+		       (format s "for ~a <- ~a do~%"
 			       (emit vs)
-			       (emit ls))
-		       (format s "~a" (emit `(do ,@body))))))
+			       (emit `(ntuple ,ls ,@filters)))
+		       (format s "~a~%end~%" (emit `(do ,@body))))))
 	      (for-generator
 	       (destructuring-bind ((vs ls) expr) (cdr code)
 		 (format nil "~a for ~a in ~a"

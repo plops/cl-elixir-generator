@@ -1,10 +1,10 @@
 #  comment
-code_git_version = "5eca90c23668cfcf7619c20ad956b133b7c4a2fc"
+code_git_version = "434db19eb9c31b816047a482821aa03c679ae940"
 
 code_repository =
   "https://github.com/plops/cl-elixir-generator/tree/master/example/01_first/source/run_00_start.py"
 
-code_generation_time = "08:30:39 of Friday, 2021-01-01 (GMT+1)"
+code_generation_time = "08:42:43 of Friday, 2021-01-01 (GMT+1)"
 
 IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} code_git_version=#{code_git_version} code_repository=#{
@@ -355,3 +355,14 @@ IO.puts(
 IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} inspect(Utility.type(123))=#{inspect(Utility.type(123))}"
 )
+
+# comprehension
+for n <- [1, 2, 3, 4] do
+  n * n
+end
+
+multiple_of_3? = fn n -> rem(n, 3) == 0 end
+
+for n <- [1, 2, 3, 4], multiple_of_3?.(n) do
+  n * n
+end

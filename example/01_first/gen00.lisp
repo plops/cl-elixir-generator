@@ -300,6 +300,14 @@
 
 	       
 	      )
+
+	     (do0
+	      (comments "comprehension")
+	      (for (n (list 1 2 3 4))
+		   (* n n))
+	      (setf multiple_of_3? (lambda (n) (== (rem n 3) 0)))
+	      (for (n (list 1 2 3 4) (multiple_of_3?. n))
+		   (* n n)))
 	    )
 	    
 	    )

@@ -10,7 +10,8 @@ sudo -u postgres psql postgres
 ALTER USER postgres PASSWORD 'postgres'
 sudo emacs /var/lib/pgsql/data/pg_hba.conf
 # enable md5 password login
-# change: local   all             all                                     md5 # peer
+# change the line for local ipv4 connection from ident to md5
+host    all             all             127.0.0.1/32            md5
 
 \password postgres
 postgres # twice

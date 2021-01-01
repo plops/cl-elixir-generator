@@ -1,10 +1,10 @@
 #  comment
-code_git_version = "0d0d327515e09391bc9b4e0cb53707afea464839"
+code_git_version = "1695c110a3f5fa2e2df853de8dc17e0600aac865"
 
 code_repository =
   "https://github.com/plops/cl-elixir-generator/tree/master/example/01_first/source/run_00_start.py"
 
-code_generation_time = "08:09:21 of Friday, 2021-01-01 (GMT+1)"
+code_generation_time = "08:27:18 of Friday, 2021-01-01 (GMT+1)"
 
 IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} code_git_version=#{code_git_version} code_repository=#{
@@ -275,3 +275,29 @@ IO.puts(
 defmodule User do
   defstruct(name: "John", age: 27)
 end
+
+# protocol
+defprotocol Utility do
+  @spec type(t) :: String.t()
+  def type(value)
+end
+
+defimpl Utility, for: BitString do
+  def type(_value) do
+    "string"
+  end
+end
+
+defimpl Utility, for: Integer do
+  def type(_value) do
+    "integer"
+  end
+end
+
+IO.puts(
+  "#{__ENV__.file}:#{__ENV__.line} inspect(Utility.type(\"foo\"))=#{inspect(Utility.type("foo"))}"
+)
+
+IO.puts(
+  "#{__ENV__.file}:#{__ENV__.line} inspect(Utility.type(123))=#{inspect(Utility.type(123))}"
+)

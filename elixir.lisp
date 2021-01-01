@@ -163,6 +163,8 @@ return the body without them and a hash table with an environment"
 				      (loop for (e f) on args by #'cddr collect
 									(format nil "~a: ~a" (emit e) (emit f))))))
 	      (defstruct (let ((args (cdr code)))
+			   ;; defstruct <name> <value> <name2> <value2>
+			   ;; <value> can be "nil"
 			  (emit `("defstruct" (keyword-list ,@(mapcar #'emit args))))))
 	      
 	      (curly (let ((args (cdr code)))
@@ -181,6 +183,17 @@ return the body without them and a hash table with an environment"
 				   (format nil "~a => ~a"
 					   (emit e)
 					   (emit f))))))
+	      (struct (let* ((args (cdr code)))
+			;; struct <name> <name1> <value1> <name2> <value2> ...
+			(destructuring-bind (name &rest rest) args
+			  (format nil "%~a{~{~a~^,~}}"
+				  name
+				 (loop for (e f) on rest by #'cddr
+				       collect
+				       (format nil "~a: ~a"
+					       (emit e)
+					       (emit f)))))))
+	      
 	      (indent (format nil "~{~a~}~a"
 			      (loop for i below level collect "    ")
 			      (emit (cadr code))))
@@ -222,6 +235,21 @@ return the body without them and a hash table with an environment"
 			     (format s "defmodule ~a do~%" (car args))
 			     (format s "~a" (emit `(do0 ,@(cdr args))))
 			     (format s "~&end"))))
+	      (defprotocol (let* ((args (cdr code)))
+			   (with-output-to-string (s)
+			     (format s "defprotocol ~a do~%" (car args))
+			     (format s "~a" (emit `(do0 ,@(cdr args))))
+			     (format s "~&end"))))
+	      (defimpl (let* ((args (cdr code)))
+			 ;; defimpl <name> <for> {body*}
+			 (destructuring-bind (name for-expr &rest body) args
+			      (with-output-to-string (s)
+				(format s "defimpl ~a, for: ~a do~%"
+					name
+					(emit for-expr)
+					)
+				(format s "~a" (emit `(do0 ,@body)))
+				(format s "~&end")))))
 	      (def (parse-def code :private nil)
 	       
 	       )

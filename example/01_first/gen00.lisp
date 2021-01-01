@@ -278,8 +278,23 @@
 	      (comments "struct")
 	      (defmodule User
 		  (defstruct name (string "John")
-			     age 27)))
-	     
+		    age 27))
+	      ;; needs compilation before use
+	      #+nil ,(lprint `((struct User
+				name (string "Jane")))))
+	     (do0
+	      (comments "protocol")
+	      (defprotocol Utility
+		  (space @spec (type "t") "::" (String.t))
+		(def type (value)))
+	      ,@(loop for (e f) in `((BitString string)
+				     (Integer integer))
+		      collect
+		      `(defimpl Utility ,e
+			 (def type (_value)
+			   (string ,f))))
+	      ,(lprint `((inspect (Utility.type (string "foo")))))
+	      ,(lprint `((inspect (Utility.type 123)))))
 	    )
 	    
 	    )

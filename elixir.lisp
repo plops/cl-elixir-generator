@@ -162,6 +162,8 @@ return the body without them and a hash table with an environment"
 			      (format nil "[~{~a~^, ~}]"
 				      (loop for (e f) on args by #'cddr collect
 									(format nil "~a: ~a" (emit e) (emit f))))))
+	      (defstruct (let ((args (cdr code)))
+			  (emit `("defstruct" (keyword-list ,@(mapcar #'emit args))))))
 	      
 	      (curly (let ((args (cdr code)))
 		       (format nil "{~{~a~^, ~}}" (mapcar #'emit args))))

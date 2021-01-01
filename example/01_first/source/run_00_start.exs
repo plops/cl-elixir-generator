@@ -1,10 +1,10 @@
 #  comment
-code_git_version = "1a3484da4795a93ef355b9f698a0747a63a7e6a8"
+code_git_version = "0d0d327515e09391bc9b4e0cb53707afea464839"
 
 code_repository =
   "https://github.com/plops/cl-elixir-generator/tree/master/example/01_first/source/run_00_start.py"
 
-code_generation_time = "22:04:49 of Thursday, 2020-12-31 (GMT+1)"
+code_generation_time = "08:09:21 of Friday, 2021-01-01 (GMT+1)"
 
 IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} code_git_version=#{code_git_version} code_repository=#{
@@ -270,3 +270,8 @@ IO.puts(
     inspect(send(pid, {:get, :hello, self()}))
   }"
 )
+
+# struct
+defmodule User do
+  defstruct(name: "John", age: 27)
+end

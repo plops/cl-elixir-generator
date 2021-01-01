@@ -273,6 +273,12 @@
 	     ,(lprint `((inspect (setf (tuple :ok pid)
 			       (KV.start_link)))))
 	     ,(lprint `((inspect (send pid (tuple :get :hello (self))))))
+
+	     (do0
+	      (comments "struct")
+	      (defmodule User
+		  (defstruct name (string "John")
+			     age 27)))
 	     
 	    )
 	    

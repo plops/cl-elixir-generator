@@ -59,6 +59,7 @@
 			    (KV.Bucket.get bucket (string "milk"))))
 		))
        )))
+   
    (write-source
    (format nil "~a/source/test/kv/registry_test.exs" *path*)
    `(do0
@@ -67,22 +68,24 @@
        (space setup
 	      (progn
 		(setf registry (start_supervised! KV.Registry))
-		(map :registry registry)))
+		(map :registry registry)
+		))
        (space test
 	      (ntuple (string "spawn buckets")
 		      (map :registry registry)
 		      )
 	      (progn
-	
+		
 		(assert (== :error
 			    (KV.Registry.lookup registry (string "shopping"))))
-		(KV.Registry.create registry (string "shopping"))
-		(assert (= (tuple :ok bucket)
+		 (KV.Registry.create registry (string "shopping"))
+		 (assert (= (tuple :ok bucket)
 			    (KV.Registry.lookup registry (string "shopping"))))
-		(KV.Bucket.put bucket (string "milk") 1)
-		(assert (== 1 (KV.Bucket.get bucket (string "milk"))))
+		 (KV.Bucket.put bucket (string "milk") 1)
+		 (assert (== 1 (KV.Bucket.get bucket (string "milk"))))
 		))
        )))
+   
    (write-source
    (format nil "~a/source/lib/kv/bucket.ex" *path*)
    `(do0
@@ -109,6 +112,7 @@
 	       (string3 Delete key from bucket. Returns value of key if it exists.))
 	(def delete (bucket key)
 	  (Agent.get_and_update bucket (&Map.pop &1 key)))))))
+   
    (write-source
    (format nil "~a/source/lib/kv/registry.ex" *path*)
    `(do0
@@ -120,7 +124,7 @@
 	 (space @doc
 		(string3 start registry))
 	 (def start_link (opts)
-	   (GenServer.start_link __MODULE__ :ok opts)))
+	   (GenServer.start_link __MODULE__ ":ok" opts)))
 	(do0
 	 (space @doc
 		(string3 lookup bucket pit for name stored in server))
@@ -140,7 +144,7 @@
        (do0
 	(space @impl true)
 	(def handle_call ((tuple :lookup name) _from names)
-	  (tuple :reply (MAp.fetch names name) names)))
+	  (tuple :reply (Map.fetch names name) names)))
        (do0
 	(space @impl true)
 	(def handle_cast ((tuple :create name) names)

@@ -434,6 +434,12 @@
 	 
 	 
 	 )
+	     (do0 (comments "dependencies")
+		  ;; in mix.exs
+		  #+nil (def application
+		    (keyword-list extra-applications (list :crypto)
+		     ))
+		  )
 
 	     
 

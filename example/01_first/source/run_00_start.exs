@@ -1,10 +1,10 @@
 #  comment
-code_git_version = "62c5efcbde7679c89d1eb15cd32ae4e1271a908e"
+code_git_version = "3c083b0f4e7fa0de34939c4e453145785dcfdbe6"
 
 code_repository =
   "https://github.com/plops/cl-elixir-generator/tree/master/example/01_first/source/run_00_start.py"
 
-code_generation_time = "11:14:18 of Friday, 2021-01-01 (GMT+1)"
+code_generation_time = "11:33:25 of Friday, 2021-01-01 (GMT+1)"
 
 IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} code_git_version=#{code_git_version} code_repository=#{
@@ -418,3 +418,4 @@ end
 # behaviours
 # debug
 1..10 |> IO.inspect() |> Enum.map(fn x -> x * 2 end) |> IO.inspect() |> Enum.sum() |> IO.inspect()
+# dependencies

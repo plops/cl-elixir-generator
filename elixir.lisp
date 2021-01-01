@@ -550,19 +550,25 @@ return the body without them and a hash table with an environment"
 				(emit "with ")
 				(emit form)
 				(emit `(do ,@body))))))
-	      (try (destructuring-bind (prog &rest exceptions) (cdr code)
-		     (with-output-to-string (s)
-		       (format s "~&~a:~%~a"
-			       (emit "try")
-			       (emit `(do ,prog)))
-		       (loop for e in exceptions do
-			 (destructuring-bind (form &rest body) e
-			   (if (member form '(else finally))
-			       (format s "~&~a~%"
-				       (emit `(indent ,(format nil "~a:" form))))
-			       (format s "~&~a~%"
-				       (emit `(indent ,(format nil "except ~a:" (emit form))))))
-			   (format s "~a" (emit `(do ,@body)))))))
+	      (try (destructuring-bind (prog &key rescue catch after else) (cdr code)
+		     ;; try {expr-block} &key rescue catch after else
+		      (with-output-to-string (s)
+			(format s "try do~%~a"
+				(emit prog))
+			(when rescue
+			  (format s "~&rescue~%~{~a~^~%~}"
+				  rescue))
+			(when catch
+			  (format s "~&catch~%~{~a~^~%~}"
+				  catch))
+			(when after
+			  (format s "~&after~%~{~a~^~%~}"
+				  after))
+			(when else
+			  (format s "~&after~%~{~a~^~%~}"
+				  else))
+			(format s "~&end~%"))
+		     )
 	       
 	       #+nil (let ((body (cdr code)))
 		       (with-output-to-string (s)

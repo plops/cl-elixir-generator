@@ -368,7 +368,9 @@
 
 	     (do0 (comments "errors")
 		  (defmodule MyError
-		    (defexception default message)))
+		      (defexception default message))
+		  ;(raise MyError)
+		  )
 	     )
 
 	    

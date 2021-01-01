@@ -3,9 +3,18 @@
 - installation on fedora
 #+begin_example 
 sudo dnf install npm postgresql-server postgresql-contrib inotify-tools
-/usr/bin/postgresql-setup --initdb
+sudo /usr/bin/postgresql-setup --initdb
 sudo systemctl enable postgresql
 sudo systemctl start postgresql
+sudo -u postgres psql postgres
+ALTER USER postgres PASSWORD 'postgres'
+sudo emacs /var/lib/pgsql/data/pg_hba.conf
+# enable md5 password login
+# change: local   all             all                                     md5 # peer
+
+\password postgres
+postgres # twice
+sudo systemctl restart postgresql
 #  sudo systemctl stop postgresql
 #  sudo systemctl disable postgresql
 

@@ -14,3 +14,8 @@ MIX_ENV=prod mix compile
 
 - https://elixir-lang.org/getting-started/mix-otp/agent.html
 - don't use async if test case writes to filesystem
+
+- link for linked crashes
+- monitors for informed crashes
+
+- stopped reading at https://elixir-lang.org/getting-started/mix-otp/supervisor-and-application.html

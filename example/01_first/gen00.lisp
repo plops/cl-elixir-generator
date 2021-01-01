@@ -8,10 +8,6 @@
   (ql:quickload "cl-ppcre"))
 (in-package :cl-elixir-generator)
 
-#+nil
-(let ((a "<<head,rest::binary>>=\"banana\"="))
-  (format t "~a~%" (cl-ppcre:regex-replace-all "" a "\\\"")))
-
 (progn
   (defparameter *path* "/home/martin/stage/cl-elixir-generator/example/01_first")
   (defparameter *code-file* "run_00_start")
@@ -369,7 +365,14 @@
 	     (do0 (comments "errors")
 		  (defmodule MyError
 		      (defexception default message))
-		  ;(raise MyError)
+					;(raise MyError)
+
+		  (try
+		   (raise (string "oops"))
+		   :rescue
+		   
+		   (-> (in e RuntimeError)
+			     e))
 		  )
 	     )
 

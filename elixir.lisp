@@ -99,7 +99,7 @@ return the body without them and a hash table with an environment"
 	      (opt-param (when pos-opt
 			   (subseq lambda-list (+ 1 pos-opt))))
 	      )
-	 (format t "pos-opt: ~a req-param: ~a opt-param: ~a ~%" pos-opt req-param opt-param)
+	 ;(format t "pos-opt: ~a req-param: ~a opt-param: ~a ~%" pos-opt req-param opt-param)
 	 #+nil(multiple-value-bind
 		    (req-param opt-param res-param
 		     key-param other-key-p aux-param key-exist-p)
@@ -288,6 +288,7 @@ return the body without them and a hash table with an environment"
 		   (format nil "(~{(~a)~^*~})" (mapcar #'emit args))))
 	      (== (let ((args (cdr code)))
 		    (format nil "(~{(~a)~^==~})" (mapcar #'emit args))))
+	      
 	      (=== (let ((args (cdr code)))
 		     (format nil "(~{(~a)~^===~})" (mapcar #'emit args))))
 	      (<> (let ((args (cdr code))) ;; concatenation
@@ -383,6 +384,7 @@ return the body without them and a hash table with an environment"
 		    ;; s-expression: (-> a b c d)
 		    ;; elixir: a -> b
 		    ;;         c -> d
+		    (format t "~&-> ~a~%" args)
 		    (with-output-to-string (s)
 		      (loop for (e f) on args by #'cddr
 			    collect
@@ -550,25 +552,29 @@ return the body without them and a hash table with an environment"
 				(emit "with ")
 				(emit form)
 				(emit `(do ,@body))))))
-	      (try (destructuring-bind (prog &key rescue catch after else) (cdr code)
+	      (try (let ((args (cdr code)))
 		     ;; try {expr-block} &key rescue catch after else
-		      (with-output-to-string (s)
-			(format s "try do~%~a"
-				(emit prog))
-			(when rescue
-			  (format s "~&rescue~%~{~a~^~%~}"
-				  rescue))
-			(when catch
-			  (format s "~&catch~%~{~a~^~%~}"
-				  catch))
-			(when after
-			  (format s "~&after~%~{~a~^~%~}"
-				  after))
-			(when else
-			  (format s "~&after~%~{~a~^~%~}"
-				  else))
-			(format s "~&end~%"))
-		     )
+		     (format t "~&try: ~a~%" args)
+		     (destructuring-bind (prog &key rescue catch after else) args
+		       (format t "~&try2: prog=~a r=~a c=~a a=~a e=~a~%" (emit prog) (emit rescue) catch after else)
+		       
+			     (with-output-to-string (s)
+			       (format s "try do~%~a"
+				       (emit prog))
+			       (when rescue
+				 (format s "~&rescue~%~a~%"
+					 (emit rescue)))
+			       (when catch
+				 (format s "~&catch~%~a~%"
+					 (emit catch)))
+			       (when after
+				 (format s "~&after~%~a~%"
+					 (emit after)))
+			       (when else
+				 (format s "~&after~%~a~%"
+					 (emit else)))
+			       (format s "~&end~%"))
+			     ))
 	       
 	       #+nil (let ((body (cdr code)))
 		       (with-output-to-string (s)

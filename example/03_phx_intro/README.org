@@ -1,0 +1,10 @@
+- https://hexdocs.pm/phoenix/up_and_running.html
+- https://hexdocs.pm/phoenix/installation.html
+- installation on fedora
+#+begin_example 
+sudo dnf install npm postgresql-server postgresql-contrib
+sudo systemctl enable postgresql
+sudo systemctl start postgresql
+#  sudo systemctl stop postgresql
+#  sudo systemctl disable postgresql
+#+end_example

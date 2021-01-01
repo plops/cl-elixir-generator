@@ -340,7 +340,20 @@
 			 (string "b") 2)
 		    (space "into:" (map)))
 		   (tuple key (* val val))))
+
+
+	     (do0 (comments "sigils")
+		  ;; regex ~r/hello/
+		  ;; allowed characters / | " ' ( [ { <
+		  ;; string ~s/this is a string/
+		  ;; char-list ~c/this is a char list/
+		  ;; word-list ~w/this is a word list/ => ["this", "is" ...]
+		  ;; word list as atoms ~w/foo bar bat/a
+		  ;;   allowed modifiers: c (char-list) s (string) a (atoms)
+ 		  )
 	     )
+
+	    
 	    
 	    )
 	  

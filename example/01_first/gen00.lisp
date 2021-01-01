@@ -400,25 +400,36 @@
 	      )
 
 	     (do0
-	      (comments "behaviours"))
+	      (comments "behaviours")
 
-	     ;; @callback
-	     ;; @behaviour
-	     ;; @impl
+	      ;; @callback
+	      ;; @behaviour
+	      ;; @impl
 
-	     ;; dynamic dispatch
+	      ;; dynamic dispatch
+	      )
+
+	     (do0 (comments "debug")
+       	 (pipe "(1..10)"
+		       IO.inspect
+		       (Enum.map (lambda (x) (* x 2)))
+		       IO.inspect
+		       Enum.sum
+	       IO.inspect))
+
 	     )
+	    
+	    
+	    
+	    
 
 	    
 	    
 	    )
-	  
 
-	  
-	  
+	  )
 
-	  
-	  
-	   ))
-    (write-source (format nil "~a/source/~a" *path* *code-file*) code)))
+	 
+	 )
+     (write-source (format nil "~a/source/~a" *path* *code-file*) code)))
 

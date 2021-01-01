@@ -1,10 +1,10 @@
 #  comment
-code_git_version = "dbb2f143dbebe38eaec4e23018bdc2e394d09452"
+code_git_version = "e436cbf50781ddfa8f2bc3333981c4399a4ba9e1"
 
 code_repository =
   "https://github.com/plops/cl-elixir-generator/tree/master/example/01_first/source/run_00_start.py"
 
-code_generation_time = "11:01:14 of Friday, 2021-01-01 (GMT+1)"
+code_generation_time = "11:13:45 of Friday, 2021-01-01 (GMT+1)"
 
 IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} code_git_version=#{code_git_version} code_repository=#{
@@ -413,3 +413,8 @@ try do
 catch
   x -> "got #{x}"
 end
+
+# types
+# behaviours
+# debug
+1..10 |> IO.inspect() |> Enum.map(fn x -> x * 2 end) |> IO.inspect() |> Enum.sum() |> IO.inspect()

@@ -9,7 +9,7 @@
 (in-package :cl-elixir-generator)
 
 (progn
-  (defparameter *path* "/home/martin/stage/cl-elixir-generator/example/01_first")
+  (defparameter *path* "/home/martin/stage/cl-elixir-generator/example/02_mix_intro")
   (defparameter *code-file* "run_00_start")
   (defparameter *source* (format nil "~a/source/~a" *path* *code-file*))
   (defparameter *day-names*

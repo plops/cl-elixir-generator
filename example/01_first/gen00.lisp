@@ -438,8 +438,8 @@
 		  ;; crypto
 		  ;; in mix.exs
 		  #+nil (def application
-		    (keyword-list extra-applications (list :crypto)
-				  ))
+			    (keyword-list extra-applications (list :crypto)
+					  ))
 
 		  ;; erlang term storage
 		  ;; ets .. in memory
@@ -451,11 +451,16 @@
 
 		  ;; queue .. for double-ended fifo
 		  #+nil (do0
-		   (setf q :queue.new)
-		   (setf q (:queue.in (string "A") q))
-		   (setf (tuple value q) (:queue.out q)))
+			 (setf q :queue.new)
+			 (setf q (:queue.in (string "A") q))
+			 (setf (tuple value q) (:queue.out q)))
 
+
+		  ;; :rand.uniform()
 		  
+		  ;; zip
+
+		  ;; zlib.compress("bla")
 		  )
 
 	     

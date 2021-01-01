@@ -1,10 +1,10 @@
 #  comment
-code_git_version = "3c083b0f4e7fa0de34939c4e453145785dcfdbe6"
+code_git_version = "b9b85258d15e7993e02fada2d00844ebc5a92dd6"
 
 code_repository =
   "https://github.com/plops/cl-elixir-generator/tree/master/example/01_first/source/run_00_start.py"
 
-code_generation_time = "11:33:25 of Friday, 2021-01-01 (GMT+1)"
+code_generation_time = "11:36:58 of Friday, 2021-01-01 (GMT+1)"
 
 IO.puts(
   "#{__ENV__.file}:#{__ENV__.line} code_git_version=#{code_git_version} code_repository=#{

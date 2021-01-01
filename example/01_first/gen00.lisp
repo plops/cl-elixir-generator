@@ -435,10 +435,27 @@
 	 
 	 )
 	     (do0 (comments "dependencies")
+		  ;; crypto
 		  ;; in mix.exs
 		  #+nil (def application
 		    (keyword-list extra-applications (list :crypto)
-		     ))
+				  ))
+
+		  ;; erlang term storage
+		  ;; ets .. in memory
+		  ;; dets .. on disk
+		  ;; tables containing tuples, only owner can write
+		  ;; simple database, key-value store or as cache mechanism
+
+		  ;; math
+
+		  ;; queue .. for double-ended fifo
+		  #+nil (do0
+		   (setf q :queue.new)
+		   (setf q (:queue.in (string "A") q))
+		   (setf (tuple value q) (:queue.out q)))
+
+		  
 		  )
 
 	     

@@ -13,3 +13,4 @@ MIX_ENV=prod mix compile
 - use agents to keep state in KV.Bucket
 
 - https://elixir-lang.org/getting-started/mix-otp/agent.html
+- don't use async if test case writes to filesystem

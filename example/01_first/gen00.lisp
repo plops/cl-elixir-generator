@@ -415,7 +415,27 @@
 		       (Enum.map (lambda (x) (* x 2)))
 		       IO.inspect
 		       Enum.sum
-	       IO.inspect))
+	       IO.inspect)
+
+	 ;; (IO.inspect (binding))
+	 ;; require IEx; IEx.pry
+
+	 ;; break! URI.decode_query/2
+	 ;; continue
+
+	 ;; in iex:
+	 ;; c "example.ex"
+	 ;; :debugger.start()
+	 ;; :int.ni(Example)
+	 ;; :int.break(Example, 3)
+
+	 ;; sudo dnf install erlang-observer
+	 ;; :observer.start()
+	 
+	 
+	 )
+
+	     
 
 	     )
 	    

@@ -14,3 +14,4 @@ mix phx.new hello
 cd hello
 mix ecto.create
 #+end_example
+ 

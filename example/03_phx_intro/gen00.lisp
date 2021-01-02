@@ -6,9 +6,8 @@
   (ql:quickload "cl-elixir-generator")
   (ql:quickload "alexandria")
   (ql:quickload "cl-ppcre")
-  (ql:quickload "spinneret"
-		)
-  (ql:quickload "serapeum"))
+  (ql:quickload "spinneret"))
+
 (in-package :cl-elixir-generator)
 
 (progn

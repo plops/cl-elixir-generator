@@ -20,6 +20,7 @@ defmodule HelloWeb.Router do
 
     # USER CODE BEGIN lib/hello_web/router.ex route
     get("/hello", HelloController, :index)
+    get("/hello/:messenger", HelloController, :show)
     # USER CODE END lib/hello_web/router.ex route
   end
 

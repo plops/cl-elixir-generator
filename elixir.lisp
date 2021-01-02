@@ -605,7 +605,7 @@ return the body without them and a hash table with an environment"
 				 (emit `(paren ,@(append
 						  positional
 						  (loop for e in props collect
-							`(= ,(format nil "~a" e) ,(getf plist e))))))))))))
+							(format nil "~a: ~a" e (getf plist e)) ))))))))))
 	    
 	    (cond
 	      ((keywordp code) ;; print an atom

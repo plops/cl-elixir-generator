@@ -68,7 +68,10 @@
 		   `(do0
 		     (get (string "/hello")
 			  HelloController
-			  ":index")))
+			  ":index")
+		     (get (string "/hello/:messenger")
+			  HelloController
+			  ":show")))
     (write-source
      (format nil "~a/lib/hello_web/controllers/hello_controller.ex" *path*)
      `(do0
@@ -76,7 +79,10 @@
 	 "use HelloWeb, :controller"
 	 ;; tell the view to render index.html
 	 (def index (conn _params)
-	   (render conn (string "index.html"))))))
+	   (render conn (string "index.html")))
+	 (def show (conn (map (string messenger) messenger))
+	   (render conn (string "show.html")
+		   :messenger messenger)))))
     (write-source
      (format nil "~a/lib/hello_web/views/hello_view.ex" *path*)
      `(do0
@@ -99,7 +105,16 @@
 	(write-sequence
 	 (spinneret:with-html-string
 	   (:div :class "phx-hero"
-		 (:h2 "hello world from phoenix"))) s))))
+		 (:h2 "hello world from phoenix"))) s)))
+
+    (with-open-file (s (format nil "~a/lib/hello_web/templates/hello/show.html.eex" *path*)
+		       :direction :output
+		       :if-exists :supersede
+		       :if-does-not-exist :create)
+      (write-sequence
+       (spinneret:with-html-string
+	 (:div :class "phx-hero"
+	       (:h2 "hello " (:raw " <%= @messenger %>")))) s)))
    
 
    )

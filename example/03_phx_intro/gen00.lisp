@@ -87,6 +87,8 @@
 
     (progn
       ;; create template
+      ;; this will be injected into lib/hello_web/templates/layout/app.html.eex at @inner_content
+      
       ;; article about spinneret, with a few examples
       ;; https://40ants.com/lisp-project-of-the-day/2020/09/0189-spinneret.html
       

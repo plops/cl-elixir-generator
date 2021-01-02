@@ -17,6 +17,9 @@ defmodule HelloWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+
+# USER CODE BEGIN lib/hello_web/router.ex route
+# USER CODE END lib/hello_web/router.ex route
   end
 
   # Other scopes may use custom stacks.

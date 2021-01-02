@@ -63,7 +63,7 @@
 				       ))))))
 
    (progn
-    (modify-source "lib/hello_web/router.ex"
+     (modify-source "lib/hello_web/router.ex"
 		   "route"
 		   `(do0
 		     (get (string "/hello")
@@ -115,7 +115,26 @@
        (spinneret:with-html-string
 	 (:div :class "phx-hero"
 	       (:h2 "hello " (:raw " <%= @messenger %>")))) s)))
-   
+
+
+   (progn
+     ;; add a inspection plug
+
+     (modify-source "lib/hello_web/endpoint.ex"
+		   "endpoint-end-definition"
+		   `(do0
+		     (plug ":introspect")))
+     (modify-source "lib/hello_web/endpoint.ex"
+		   "plug-before-helloweb.router"
+		   `(do0
+		     (def introspect (conn _opts)
+		       ,(lprint `((inspect conn.method)
+				  (inspect conn.host)
+				  (inspect conn.req_headers)))
+		       conn)))
+
+     
+     )
 
    )
 

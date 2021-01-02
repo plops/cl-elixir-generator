@@ -39,13 +39,13 @@
 				      (format nil "~a~%~a~%~a" start-comment
 					      (emit-elixir :code code)
 					      end-comment))))
-    (with-open-file (s (format nil "~a.2" fn-full)
+    (with-open-file (s fn-full
 		       :direction :output
 		       :if-exists :supersede
 		       :if-does-not-exist :create)
       (write-sequence new s))
     (sb-ext:run-program "/usr/bin/mix" (list "format"
-					     (namestring (format nil "~a.2" fn-full)
+					     (namestring fn-full
 							 )))))
   )
    (defun lprint (rest)

@@ -2,24 +2,25 @@ defmodule HelloWeb.Router do
   use HelloWeb, :router
 
   pipeline :browser do
-    plug :accepts, ["html"]
-    plug :fetch_session
-    plug :fetch_flash
-    plug :protect_from_forgery
-    plug :put_secure_browser_headers
+    plug(:accepts, ["html"])
+    plug(:fetch_session)
+    plug(:fetch_flash)
+    plug(:protect_from_forgery)
+    plug(:put_secure_browser_headers)
   end
 
   pipeline :api do
-    plug :accepts, ["json"]
+    plug(:accepts, ["json"])
   end
 
   scope "/", HelloWeb do
-    pipe_through :browser
+    pipe_through(:browser)
 
-    get "/", PageController, :index
+    get("/", PageController, :index)
 
-# USER CODE BEGIN lib/hello_web/router.ex route
-# USER CODE END lib/hello_web/router.ex route
+    # USER CODE BEGIN lib/hello_web/router.ex route
+    get("/hello", HelloController, :index)
+    # USER CODE END lib/hello_web/router.ex route
   end
 
   # Other scopes may use custom stacks.
@@ -38,8 +39,8 @@ defmodule HelloWeb.Router do
     import Phoenix.LiveDashboard.Router
 
     scope "/" do
-      pipe_through :browser
-      live_dashboard "/dashboard", metrics: HelloWeb.Telemetry
+      pipe_through(:browser)
+      live_dashboard("/dashboard", metrics: HelloWeb.Telemetry)
     end
   end
 end

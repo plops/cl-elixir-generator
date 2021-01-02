@@ -61,25 +61,45 @@
 				       (cl-ppcre:regex-replace-all "\"" (emit-elixir :code e) "\\\"")
 				       (emit-elixir :code e)
 				       ))))))
-   (modify-source "lib/hello_web/router.ex"
-	       "route"
-	       `(do0
-		 (get (string "/hello")
-		      HelloController
-		      ":index")))
-   (write-source
-    (format nil "~a/lib/hello_web/controllers/hello_controller.ex" *path*)
-    `(do0
-      (defmodule HelloWeb.HelloController 
-	"use HelloWeb, :controller"
-	;; tell the view to render index.html
-	(def index (conn _params)
-	  (render conn (string "index.html"))))))
-   (write-source
-    (format nil "~a/lib/hello_web/views/hello_view.ex" *path*)
-    `(do0
-      (defmodule HelloWeb.HelloView
-	"use HelloWeb, :view")))
+
+   (progn
+    (modify-source "lib/hello_web/router.ex"
+		   "route"
+		   `(do0
+		     (get (string "/hello")
+			  HelloController
+			  ":index")))
+    (write-source
+     (format nil "~a/lib/hello_web/controllers/hello_controller.ex" *path*)
+     `(do0
+       (defmodule HelloWeb.HelloController 
+	 "use HelloWeb, :controller"
+	 ;; tell the view to render index.html
+	 (def index (conn _params)
+	   (render conn (string "index.html"))))))
+    (write-source
+     (format nil "~a/lib/hello_web/views/hello_view.ex" *path*)
+     `(do0
+       (defmodule HelloWeb.HelloView
+	 "use HelloWeb, :view")))
+   
+    
+
+    (progn
+      ;; create template
+      ;; article about spinneret, with a few examples
+      ;; https://40ants.com/lisp-project-of-the-day/2020/09/0189-spinneret.html
+      
+      (with-open-file (s (format nil "~a/lib/hello_web/templates/hello/index.html.eex" *path*)
+			 :direction :output
+			 :if-exists :supersede
+			 :if-does-not-exist :create)
+	(write-sequence
+	 (spinneret:with-html-string
+	   (:div :class "phx-hero"
+		 (:h2 "hello world from phoenix"))) s))))
+   
+
    )
 
 
@@ -91,3 +111,6 @@
 
 
 
+
+
+ 

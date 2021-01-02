@@ -35,3 +35,20 @@ mix phx.server
 - lib/hello_web/router.ex defines the rules to dispatch requests to
   "controllers", which then uses "views" and "templates" to render
   HTML
+
+- show routes
+
+#+begin_example
+[martin@localhost hello]$ mix phx.routes
+          page_path  GET  /                                      HelloWeb.PageController :index
+         hello_path  GET  /hello                                 HelloWeb.HelloController :index
+         hello_path  GET  /hello/:messenger                      HelloWeb.HelloController :show
+live_dashboard_path  GET  /dashboard                             Phoenix.LiveView.Plug :home
+live_dashboard_path  GET  /dashboard/:page                       Phoenix.LiveView.Plug :page
+live_dashboard_path  GET  /dashboard/:node/:page                 Phoenix.LiveView.Plug :page
+          websocket  WS   /live/websocket                        Phoenix.LiveView.Socket
+           longpoll  GET  /live/longpoll                         Phoenix.LiveView.Socket
+           longpoll  POST  /live/longpoll                         Phoenix.LiveView.Socket
+          websocket  WS   /socket/websocket                      HelloWeb.UserSocket
+
+#+end_example

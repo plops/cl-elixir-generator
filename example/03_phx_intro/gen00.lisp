@@ -5,7 +5,10 @@
 (eval-when (:compile-toplevel :execute :load-toplevel)
   (ql:quickload "cl-elixir-generator")
   (ql:quickload "alexandria")
-  (ql:quickload "cl-ppcre"))
+  (ql:quickload "cl-ppcre")
+  (ql:quickload "spinneret"
+		)
+  (ql:quickload "serapeum"))
 (in-package :cl-elixir-generator)
 
 (progn
@@ -65,38 +68,19 @@
 		 (get (string "/hello")
 		      HelloController
 		      ":index")))
-   #+nil (write-source
-    (format nil "~a/source/test/kv/bucket_test.exs" *path*)
+   (write-source
+    (format nil "~a/lib/hello_web/controllers/hello_controller.ex" *path*)
     `(do0
-      (defmodule KV.BucketTest
-       "use ExUnit.Case, async: true"
-       (space setup
-	      (progn
-		(setf bucket (start_supervised! KV.Bucket))
-		#+nil (setf (tuple :ok bucket)
-		      (KV.Bucket.start_link (list))
-		      )
-		(map :bucket bucket)))
-       (space test
-	      (ntuple (string "stores values by key")
-		      (map :bucket bucket) ;; get the setup bucket into the test context
-		      )
-	      (progn
-	
-		(assert (== nil
-			    (KV.Bucket.get bucket (string "milk"))))
-		(dot KV
-		     Bucket
-		     (put bucket (string "milk") 3))
-		(assert (== 3
-			    (KV.Bucket.get bucket (string "milk"))))
-		(dot KV
-		     Bucket
-		     (delete bucket (string "milk")))
-		(assert (== nil
-			    (KV.Bucket.get bucket (string "milk"))))
-		))
-       )))
+      (defmodule HelloWeb.HelloController 
+	"use HelloWeb, :controller"
+	;; tell the view to render index.html
+	(def index (conn _params)
+	  (render conn (string "index.html"))))))
+   (write-source
+    (format nil "~a/lib/hello_web/views/hello_view.ex" *path*)
+    `(do0
+      (defmodule HelloWeb.HelloView
+	"use HelloWeb, :view")))
    )
 
 

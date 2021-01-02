@@ -18,37 +18,45 @@
     '("Monday" "Tuesday" "Wednesday"
       "Thursday" "Friday" "Saturday"
       "Sunday"))
-  (defun modify-source (fn-part name code)
-  (let* (;(fn-part "lib/hello_web/router.ex")
-       (fn-full (format nil "~a/~a" *path* fn-part))
-       ;(name "route")
-       (fn-part-name (format nil "~a ~a" fn-part name))
-       (start-comment (format nil "# USER CODE BEGIN ~a" fn-part-name))
-       (end-comment (format nil "# USER CODE END ~a" fn-part-name))
-       (a (with-open-file (s fn-full
-			     :direction :input)
-	    (let ((a (make-string (file-length s))))
-	      (read-sequence a s)
-	      a))))
-  (let* (
-	 ;; escape * characters to convert elixir comment to regex
-	 (regex (format nil "~a.*~a"
-			(cl-ppcre:regex-replace-all "\\*" start-comment "\\*")
-			(cl-ppcre:regex-replace-all "\\*" end-comment "\\*")))
-	 ;; now use the regex to replace the text between the comments
-	 (new (cl-ppcre:regex-replace (cl-ppcre:create-scanner regex :single-line-mode t)
-				      a
-				      (format nil "~a~%~a~%~a" start-comment
-					      (emit-elixir :code code)
-					      end-comment))))
-    (with-open-file (s fn-full
-		       :direction :output
-		       :if-exists :supersede
-		       :if-does-not-exist :create)
-      (write-sequence new s))
-    (sb-ext:run-program "/usr/bin/mix" (list "format"
-					     (namestring fn-full
-							 )))))
+  (defun modify-source (fn-part name code &key (comment-style :hash))
+    (flet ((comment (str)
+	     (case comment-style
+	       (:hash (format nil "# ~a" str))
+	       (:html (format nil "<!-- ~a -->" str)))))
+     (let* (			  ;(fn-part "lib/hello_web/router.ex")
+	    (fn-full (format nil "~a/~a" *path* fn-part))
+					;(name "route")
+	    (fn-part-name (format nil "~a ~a" fn-part name))
+	    (start-comment (comment (format nil "USER CODE BEGIN ~a" fn-part-name)))
+	    (end-comment (comment (format nil "USER CODE END ~a" fn-part-name)))
+	    (a (with-open-file (s fn-full
+				  :direction :input)
+		 (let ((a (make-string (file-length s))))
+		   (read-sequence a s)
+		   a))))
+       (let* (
+	      ;; escape * characters to convert elixir comment to regex
+	      (regex (format nil "~a.*~a"
+			     (cl-ppcre:regex-replace-all "\\*" start-comment "\\*")
+			     (cl-ppcre:regex-replace-all "\\*" end-comment "\\*")))
+	      ;; now use the regex to replace the text between the comments
+	      (new (cl-ppcre:regex-replace (cl-ppcre:create-scanner regex :single-line-mode t)
+					   a
+					   (format nil "~a~%~a~%~a" start-comment
+						   (case comment-style
+						     (:hash (emit-elixir :code code))
+						     (:html code ;(spinneret:with-html-string code)
+						      ))
+						   end-comment))))
+	 (with-open-file (s fn-full
+			    :direction :output
+			    :if-exists :supersede
+			    :if-does-not-exist :create)
+	   (write-sequence new s))
+	 (when (eq comment-style :hash)
+	  (sb-ext:run-program "/usr/bin/mix" (list "format"
+						   (namestring fn-full
+							       )))))))
   )
    (defun lprint (rest)
      `(IO.puts (string
@@ -133,6 +141,43 @@
 				  (inspect conn.req_headers)))
 		       conn)))
 
+     
+     )
+
+
+   (progn
+     ;; add a module plug
+     ;; localhost:4000/?locale=fr
+     (write-source
+     (format nil "~a/lib/hello_web/plugs/locale.ex" *path*)
+     `(do0
+       (defmodule HelloWeb.Plugs.Locale
+	 "import Plug.Conn"
+	 (space @locales (list (string "en")
+			       (string "fr")
+			       (string "de")))
+	 (def init (default)
+	   default)
+	 (def call ((= (struct Plug.Conn
+			       params (map (string "locale") loc))
+		       conn)
+		    _default)
+	   (declare (when (in loc @locales)))
+	   (assign conn ":locale" loc)
+	   )
+	 (def call (conn default)
+	   (assign conn ":locale" default)))))
+     (modify-source "lib/hello_web/router.ex"
+		   "browser-pipeline-end"
+		   `(do0
+		     (plug HelloWeb.Plugs.Locale (string "en"))))
+     (modify-source "lib/hello_web/templates/layout/app.html.eex"
+		   "main-top"
+		   (spinneret:with-html-string
+		     (:p
+			"Locale:"
+			(:raw "<%= @locale %>")))
+		   :comment-style :html)
      
      )
 

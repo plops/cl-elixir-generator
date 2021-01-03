@@ -23,4 +23,12 @@
     - only changes are transmitted
   - reliability
     - process linking structure allow effective supervision
-
+    - phoenix comes with a default supervision structure
+    - emulate failures by crashing database connections from the pool
+ - check phoenix version `mix phx.new -v` => 1.5.7
+ - elixir syntax, these lines are equivalent:
+#+begin_example
+render(conn, "world.html", name: name)
+render(conn, "world.html", [name: name])
+render(conn, "world.html", [{:name, name}])
+#+end_example

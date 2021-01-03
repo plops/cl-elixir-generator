@@ -25,7 +25,14 @@ cd hello
 mix ecto.create
 mix phx.server
 #+end_example
- 
+- installation on arch linux
+#+begin_example
+sudo pacman -S elixir postgresql npm inotify-tools
+# installs 222MB
+su - postgres -c "initdb -D '/var/lib/postgres/data'"
+sudo systemctl enable postgresql
+sudo systemctl start postgresql
+#+end_example
 - don't put in repo, will be regenerated if deleted:
   - _build
   - deps

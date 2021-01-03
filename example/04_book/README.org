@@ -1,3 +1,12 @@
 * functional web development with elixir, otp and phoenix
   - 2017
   - l halvorson
+  - phoenix application can maintain persistent channel connections to
+    millions of clients, alternative to stateless servers
+  - example app is schiffe versenken
+  - i think the examples are a bit too detailed and i got bored
+
+* programming phoenix
+  - 2019 (2nd rev?)
+  - chris mccord, bruce tate
+  - phoenix author, perhaps this book is better

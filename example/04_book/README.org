@@ -10,3 +10,17 @@
   - 2019 (2nd rev?)
   - chris mccord, bruce tate
   - phoenix author, perhaps this book is better
+
+  - phoenix provides powerfull guarantees
+    - isolation: bug in one channel will not influence others
+    - concurrency: channels won't block each other; UI always
+      responsive
+  - horizontal scaling: broadcast messages across all nodes
+  - tracking presence: which users are connected to cluster of
+    machines
+  - liveview: server-side react
+    - page initially like any other static page
+    - only changes are transmitted
+  - reliability
+    - process linking structure allow effective supervision
+

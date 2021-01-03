@@ -32,3 +32,12 @@ render(conn, "world.html", name: name)
 render(conn, "world.html", [name: name])
 render(conn, "world.html", [{:name, name}])
 #+end_example
+  - pattern matching in argument list
+#+begin_example
+aalst = %{city: "Aalst", state: "NB"}
+
+defmodule Place do
+  def city(%{city: city}), do: city
+...
+#+end_example
+  - external parameters have string keys

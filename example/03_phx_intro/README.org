@@ -45,7 +45,7 @@ ALTER USER postgres PASSWORD 'postgres'
 cd hello
 mix ecto.create
 mix deps.get
-mix ecto.create
+mix ecto.create 
 cd assets
 npm install
 mix phx.server

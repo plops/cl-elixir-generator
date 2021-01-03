@@ -20,6 +20,8 @@ sudo systemctl restart postgresql
 #  sudo systemctl disable postgresql
 
 mix archive.install hex phx_new 1.5.7
+# don't run the following command if working with this repo
+# this is how i populated the hello directory
 mix phx.new hello
 cd hello
 mix ecto.create
@@ -39,8 +41,14 @@ sudo systemctl start postgresql
 # note: authentication is set to trust by default
 sudo -u postgres psql postgres
 ALTER USER postgres PASSWORD 'postgres'
+# assuming the hello directory exists
+cd hello
 mix ecto.create
 mix deps.get
+mix ecto.create
+cd assets
+npm install
+mix phx.server
 #+end_example
 - don't put in repo, will be regenerated if deleted:
   - _build

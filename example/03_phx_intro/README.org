@@ -27,11 +27,20 @@ mix phx.server
 #+end_example
 - installation on arch linux
 #+begin_example
+emacs /etc/locale-gen
+# uncommment: en_US.UTF-8 UTF-8
+locale-gen
+export LANG=en_US.UTF-8
 sudo pacman -S elixir postgresql npm inotify-tools
 # installs 222MB
-su - postgres -c "initdb -D '/var/lib/postgres/data'"
+su - postgres -c "initdb --locale en_US.UTF-8 -D '/var/lib/postgres/data'"
 sudo systemctl enable postgresql
 sudo systemctl start postgresql
+# note: authentication is set to trust by default
+sudo -u postgres psql postgres
+ALTER USER postgres PASSWORD 'postgres'
+mix ecto.create
+mix deps.get
 #+end_example
 - don't put in repo, will be regenerated if deleted:
   - _build

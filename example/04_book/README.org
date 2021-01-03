@@ -1,0 +1,3 @@
+* functional web development with elixir, otp and phoenix
+  - 2017
+  - l halvorson

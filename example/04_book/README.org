@@ -41,3 +41,6 @@ defmodule Place do
 ...
 #+end_example
   - external parameters have string keys
+
+* emacs tooling
+  - install elixir mode and alchemist

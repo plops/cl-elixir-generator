@@ -6,4 +6,10 @@ mix archive.install hex phx.new
 # at least 1.5.6
 mix phx.new live_view_todos --live
 # install dependencies Y
+cd live_view_todos
+mix ecto.setup
+mix phx.gen.context Todos Todo todos title:string done:boolean
+mix ecto.migrate
+# router.ex:20 s/PageLive/TodoLive/ (6:32)
+# lib/live/todo_live.ex 
 #+end_example

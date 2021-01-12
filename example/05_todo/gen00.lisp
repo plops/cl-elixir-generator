@@ -81,50 +81,21 @@
 				       ))))))
 
    (progn
-     (modify-source "lib/hello_web/router.ex"
-		   "route"
-		   `(do0
-		     (get (string "/hello")
-			  HelloController
-			  ":index")
-		     (get (string "/hello/:messenger")
-			  HelloController
-			  ":show")))
+     
     (write-source
-     (format nil "~a/lib/hello_web/controllers/hello_controller.ex" *path*)
+     (format nil "~a/lib/live_view_todos_web/live/todo_live.ex" *path*)
      `(do0
-       (defmodule HelloWeb.HelloController 
-	 "use HelloWeb, :controller"
-	 ;; tell the view to render index.html
-	 (def index (conn _params)
-	   (render conn (string "index.html")))
-	 (def show (conn (map (string messenger) messenger))
-	   (render conn (string "show.html")
-		   :messenger messenger)))))
-    (write-source
-     (format nil "~a/lib/hello_web/views/hello_view.ex" *path*)
-     `(do0
-       (defmodule HelloWeb.HelloView
-	 "use HelloWeb, :view")))
-   
+       (defmodule LiveViewTodosWeb.TodoLive
+	 "use LiveViewTodosWeb, :live_view"
+	 
+	 (def mount (_params _session socket)
+	   (tuple :ok socket)
+	   )
+	 (def render (assigns)
+	   (string-L "Rendering LiveView")))))   
     
 
-    (progn
-      ;; create template
-      ;; this will be injected into lib/hello_web/templates/layout/app.html.eex at @inner_content
-      
-      ;; article about spinneret, with a few examples
-      ;; https://40ants.com/lisp-project-of-the-day/2020/09/0189-spinneret.html
-      
-      (with-open-file (s (format nil "~a/lib/hello_web/templates/hello/index.html.eex" *path*)
-			 :direction :output
-			 :if-exists :supersede
-			 :if-does-not-exist :create)
-	(write-sequence
-	 (spinneret:with-html-string
-	   (:div :class "phx-hero"
-		 (:h2 "hello world from phoenix"))) s)))
-
+#+nil
     (with-open-file (s (format nil "~a/lib/hello_web/templates/hello/show.html.eex" *path*)
 		       :direction :output
 		       :if-exists :supersede
@@ -135,61 +106,9 @@
 	       (:h2 "hello " (:raw " <%= @messenger %>")))) s)))
 
 
-   (progn
-     ;; add a inspection plug
-
-     (modify-source "lib/hello_web/endpoint.ex"
-		   "endpoint-end-definition"
-		   `(do0
-		     (plug ":introspect")))
-     (modify-source "lib/hello_web/endpoint.ex"
-		   "plug-before-helloweb.router"
-		   `(do0
-		     (def introspect (conn _opts)
-		       ,(lprint `((inspect conn.method)
-				  (inspect conn.host)
-				  (inspect conn.req_headers)))
-		       conn)))
-
-     
-     )
 
 
-   (progn
-     ;; add a module plug
-     ;; localhost:4000/?locale=fr
-     (write-source
-     (format nil "~a/lib/hello_web/plugs/locale.ex" *path*)
-     `(do0
-       (defmodule HelloWeb.Plugs.Locale
-	 "import Plug.Conn"
-	 (space @locales (list (string "en")
-			       (string "fr")
-			       (string "de")))
-	 (def init (default)
-	   default)
-	 (def call ((= (struct Plug.Conn
-			       params (map (string "locale") loc))
-		       conn)
-		    _default)
-	   (declare (when (in loc @locales)))
-	   (assign conn ":locale" loc)
-	   ) 
-	 (def call (conn default)
-	   (assign conn ":locale" default)))))
-     (modify-source "lib/hello_web/router.ex"
-		   "browser-pipeline-end"
-		   `(do0
-		     (plug HelloWeb.Plugs.Locale (string "en"))))
-     (modify-source "lib/hello_web/templates/layout/app.html.eex"
-		   "main-top"
-		   (spinneret:with-html-string
-		     (:p
-			"Locale:"
-			(:raw "<%= @locale %>")))
-		   :comment-style :html)
-     
-     )
+
 
    )
 

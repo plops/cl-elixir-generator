@@ -373,6 +373,7 @@ return the body without them and a hash table with an environment"
 								 (format nil "~a::~a" value (emit bitsize)))
 							       e))))
 	      (string (format nil "\"~a\"" (cadr code)))
+	      (string-L (format nil "~~L\"~a\"" (cadr code)))
 					;(string-b (format nil "b\"~a\"" (cadr code)))
 	      (string3 (format nil "\"\"\"~&~{~a~^ ~}~%\"\"\"" (cdr code))) ;; string3 and heredoc are the same
 	      ;(heredoc (format nil "\"\"\"~a\"\"\"" (cadr code)))

@@ -89,8 +89,16 @@
 	 "use LiveViewTodosWeb, :live_view"
 	 "alias LiveViewTodos.Todos"
 	 (def mount (_params _session socket)
-	   (tuple :ok (assign socket ":todos" (Todos.list_todos)))
+	   (tuple :ok (fetch socket))
 	   )
+	 (def handle_event ("add" (map (string "todo")
+				       todo)
+				  socket)
+	   (Todos.create_todo todo)
+	   (tuple :noreply (fetch socket)))
+	 
+	 (defp fetch (socket)
+	   (assign socket :todos (Todos.list_todos)))
 	 #+nil
 	 (def render (assigns)
 	   (string-L "Rendering LiveView")))))   
@@ -104,6 +112,10 @@
       (write-sequence
        (spinneret:with-html-string
 	 (:div
+	  (:form :action "#"
+		 :phx-submit "add"
+		 (:raw "<%= text_input(:todo, :title, placeholder: \"what do you want to get done?\")%>")
+		 (:raw "<%= submit(\"Add\", phx_disable_with: \"Adding...\") %>"))
 	  (:raw "<%= for todo <- @todos do %>")
 	  (:div
 	   (:raw "<%= todo.title %>"))

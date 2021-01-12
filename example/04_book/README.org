@@ -46,3 +46,4 @@ defmodule Place do
   - install elixir mode and alchemist
   - M-x alchemist-server-start
   - M-x alchemist-server-status
+  - M-x alchemist-phoenix-mode

@@ -1,0 +1,2 @@
+- https://www.youtube.com/watch?v=xgz-HTot3R8
+- How to Create a Todo List with Phoenix LiveView (Updated for Phoenix 1.5)

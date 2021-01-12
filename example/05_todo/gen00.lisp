@@ -87,21 +87,28 @@
      `(do0
        (defmodule LiveViewTodosWeb.TodoLive
 	 "use LiveViewTodosWeb, :live_view"
-	 
+	 "alias LiveViewTodos.Todos"
 	 (def mount (_params _session socket)
-	   (tuple :ok socket)
+	   (tuple :ok (assign socket ":todos" (Todos.list_todos)))
 	   )
+	 #+nil
 	 (def render (assigns)
 	   (string-L "Rendering LiveView")))))   
     
 
-#+nil
-    (with-open-file (s (format nil "~a/lib/hello_web/templates/hello/show.html.eex" *path*)
+
+    (with-open-file (s (format nil "~a/lib/live_view_todos_web/live/todo_live.html.leex" *path*)
 		       :direction :output
 		       :if-exists :supersede
 		       :if-does-not-exist :create)
       (write-sequence
        (spinneret:with-html-string
+	 (:div
+	  (:raw "<%= for todo <- @todos do %>")
+	  (:div
+	   (:raw "<%= todo.title %>"))
+	  (:raw "<%= end %>"))
+	 #+nil
 	 (:div :class "phx-hero"
 	       (:h2 "hello " (:raw " <%= @messenger %>")))) s)))
 

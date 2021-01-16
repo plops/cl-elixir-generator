@@ -18,3 +18,4 @@
       - back pressure
       - automatic ack
       - fault tolerance, minimal data loss
+      - batching, patitioning

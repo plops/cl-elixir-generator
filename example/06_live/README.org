@@ -14,3 +14,7 @@
       - map reduce, partition, max, min
     - last step: distributed
       - wait for usage of flow before tackling this
+    - broadway multi-stage concurrent
+      - back pressure
+      - automatic ack
+      - fault tolerance, minimal data loss

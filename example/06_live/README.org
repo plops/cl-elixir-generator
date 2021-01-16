@@ -1,0 +1,2 @@
+- https://www.youtube.com/watch?v=8xJzHq8ru0M
+  - Chris McCord - Keynote: Phoenix LiveView - Interactive Apps without Javascript - ElixirConf EU 2019

@@ -15,3 +15,6 @@ mix ecto.migrate
 mix phx.server
 # open localhost:4000
 #+end_example
+
+- i'm stuck because my code is not updating the messages as shown in
+  the video. can't find the bug

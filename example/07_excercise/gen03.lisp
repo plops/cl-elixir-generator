@@ -24,8 +24,30 @@
 	 ((string "n")
 	  (IO.puts (string "that is a shame, #{name}.")))
 	 (t (IO.puts (string "you should have entered 'y' or 'n'.")))))
+     (def cow_art ()
+       (setf path (Path.expand (string "support/cow.txt") __DIR__))
+       (case (File.read path)
+	 ((tuple :ok art)
+	  art)
+	 ((tuple :error _)
+	  (IO.puts (string "error: cow.txt file not found"))
+	  (System.halt 1))))
 
-    )))   
+     )
+
+   "ExUnit.start"
+   (defmodule InputOutputTest
+     "use ExUnit.Case"
+     "import String"
+     (space test (string "checks if cow_art returns string from support/cow.txt")
+	    (progn
+	      (setf art (CowInterrogator.cow_art))
+	      (assert (== (pipe (trim art)
+			     first
+			     )
+			  (string "("))))))
+   "CowInterrogator.interrogate"
+   ))   
 
 
 

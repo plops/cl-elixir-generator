@@ -7,6 +7,8 @@
 (write-source
  (format nil "~a/01_hello_world.exs" *path*)
  `(do0
+   (IO.puts (string "hello world"))
+   #+nil
    (defmodule LiveViewTodosWeb.TodoLive
      "use LiveViewTodosWeb, :live_view"
      "alias LiveViewTodos.Todos"

@@ -12,7 +12,7 @@
       "Thursday" "Friday" "Saturday"
       "Sunday"))
 
-  (defun modify-source (fn-part name code &key (comment-style :hash))
+#+nil (defun modify-source (fn-part name code &key (comment-style :hash))
     (flet ((comment (str)
 	     (case comment-style
 	       (:hash (format nil "# ~a" str))

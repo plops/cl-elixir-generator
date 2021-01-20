@@ -54,7 +54,7 @@
   )
 
 (defun lprint (rest)
-     `(IO.puts (string
+     `(|IO.puts| (string
                 ,(format nil "#{__ENV__.file}:#{__ENV__.line} ~{~a~^ ~}"
 
 			 (loop for e in rest

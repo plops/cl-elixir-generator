@@ -1,0 +1,21 @@
+- compile
+#+begin_example
+cd source
+mix compile
+iex -S mix
+mix test
+mix format 
+mix format --check-formatted
+# by default we are in :dev environment,
+MIX_ENV=prod mix compile
+#+end_example
+
+- use agents to keep state in KV.Bucket
+
+- https://elixir-lang.org/getting-started/mix-otp/agent.html
+- don't use async if test case writes to filesystem
+
+- link for linked crashes
+- monitors for informed crashes
+
+- stopped reading at https://elixir-lang.org/getting-started/mix-otp/supervisor-and-application.html

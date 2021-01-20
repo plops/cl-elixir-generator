@@ -1,0 +1,80 @@
+- https://hexdocs.pm/phoenix/up_and_running.html
+- https://hexdocs.pm/phoenix/installation.html
+- installation on fedora
+#+begin_example 
+sudo dnf install npm postgresql-server postgresql-contrib inotify-tools
+sudo /usr/bin/postgresql-setup --initdb
+sudo systemctl enable postgresql
+sudo systemctl start postgresql
+sudo -u postgres psql postgres
+ALTER USER postgres PASSWORD 'postgres'
+sudo emacs /var/lib/pgsql/data/pg_hba.conf
+# enable md5 password login
+# change the line for local ipv4 connection from ident to md5
+host    all             all             127.0.0.1/32            md5
+
+\password postgres
+postgres # twice
+sudo systemctl restart postgresql
+#  sudo systemctl stop postgresql
+#  sudo systemctl disable postgresql
+
+mix archive.install hex phx_new 1.5.7
+# don't run the following command if working with this repo
+# this is how i populated the hello directory
+mix phx.new hello
+cd hello
+mix ecto.create
+mix phx.server
+#+end_example
+- installation on arch linux
+#+begin_example
+emacs /etc/locale-gen
+# uncommment: en_US.UTF-8 UTF-8
+locale-gen
+export LANG=en_US.UTF-8
+sudo pacman -S elixir postgresql npm inotify-tools
+# installs 222MB
+su - postgres -c "initdb --locale en_US.UTF-8 -D '/var/lib/postgres/data'"
+sudo systemctl enable postgresql
+sudo systemctl start postgresql
+# note: authentication is set to trust by default
+sudo -u postgres psql postgres
+ALTER USER postgres PASSWORD 'postgres'
+# assuming the hello directory exists
+cd hello
+mix ecto.create
+mix deps.get
+mix ecto.create 
+cd assets
+npm install
+mix phx.server
+#+end_example
+- don't put in repo, will be regenerated if deleted:
+  - _build
+  - deps
+- what about assets?
+
+- lib/hello_web/endpoint.ex is the entry-point for HTTP requests
+- lib/hello_web/router.ex defines the rules to dispatch requests to
+  "controllers", which then uses "views" and "templates" to render
+  HTML
+
+- show routes
+
+#+begin_example
+[martin@localhost hello]$ mix phx.routes
+          page_path  GET  /                                      HelloWeb.PageController :index
+         hello_path  GET  /hello                                 HelloWeb.HelloController :index
+         hello_path  GET  /hello/:messenger                      HelloWeb.HelloController :show
+live_dashboard_path  GET  /dashboard                             Phoenix.LiveView.Plug :home
+live_dashboard_path  GET  /dashboard/:page                       Phoenix.LiveView.Plug :page
+live_dashboard_path  GET  /dashboard/:node/:page                 Phoenix.LiveView.Plug :page
+          websocket  WS   /live/websocket                        Phoenix.LiveView.Socket
+           longpoll  GET  /live/longpoll                         Phoenix.LiveView.Socket
+           longpoll  POST  /live/longpoll                         Phoenix.LiveView.Socket
+          websocket  WS   /socket/websocket                      HelloWeb.UserSocket
+#+end_example
+
+- controller can invoke html/2 function to emit html without using template files
+  https://hexdocs.pm/phoenix/controllers.html#content

@@ -1,0 +1,21 @@
+- https://www.youtube.com/watch?v=8xJzHq8ru0M
+  - Chris McCord - Keynote: Phoenix LiveView - Interactive Apps without Javascript - ElixirConf EU 2019
+- https://youtu.be/IzFmNQGzApQ
+  - José Valim - Elixir Creator: Keynote - announcing Broadway by José ValimXS
+    - eager
+    - lazy
+    - GenStage, back pressure
+    - dispatcher sends to consumer with highest demand
+      - broadcast to everyone
+      - partition
+    - flow 
+      - concurrent lazy processing
+      - out of order
+      - map reduce, partition, max, min
+    - last step: distributed
+      - wait for usage of flow before tackling this
+    - broadway multi-stage concurrent
+      - back pressure
+      - automatic ack
+      - fault tolerance, minimal data loss
+      - batching, patitioning

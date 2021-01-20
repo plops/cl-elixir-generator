@@ -1,0 +1,49 @@
+* functional web development with elixir, otp and phoenix
+  - 2017
+  - l halvorson
+  - phoenix application can maintain persistent channel connections to
+    millions of clients, alternative to stateless servers
+  - example app is schiffe versenken
+  - i think the examples are a bit too detailed and i got bored
+
+* programming phoenix
+  - 2019 (2nd rev?)
+  - chris mccord, bruce tate
+  - phoenix author, perhaps this book is better
+
+  - phoenix provides powerfull guarantees
+    - isolation: bug in one channel will not influence others
+    - concurrency: channels won't block each other; UI always
+      responsive
+  - horizontal scaling: broadcast messages across all nodes
+  - tracking presence: which users are connected to cluster of
+    machines
+  - liveview: server-side react
+    - page initially like any other static page
+    - only changes are transmitted
+  - reliability
+    - process linking structure allow effective supervision
+    - phoenix comes with a default supervision structure
+    - emulate failures by crashing database connections from the pool
+ - check phoenix version `mix phx.new -v` => 1.5.7
+ - elixir syntax, these lines are equivalent:
+#+begin_example
+render(conn, "world.html", name: name)
+render(conn, "world.html", [name: name])
+render(conn, "world.html", [{:name, name}])
+#+end_example
+  - pattern matching in argument list
+#+begin_example
+aalst = %{city: "Aalst", state: "NB"}
+
+defmodule Place do
+  def city(%{city: city}), do: city
+...
+#+end_example
+  - external parameters have string keys
+
+* emacs tooling
+  - install elixir mode and alchemist
+  - M-x alchemist-server-start
+  - M-x alchemist-server-status
+  - M-x alchemist-phoenix-mode

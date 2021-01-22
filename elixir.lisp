@@ -216,6 +216,10 @@ return the body without them and a hash table with an environment"
 			(format nil "~{~a~^, ~}" (mapcar #'emit args))))
 	      (list (let ((args (cdr code)))
 		      (format nil "[~{~a~^, ~}]" (mapcar #'emit args))))
+	      (cons (let ((args (cdr code)))
+		      (format nil "[(~a) | (~a)]"
+			      (emit (first args))
+			      (emit (second args)))))
 	      (keyword-list (let ((args (cdr code)))
 			      (format nil "[~{~a~^, ~}]"
 				      (loop for (e f) on args by #'cddr collect
@@ -223,7 +227,8 @@ return the body without them and a hash table with an environment"
 	      (defstruct (let ((args (cdr code)))
 			   ;; defstruct <name> <value> <name2> <value2>
 			   ;; <value> can be "nil"
-			  (emit `("defstruct" (keyword-list ,@(mapcar #'emit args))))))
+			   (emit `("defstruct" (keyword-list ,@(mapcar #'emit args))
+					        ))))
 	      
 	      (curly (let ((args (cdr code)))
 		       (format nil "{~{~a~^, ~}}" (mapcar #'emit args))))
@@ -664,7 +669,7 @@ return the body without them and a hash table with an environment"
 				 (emit `(paren ,@(append
 						  positional
 						  (loop for e in props collect
-							(format nil "~a: ~a" e (getf plist e)) ))))))))))
+							(format nil "~a: ~a" e (emit (getf plist e))) ))))))))))
 	    
 	    (cond
 	      ((keywordp code) ;; print an atom

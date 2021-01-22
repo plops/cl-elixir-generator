@@ -205,7 +205,7 @@ return the body without them and a hash table with an environment"
 	      #+nil (atom (let ((args (cdr code)))
 			    (format nil ":~a" (emit (car args)))))
 	      (tuple (let ((args (cdr code)))
-		       (format nil "{~{~a,~}}" (mapcar #'emit args))))
+		       (format nil "{~{~a~^,~}}" (mapcar #'emit args))))
 	      (paren (let ((args (cdr code)))
 		       (format nil "(~{~a~^, ~})" (mapcar #'emit args))))
 	      (space
@@ -601,6 +601,13 @@ return the body without them and a hash table with an environment"
                       (emit `(if ,condition
                                  (do0
                                   ,@forms)))))
+	      (when-i (destructuring-bind (condition form) (cdr code)
+			;; inlined when
+			;;    when-i <condition> <form>
+			;; => <form> when-i <condition>
+			(format nil "~a when ~a"
+				(emit form)
+				(emit condition))))
               (unless (destructuring-bind (condition &rest forms) (cdr code)
                         (with-output-to-string (s)
 			  (format s "unless ( ~a ) do~%~a~&end"

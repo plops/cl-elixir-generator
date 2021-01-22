@@ -10,7 +10,7 @@
    (defmodule Ping
        (def ping_async (ip parent)
 	 (send parent
-	       (ring_ping ip))
+	       (run_ping ip))
 	 )
      (def run_ping (ip)
        (try
@@ -45,7 +45,7 @@
 				  (list ip (self)))))
 	 (wait (map)
 	       (Enum.count all)))
-     "@doc Given class-C subnet like 192.168.1.x return list of all 254 contained ips"
+     "@doc \"Given class-C subnet like 192.168.1.x return list of all 254 contained ips\""
      (def ips (subnet)
        (setf subnet (pipe (Regex.run "~r/^\\d+\\.\\d+\\.\\d+\\./" subnet)
 			  (Enum.at 0)))
@@ -87,7 +87,7 @@
 	       (progn
 		 (setf ips (Subnet.ips (string "192.168.1.x")))
 		 (assert (== (Enum.count ips)
-			     254))c
+			     254))
 		 (assert (== (string "192.168.1.1")
 			     (Enum.at ips 0)))
 		 (assert (== (string "192.168.1.254")
@@ -102,7 +102,6 @@
 
 
 
-q
 
 
 

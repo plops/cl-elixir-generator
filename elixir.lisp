@@ -630,7 +630,7 @@ return the body without them and a hash table with an environment"
 		     ;; try {expr-block} &key rescue catch after else
 		     (format t "~&try: ~a~%" args)
 		     (destructuring-bind (prog &key rescue catch after else) args
-		       (format t "~&try2: prog=~a r=~a c=~a a=~a e=~a~%" (emit prog) (emit rescue) catch after else)
+		       ;(format t "~&try2: prog=~a r=~a c=~a a=~a e=~a~%" (emit prog) (emit rescue) catch after else)
 		       
 			     (with-output-to-string (s)
 			       (format s "try do~%~a"

@@ -278,14 +278,15 @@ return the body without them and a hash table with an environment"
 		       (format nil "do~%~{~a~%~}end~%"
 			       (mapcar #'emit args))))
 	      (lambda (destructuring-bind (lambda-list &rest body) (cdr code)
-			(multiple-value-bind (req-param opt-param res-param
-					      key-param other-key-p aux-param key-exist-p)
-			    (parse-ordinary-lambda-list lambda-list)
-			  (declare (ignorable req-param opt-param res-param
-					      key-param other-key-p aux-param key-exist-p))
-			  (with-output-to-string (s)
-			    (format s "fn ~a -> ~a~%end"
-				    (emit `(paren ,@(append req-param
+			(handler-case
+			 (multiple-value-bind (req-param opt-param res-param
+					       key-param other-key-p aux-param key-exist-p)
+			     (parse-ordinary-lambda-list lambda-list)
+			   (declare (ignorable req-param opt-param res-param
+					       key-param other-key-p aux-param key-exist-p))
+			   (with-output-to-string (s)
+			     (format s "fn ~a -> ~a~%end"
+				     (emit `(paren ,@(append req-param
 							     (loop for e in key-param collect 
 										      (destructuring-bind ((keyword-name name) init suppliedp)
 											  e
@@ -293,9 +294,16 @@ return the body without them and a hash table with an environment"
 											(if init
 											    `(= ,(emit name) ,init)
 											    `(= ,(emit name) "None")))))))
+				     (if (cdr body)
+					 (emit `(do0 ,@body)) ; (break "body ~a should have only one entry" body)
+					 (emit (car body))))))
+			  (simple-program-error ()
+			    ;; handle complex types in parameter list
+			    (format nil "fn ~{~a~^,~} -> ~a~%end"
+				    (mapcar #'emit lambda-list)
 				    (if (cdr body)
-					(emit `(do0 ,@body)) ; (break "body ~a should have only one entry" body)
-					(emit (car body))))))))
+					 (emit `(do0 ,@body))
+					 (emit (car body))))))))
 	      (defmodule (let* ((args (cdr code)))
 			   (with-output-to-string (s)
 			     (format s "defmodule ~a do~%" (car args))
@@ -324,7 +332,7 @@ return the body without them and a hash table with an environment"
 	       )
 	      (defp (parse-def code :private t))
 	      (= (destructuring-bind (a b) (cdr code)
-		   (format nil "~a=~a" (emit a) (emit b))))
+		   (format nil "~a = ~a" (emit a) (emit b))))
 	      (in (destructuring-bind (a b) (cdr code)
 		    (format nil "(~a in ~a)" (emit a) (emit b))))
 	      (is (destructuring-bind (a b) (cdr code)

@@ -71,7 +71,8 @@
      ((list subnet)
       (setf results (Subnet.ping subnet))
       (pipe results
-	    (Enum.filter (lambda ((tuple _ip exists))
+	    (Enum.filter (lambda ((tuple _ip exists)
+				 )
 			   exists))
 	    (Enum.map (lambda ((tuple ip _))
 			ip))
@@ -86,7 +87,7 @@
 	       (progn
 		 (setf ips (Subnet.ips (string "192.168.1.x")))
 		 (assert (== (Enum.count ips)
-			     254))
+			     254))c
 		 (assert (== (string "192.168.1.1")
 			     (Enum.at ips 0)))
 		 (assert (== (string "192.168.1.254")
@@ -101,7 +102,7 @@
 
 
 
-
+q
 
 
 

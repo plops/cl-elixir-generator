@@ -11,7 +11,8 @@
        (defstruct
 	   name "nil"
 	 ate 0
-	 thought 0))
+	 thought 0)
+     )
    (def simulate ()
      (setf forks (list ,@(loop for i below 5 collect
 					     (format nil ":fork~a" i))))
@@ -29,7 +30,7 @@
 				   name (string ,e))
 			   table)))
      (receive
-     
+	 
       (_ ":ok")))
    (def manage_resources (forks &optional (waiting (list)))
      (when (< 0 (length waiting))
@@ -48,23 +49,37 @@
 	       forks)
 	 (send pid (tuple :eat (list fork1 fork2))))
        (receive
-	 
+	
 	( (tuple :sit_down pid phil)
-	    (manage_resources forks (cons (tuple pid phil)
-					  waiting)))
+	  (manage_resources forks (cons (tuple pid phil)
+					waiting)))
 	( (tuple :give_up_seat
-		   free_forks _)
-	    (setf forks (++ free_forks forks))
+		 free_forks _)
+	  (setf forks (++ free_forks forks))
 	  ,(lprint `((length forks)))
 	  (manage_resources forks waiting)))))
    (defmodule Dine
        (def dine (phil table)
 	 (send table (tuple :sit_down self phil))
 	 (receive
-	  
 	  ((tuple :eat forks )
 	   (setf phil (eat phil forks table)
-		 phil (think phil table))))))
+		 phil (think phil table))))
+	 (dine phil table))
+     (def eat (phil forks table)
+       ;; i don't like this map update syntax
+       (setf phil "%{phil | ate: phil.ate + 1}")
+       ,(lprint `(phil.name (string "eating") phil.ate))
+       (":timer.sleep" (":random.unirfom 1_000"))
+       ,(lprint `(phil.nam (string "done eating") e))
+       (send table (tuple :give_up_seat forks phil))
+       phil)
+     (def think (phil _)
+       ,(lprint `(phil.name (string "thinking") phil.thought))
+       (":timer.sleep" (":random.uniform" 1000))
+       (setf phil "%{phil | thought: phil.thought + 1}")))
+   (":random.seed" ":erlang.now")
+   (Table.simulate)
    ))
 
 

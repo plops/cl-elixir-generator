@@ -21,12 +21,12 @@ names = for {_,phil} <- waiting do
 end
     IO.puts("#{__ENV__.file}:#{__ENV__.line} length(waiting)=#{length(waiting)} names=#{names}")
     if ( ((2)<=(length(forks))) ) do
-[({pid,_}) | (waiting)] = waiting
-    [(fork1, fork2) | (forks)] = forks
+[{pid,_} | waiting] = waiting
+    [fork1, fork2 | forks] = forks
     send(pid, {:eat,[fork1, fork2]})
 end
     receive do
-{:sit_down,pid,phil} -> manage_resources(forks, [({pid,phil}) | (waiting)])
+{:sit_down,pid,phil} -> manage_resources(forks, [{pid,phil} | waiting])
 
 {:give_up_seat,free_forks,_} -> forks = ((free_forks)++(forks))
     IO.puts("#{__ENV__.file}:#{__ENV__.line} length(forks)=#{length(forks)}")
@@ -43,5 +43,21 @@ def dine(phil, table) do
     phil = think(phil, table)
 
 end
+    dine(phil, table)
+end
+def eat(phil, forks, table) do
+    phil = %{phil | ate: phil.ate + 1}
+    IO.puts("#{__ENV__.file}:#{__ENV__.line} phil.name=#{phil.name} \"eating\"=#{"eating"} phil.ate=#{phil.ate}")
+    :timer.sleep(:random.unirfom 1_000())
+    IO.puts("#{__ENV__.file}:#{__ENV__.line} phil.nam=#{phil.nam} \"done eating\"=#{"done eating"} e=#{e}")
+    send(table, {:give_up_seat,forks,phil})
+    phil
+end
+def think(phil, _) do
+    IO.puts("#{__ENV__.file}:#{__ENV__.line} phil.name=#{phil.name} \"thinking\"=#{"thinking"} phil.thought=#{phil.thought}")
+    :timer.sleep(:random.uniform(1000))
+    phil = %{phil | thought: phil.thought + 1}
 end
 end
+:random.seed(:erlang.now)
+Table.simulate()

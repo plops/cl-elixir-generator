@@ -217,7 +217,7 @@ return the body without them and a hash table with an environment"
 	      (list (let ((args (cdr code)))
 		      (format nil "[~{~a~^, ~}]" (mapcar #'emit args))))
 	      (cons (let ((args (cdr code)))
-		      (format nil "[(~a) | (~a)]"
+		      (format nil "[~a | ~a]"
 			      (emit (first args))
 			      (emit (second args)))))
 	      (keyword-list (let ((args (cdr code)))

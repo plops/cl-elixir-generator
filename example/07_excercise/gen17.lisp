@@ -48,7 +48,7 @@
 	       forks)
 	 (send pid (tuple :eat (list fork1 fork2))))
        (receive
-	
+	 
 	( (tuple :sit_down pid phil)
 	    (manage_resources forks (cons (tuple pid phil)
 					  waiting)))

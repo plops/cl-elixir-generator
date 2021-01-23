@@ -500,23 +500,33 @@ return the body without them and a hash table with an environment"
 
 			 ;; receive (<clause0> <forms0>) (<clause1> <forms1>) ... [:after <after-code>]
 			
-			 ;; (receive ((tuple :bla foo) foo) :after (-> 1_000 (string "nothing"))
+			 ;; (receive ((tuple :bla foo) foo) :after (1_000 (setf q (+ 1 2)) (string "nothing"))
 			 (destructuring-bind (&rest clause-forms) args
 			   (with-output-to-string (s)
 			     (format s "receive do~%")
-			     (loop for clause-form in clause-forms
-				   while (listp clause-form)
-				      (if (listp clause-form)
-					  (destructuring-bind (clause &rest forms) clause-form
-					    (emit `(-> ,clause
-						       (do0
-							,@forms))))))
-			     (format s "~a" (emit `(do ,@body)))
-			     (when after-body
-			       (format s "~&after~%")
-			       (format s "~a" (emit `(do ,@after-body))))
-			     (format s "~&end~%")))
-			 ))
+			     (let ((count 0))
+			       ;; process clause forms until atom :after is detected
+			       (loop for clause-form in clause-forms
+				     and i from 0
+				     while (listp clause-form)
+				     do
+				     (destructuring-bind (clause &rest forms) clause-form
+				       (setf count i)
+				       (format s "~a~%"
+					       (emit `(-> ,clause
+							  (do0
+							   ,@forms))))))
+			       (when (< (+ count 1) (length clause-forms))
+				(unless (eq (elt clause-forms (+ 1 count))
+					    :after)
+				  (break "atom :after expected"))
+				(format s "~&after~%")
+				(destructuring-bind (time &rest cmds) (car (subseq clause-forms
+										   (+ 2 count)))
+				  (format s "~a~%"
+					  (emit `(-> ,time (do0
+							    ,@cmds))))))
+			         (format s "~&end~%"))))))
 	      (case
 		  ;; case keyform {normal-clause}* [otherwise-clause]
 		  ;; normal-clause::= (keys form*) 
@@ -729,29 +739,3 @@ return the body without them and a hash table with an environment"
 			      (print-sufficient-digits-f64 (realpart code))
 			      (print-sufficient-digits-f64 (imagpart code))))))))
 	"")))
-
-
-(let ((l `((a 1)
-	   (b 2)
-	   :after
-	   (1_00
-	    (string "bla")
-	    (+ 1 2)))))
-  (let ((count 0))  
-	  (list
-	   (loop for clause-form in l
-		 and i from 0
-		 while (listp clause-form)
-		 collect
-		 (destructuring-bind (clause &rest forms) clause-form
-		   (setf count i)
-		   (format nil "~a" `(-> ,clause
-					 (do0
-					  ,@forms)))))
-	   (unless (eq (elt l (+ 1 count))
-		       :after)
-	     (break ":after expected"))
-	   (destructuring-bind (time &rest cmds) (car (subseq l (+ 2 count)))
-	     (format nil "~a -> ~a"
-		     time cmds)))
-	  ))

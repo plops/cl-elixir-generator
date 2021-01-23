@@ -29,8 +29,8 @@
 				   name (string ,e))
 			   table)))
      (receive
-      ()
-      (-> _ ":ok")))
+     
+      (_ ":ok")))
    (def manage_resources (forks &optional (waiting (list)))
      (when (< 0 (length waiting))
        (setf names (for ((tuple _ phil)
@@ -48,23 +48,24 @@
 	       forks)
 	 (send pid (tuple :eat (list fork1 fork2))))
        (receive
-	()
-	(-> (tuple :sit_down pid phil)
+	
+	( (tuple :sit_down pid phil)
 	    (manage_resources forks (cons (tuple pid phil)
 					  waiting)))
-	(-> (tuple :give_up_seat
+	( (tuple :give_up_seat
 		   free_forks _)
-	    (do0
-	     (setf forks (++ free_forks forks))
-	     ,(logprint `((length forks)))
-	     (manage_resources forks waiting))))))
+	    (setf forks (++ free_forks forks))
+	  ,(lprint `((length forks)))
+	  (manage_resources forks waiting)))))
    (defmodule Dine
        (def dine (phil table)
 	 (send table (tuple :sit_down self phil))
 	 (receive
-	  ()
-	  (-> (tuple )))))
-   ))   
+	  
+	  ((tuple :eat forks )
+	   (setf phil (eat phil forks table)
+		 phil (think phil table))))))
+   ))
 
 
 

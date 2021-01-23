@@ -10,7 +10,8 @@ def simulate() do
     spawn(Dine, :dine, [%Philosopher{name: "Marx"}, table])
     spawn(Dine, :dine, [%Philosopher{name: "Russ"}, table])
     receive do
-        _ -> :ok
+_ -> :ok
+
 end
 end
 def manage_resources(forks, waiting \\ []) do
@@ -25,8 +26,22 @@ end
     send(pid, {:eat,[fork1, fork2]})
 end
     receive do
-        {:sit_down,pid,phil} -> manage_resources(forks, [({pid,phil}) | (waiting)])
-        {:give_up_seat} -> 
+{:sit_down,pid,phil} -> manage_resources(forks, [({pid,phil}) | (waiting)])
+
+{:give_up_seat,free_forks,_} -> forks = ((free_forks)++(forks))
+    IO.puts("#{__ENV__.file}:#{__ENV__.line} length(forks)=#{length(forks)}")
+    manage_resources(forks, waiting)
+
+end
+end
+end
+defmodule Dine do
+def dine(phil, table) do
+    send(table, {:sit_down,self,phil})
+    receive do
+{:eat,forks} -> phil = eat(phil, forks, table)
+    phil = think(phil, table)
+
 end
 end
 end

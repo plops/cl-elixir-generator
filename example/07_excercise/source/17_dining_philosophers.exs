@@ -1,8 +1,8 @@
-defmodule Philosopher do
-  defstruct(name: nil, ate: 0, thought: 0)
-end
-
 defmodule Table do
+  defmodule Philosopher do
+    defstruct(name: nil, ate: 0, thought: 0)
+  end
+
   def simulate() do
     forks = [:fork0, :fork1, :fork2, :fork3, :fork4]
     table = spawn_link(Table, :manage_resources, [forks])
@@ -43,49 +43,49 @@ defmodule Table do
       end
     end
   end
-end
 
-defmodule Dine do
-  def dine(phil, table) do
-    send(table, {:sit_down, self, phil})
+  defmodule Dine do
+    def dine(phil, table) do
+      send(table, {:sit_down, self, phil})
 
-    receive do
-      {:eat, forks} ->
-        phil = eat(phil, forks, table)
-        phil = think(phil, table)
+      receive do
+        {:eat, forks} ->
+          phil = eat(phil, forks, table)
+          phil = think(phil, table)
+      end
+
+      dine(phil, table)
     end
 
-    dine(phil, table)
-  end
+    def eat(phil, forks, table) do
+      phil = Map.update(phil, :ate, 0, fn x -> x + 1 end)
 
-  def eat(phil, forks, table) do
-    phil = Map.update(phil, :ate, 0, fn x -> x + 1 end)
+      IO.puts(
+        "#{__ENV__.file}:#{__ENV__.line} phil.name=#{phil.name} \"eating\"=#{"eating"} phil.ate=#{
+          phil.ate
+        }"
+      )
 
-    IO.puts(
-      "#{__ENV__.file}:#{__ENV__.line} phil.name=#{phil.name} \"eating\"=#{"eating"} phil.ate=#{
-        phil.ate
-      }"
-    )
+      :timer.sleep(:random.uniform(1_000))
 
-    :timer.sleep(:random.uniform(1_000))
+      IO.puts(
+        "#{__ENV__.file}:#{__ENV__.line} phil.nam=#{phil.nam} \"done eating\"=#{"done eating"}"
+      )
 
-    IO.puts(
-      "#{__ENV__.file}:#{__ENV__.line} phil.nam=#{phil.nam} \"done eating\"=#{"done eating"}"
-    )
+      send(table, {:give_up_seat, forks, phil})
+      phil
+    end
 
-    send(table, {:give_up_seat, forks, phil})
-    phil
-  end
+    def think(phil, _) do
+      IO.puts(
+        "#{__ENV__.file}:#{__ENV__.line} phil.name=#{phil.name} \"thinking\"=#{"thinking"} phil.thought=#{
+          phil.thought
+        }"
+      )
 
-  def think(phil, _) do
-    IO.puts(
-      "#{__ENV__.file}:#{__ENV__.line} phil.name=#{phil.name} \"thinking\"=#{"thinking"} phil.thought=#{
-        phil.thought
-      }"
-    )
-
-    :timer.sleep(:random.uniform(1000))
-    phil = %{phil | thought: phil.thought + 1}
+      :timer.sleep(:random.uniform(1000))
+      phil = %{phil | thought: phil.thought + 1}
+    end
   end
 end
 

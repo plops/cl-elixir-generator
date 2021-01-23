@@ -734,7 +734,9 @@ return the body without them and a hash table with an environment"
 (let ((l `((a 1)
 	   (b 2)
 	   :after
-	   (-> 1_00 (string "bla")))))
+	   (1_00
+	    (string "bla")
+	    (+ 1 2)))))
   (let ((count 0))  
 	  (list
 	   (loop for clause-form in l
@@ -749,5 +751,7 @@ return the body without them and a hash table with an environment"
 	   (unless (eq (elt l (+ 1 count))
 		       :after)
 	     (break ":after expected"))
-	   (subseq l (+ 2 count) ))
+	   (destructuring-bind (time &rest cmds) (car (subseq l (+ 2 count)))
+	     (format nil "~a -> ~a"
+		     time cmds)))
 	  ))

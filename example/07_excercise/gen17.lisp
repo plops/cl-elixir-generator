@@ -35,7 +35,35 @@
      (when (< 0 (length waiting))
        (setf names (for ((tuple _ phil)
 			 waiting)
-			phil.name))))
+			phil.name))
+       
+       ,(lprint `((length waiting)
+		  names))
+       (when (<= 2 (length forks))
+	 (setf (cons (tuple pid _)
+		     waiting)
+	       waiting
+	       (cons "fork1, fork2"
+		     forks)
+	       forks)
+	 (send pid (tuple :eat (list fork1 fork2))))
+       (receive
+	()
+	(-> (tuple :sit_down pid phil)
+	    (manage_resources forks (cons (tuple pid phil)
+					  waiting)))
+	(-> (tuple :give_up_seat
+		   free_forks _)
+	    (do0
+	     (setf forks (++ free_forks forks))
+	     ,(logprint `((length forks)))
+	     (manage_resources forks waiting))))))
+   (defmodule Dine
+       (def dine (phil table)
+	 (send table (tuple :sit_down self phil))
+	 (receive
+	  ()
+	  (-> (tuple )))))
    ))   
 
 

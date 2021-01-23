@@ -48,7 +48,7 @@
 		       waiting)
 		 waiting
 		 (cons "fork1, fork2"
-		       forks)
+		       forks) ;; what is up with forks here?
 		 forks)
 	   (send pid (tuple :eat (list fork1 fork2))))
 	 (receive
@@ -72,8 +72,8 @@
 	  (dine phil table))
       (def eat (phil forks table)
 	;; i don't like this map update syntax
-	;; (setf phil "%{phil | ate: phil.ate + 1}")
-	(setf phil (Map.update phil ":ate" 0 (lambda (x) (+ x 1))))
+	 (setf phil "%{phil | ate: phil.ate + 1}")
+	;(setf phil (Map.update phil ":ate" 0 (lambda (x) (+ x 1))))
 	,(lprint `(phil.name (string "eating") phil.ate))
 	(":timer.sleep" (":random.uniform"  1_000))
 	,(lprint `(phil.nam (string "done eating")))

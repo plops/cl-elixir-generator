@@ -58,7 +58,7 @@ defmodule Table do
     end
 
     def eat(phil, forks, table) do
-      phil = Map.update(phil, :ate, 0, fn x -> x + 1 end)
+      phil = %{phil | ate: phil.ate + 1}
 
       IO.puts(
         "#{__ENV__.file}:#{__ENV__.line} phil.name=#{phil.name} \"eating\"=#{"eating"} phil.ate=#{

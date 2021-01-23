@@ -29,3 +29,9 @@ sudo dnf install elixir
 - https://www.youtube.com/watch?v=JvBT4XBdoUE
   - sasa juric
   - shows how erlang/beam can be debugged
+
+
+* Changelog
+|          |                                                                                    |
+| 20210123 | incompatible change in receive semantics, old behaviour available as semantics_old |
+|          |                                                                                    |

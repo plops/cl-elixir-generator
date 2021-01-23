@@ -472,7 +472,7 @@ return the body without them and a hash table with an environment"
 			    collect
 			    (format s   "~a <- ~a" (emit e) (emit f)))
 		    )))
-	      (receive (let ((args (cdr code)))
+	      (receive_old (let ((args (cdr code)))
 			 ;; receive do
 			 ;;   {:bla, foo} -> foo
 			 ;; after
@@ -485,6 +485,32 @@ return the body without them and a hash table with an environment"
 					      &rest body) args
 			   (with-output-to-string (s)
 			     (format s "receive do~%")
+			     (format s "~a" (emit `(do ,@body)))
+			     (when after-body
+			       (format s "~&after~%")
+			       (format s "~a" (emit `(do ,@after-body))))
+			     (format s "~&end~%")))
+			 ))
+	      (receive (let ((args (cdr code)))
+			 ;; receive do
+			 ;;   {:bla, foo} -> foo
+			 ;; after
+			 ;;   1_000 -> "nothing"
+			 ;; end
+
+			 ;; receive (<clause0> <forms0>) (<clause1> <forms1>) ... [:after <after-code>]
+			
+			 ;; (receive ((tuple :bla foo) foo) :after (-> 1_000 (string "nothing"))
+			 (destructuring-bind (&rest clause-forms) args
+			   (with-output-to-string (s)
+			     (format s "receive do~%")
+			     (loop for clause-form in clause-forms
+				   while (listp clause-form)
+				      (if (listp clause-form)
+					  (destructuring-bind (clause &rest forms) clause-form
+					    (emit `(-> ,clause
+						       (do0
+							,@forms))))))
 			     (format s "~a" (emit `(do ,@body)))
 			     (when after-body
 			       (format s "~&after~%")
@@ -705,4 +731,23 @@ return the body without them and a hash table with an environment"
 	"")))
 
 
-
+(let ((l `((a 1)
+	   (b 2)
+	   :after
+	   (-> 1_00 (string "bla")))))
+  (let ((count 0))  
+	  (list
+	   (loop for clause-form in l
+		 and i from 0
+		 while (listp clause-form)
+		 collect
+		 (destructuring-bind (clause &rest forms) clause-form
+		   (setf count i)
+		   (format nil "~a" `(-> ,clause
+					 (do0
+					  ,@forms)))))
+	   (unless (eq (elt l (+ 1 count))
+		       :after)
+	     (break ":after expected"))
+	   (subseq l (+ 2 count) ))
+	  ))

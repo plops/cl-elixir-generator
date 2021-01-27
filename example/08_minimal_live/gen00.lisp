@@ -25,7 +25,10 @@
 		   @console
 		   :format (string "$time $metadata[$level] $messag\\n")
 		   :metadata (list @request_id))
-	   (config ":phoenix")))
+	   (config @phoenix
+		   @json_library
+		   Jason)
+	   (import_config (string "#{Mix.env()}.exs"))))
 	 ;; (config/dev.exs)
 	 ;; (config/prod.exs)
 	 ;; (config/prod.secret.exs)

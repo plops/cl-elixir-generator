@@ -10,4 +10,5 @@ config(:live_view_studio, LiveViewStudioWeb.Endpoint,
 )
 
 config(:logger, :console, format: "$time $metadata[$level] $messag\n", metadata: [:request_id])
-config(:phoenix)
+config(:phoenix, :json_library, Jason)
+import_config("#{Mix.env()}.exs")

@@ -105,8 +105,11 @@
 	       @ok)
 	    )
 	   ))
-	 ;; (lib/q.ex)
-	 ;; (lib/q/repo.ex)
+	 (lib/q.ex
+	  (defmodule Q))
+	 (lib/q/repo.ex
+	  (defmodule Q.Repo
+	      ("use" Ecto.Repo)))
 	 ;; (lib/q_web/channels/user_socket.ex)
 	 ;; (lib/q_web/endpoint.ex)
 	 ;; (lib/q_web.ex)

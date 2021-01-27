@@ -17,16 +17,16 @@
       )
 
     (def simulate ()
-      (setf forks (list ,@(loop for i below 5 collect
+      (setf forks (list ,@(loop for i from 1 upto 5 collect
 					      (format nil ":fork~a" i))))
       (setf table (spawn_link Table
 			      ":manage_resources"
 			      (list forks)))
-      ,@(loop for e in `(Aris
+      ,@(loop for e in `(Aristotle
 			 Kant
-			 Spin
+			 Spinoza
 			 Marx
-			 Russ)
+			 Russell)
 	      collect
 	      `(spawn Dine ":dine"
 		      (list (struct Philosopher
@@ -62,7 +62,10 @@
 	    ,(lprint `((length forks)))
 	    (manage_resources forks waiting)))))
 
-    (defmodule Dine
+    
+     )
+
+   (defmodule Dine
 	(def dine (phil table)
 	  (send table (tuple :sit_down self phil))
 	  (receive
@@ -71,7 +74,7 @@
 		  phil (think phil table))))
 	  (dine phil table))
       (def eat (phil forks table)
-	;; i don't like this map update syntax
+	;; i don't like this map update syntaxchange
 	 (setf phil "%{phil | ate: phil.ate + 1}")
 	;(setf phil (Map.update phil ":ate" 0 (lambda (x) (+ x 1))))
 	,(lprint `(phil.name (string "eating") phil.ate))
@@ -82,30 +85,8 @@
       (def think (phil _)
 	,(lprint `(phil.name (string "thinking") phil.thought))
 	(":timer.sleep" (":random.uniform" 1000))
-	(setf phil "%{phil | thought: phil.thought + 1}")))
-     )
+	"%{phil | thought: phil.thought + 1}"))
    (":random.seed" ":erlang.now")
-    "Table.simulate"
+   "Table.simulate"
      
    ))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 

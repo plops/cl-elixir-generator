@@ -4,13 +4,13 @@ defmodule Table do
   end
 
   def simulate() do
-    forks = [:fork0, :fork1, :fork2, :fork3, :fork4]
+    forks = [:fork1, :fork2, :fork3, :fork4, :fork5]
     table = spawn_link(Table, :manage_resources, [forks])
-    spawn(Dine, :dine, [%Philosopher{name: "Aris"}, table])
+    spawn(Dine, :dine, [%Philosopher{name: "Aristotle"}, table])
     spawn(Dine, :dine, [%Philosopher{name: "Kant"}, table])
-    spawn(Dine, :dine, [%Philosopher{name: "Spin"}, table])
+    spawn(Dine, :dine, [%Philosopher{name: "Spinoza"}, table])
     spawn(Dine, :dine, [%Philosopher{name: "Marx"}, table])
-    spawn(Dine, :dine, [%Philosopher{name: "Russ"}, table])
+    spawn(Dine, :dine, [%Philosopher{name: "Russell"}, table])
 
     receive do
       _ -> :ok
@@ -43,49 +43,49 @@ defmodule Table do
       end
     end
   end
+end
 
-  defmodule Dine do
-    def dine(phil, table) do
-      send(table, {:sit_down, self, phil})
+defmodule Dine do
+  def dine(phil, table) do
+    send(table, {:sit_down, self, phil})
 
-      receive do
-        {:eat, forks} ->
-          phil = eat(phil, forks, table)
-          phil = think(phil, table)
-      end
-
-      dine(phil, table)
+    receive do
+      {:eat, forks} ->
+        phil = eat(phil, forks, table)
+        phil = think(phil, table)
     end
 
-    def eat(phil, forks, table) do
-      phil = %{phil | ate: phil.ate + 1}
+    dine(phil, table)
+  end
 
-      IO.puts(
-        "#{__ENV__.file}:#{__ENV__.line} phil.name=#{phil.name} \"eating\"=#{"eating"} phil.ate=#{
-          phil.ate
-        }"
-      )
+  def eat(phil, forks, table) do
+    phil = %{phil | ate: phil.ate + 1}
 
-      :timer.sleep(:random.uniform(1_000))
+    IO.puts(
+      "#{__ENV__.file}:#{__ENV__.line} phil.name=#{phil.name} \"eating\"=#{"eating"} phil.ate=#{
+        phil.ate
+      }"
+    )
 
-      IO.puts(
-        "#{__ENV__.file}:#{__ENV__.line} phil.nam=#{phil.nam} \"done eating\"=#{"done eating"}"
-      )
+    :timer.sleep(:random.uniform(1_000))
 
-      send(table, {:give_up_seat, forks, phil})
-      phil
-    end
+    IO.puts(
+      "#{__ENV__.file}:#{__ENV__.line} phil.nam=#{phil.nam} \"done eating\"=#{"done eating"}"
+    )
 
-    def think(phil, _) do
-      IO.puts(
-        "#{__ENV__.file}:#{__ENV__.line} phil.name=#{phil.name} \"thinking\"=#{"thinking"} phil.thought=#{
-          phil.thought
-        }"
-      )
+    send(table, {:give_up_seat, forks, phil})
+    phil
+  end
 
-      :timer.sleep(:random.uniform(1000))
-      phil = %{phil | thought: phil.thought + 1}
-    end
+  def think(phil, _) do
+    IO.puts(
+      "#{__ENV__.file}:#{__ENV__.line} phil.name=#{phil.name} \"thinking\"=#{"thinking"} phil.thought=#{
+        phil.thought
+      }"
+    )
+
+    :timer.sleep(:random.uniform(1000))
+    %{phil | thought: phil.thought + 1}
   end
 end
 

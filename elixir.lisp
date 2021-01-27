@@ -222,8 +222,10 @@ return the body without them and a hash table with an environment"
 			      (emit (second args)))))
 	      (keyword-list (let ((args (cdr code)))
 			      (format nil "[~{~a~^, ~}]"
-				      (loop for (e f) on args by #'cddr collect
-									(format nil "~a: ~a" (emit e) (emit f))))))
+				      (loop for (e f) on args by #'cddr
+					    collect
+					    (format nil "~a: ~a" (emit e) (emit f))))))
+	      (plist (emit `(keyword-list ,@(cdr code))))
 	      (defstruct (let ((args (cdr code)))
 			   ;; defstruct <name> <value> <name2> <value2>
 			   ;; <value> can be "nil"
@@ -664,6 +666,8 @@ return the body without them and a hash table with an environment"
 			    (format nil "import ~a~%" args))))
 	      (imports (destructuring-bind (args) (cdr code)
 			 (format nil "~{~a~}" (mapcar #'(lambda (x) (emit `(import ,x))) args))))
+	      (use (destructuring-bind (&rest args) (cdr code)
+			 (format nil "~{use ~a~%~}" (mapcar #'emit args))))
 	      (with (destructuring-bind (form &rest body) (cdr code)
 		      (with-output-to-string (s)
 			(format s "~a~a:~%~a"

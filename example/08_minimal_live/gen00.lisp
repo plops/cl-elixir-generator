@@ -169,8 +169,28 @@
 			 (progn
 			   ("use" Phoenix.Controller :namespace QWeb)
 			   (import Plug.Conn
-				   QWeb.Gettext)))
-		)))
+				   QWeb.Gettext)
+			   (alias QWeb.Router.Helpers
+				  :as Routes)))
+		)
+	    (def view ()
+	      (space quote
+		     (progn
+		      ("use" Phoenix.View
+			     :root (string "lib/q_web/templates")
+			     :namespace QWeb)
+		      ("import" Phoenix.Controller
+				:only (plist get_flash 1
+					     get_flash 2
+					     view_module 1
+					     view_template 1))
+		      (unquote (view_helpers)))))
+	    (def live_view ()
+	      (space quote
+		     (progn ("use" Phoenix.LiveView
+				   :layout (tuple QWeb.LayoutView
+						  (string "live.html")))
+			    (unquote (view_helpers)))))))
 	 ;; (lib/q_web/gettext.ex)
 	 ;; (lib/q_web/live/page_live.ex)
 	 ;; (lib/q_web/router.ex)

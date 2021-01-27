@@ -190,7 +190,36 @@
 		     (progn ("use" Phoenix.LiveView
 				   :layout (tuple QWeb.LayoutView
 						  (string "live.html")))
-			    (unquote (view_helpers)))))))
+			    (unquote (view_helpers)))))
+	     (def live_component ()
+	      (space quote
+		     (progn (use Phoenix.LiveComponent)
+			    (unquote (view_helpers)))))
+	    (def router ()
+	      (space quote
+		     (progn (use Phoenix.Router)
+			    (import Phoenix.Controller
+				    Phoenix.LiveView.Router))))
+	    (def channel ()
+	      (space quote
+		     (progn (use Phoenix.Channel)
+			    (import QWeb.Gettext))))
+	    (defp view_helpers ()
+	      (space quote
+		     (progn
+		       (use Phoenix.HTML)
+		       (import Phoenix.LiveView.Helpers
+			       Phoenix.View
+			       QWeb.ErrorHelpers
+			       QWeb.Gettext)
+		       (alias QWeb.Router.Helpers :as Routes)))
+	      )
+	    (space defmacro
+		   (__using__ which)
+		   when
+		   (is_atom which)
+		   (progn
+		     (apply __MODULE which (list))))))
 	 ;; (lib/q_web/gettext.ex)
 	 ;; (lib/q_web/live/page_live.ex)
 	 ;; (lib/q_web/router.ex)

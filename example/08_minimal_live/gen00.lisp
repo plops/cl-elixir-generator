@@ -1,0 +1,41 @@
+(eval-when (:compile-toplevel :execute :load-toplevel)
+  (ql:quickload "cl-elixir-generator"))
+(in-package :cl-elixir-generator)
+
+(defparameter *path* "/home/martin/stage/cl-elixir-generator/example/08_minimal_live/source")
+
+(let
+    ((l
+       `((config/config.exs)
+	 (config/dev.exs)
+	 (config/prod.exs)
+	 (config/prod.secret.exs)
+	 (config/test.exs)
+	 (lib/live_view_studio/application.ex)
+	 (lib/live_view_studio.ex)
+	 (lib/live_view_studio/repo.ex)
+	 (lib/live_view_studio_web/channels/user_socket.ex)
+	 (lib/live_view_studio_web/endpoint.ex)
+	 (lib/live_view_studio_web.ex)
+	 (lib/live_view_studio_web/gettext.ex)
+	 (lib/live_view_studio_web/live/page_live.ex)
+	 (lib/live_view_studio_web/router.ex)
+	 (lib/live_view_studio_web/telemetry.ex)
+	 (lib/live_view_studio_web/views/error_helpers.ex)
+	 (lib/live_view_studio_web/views/error_view.ex)
+	 (lib/live_view_studio_web/views/layout_view.ex)
+	 (mix.exs)
+	 (priv/repo/migrations/.formatter.exs)
+	 (priv/repo/seeds.exs)
+	 (test/live_view_studio_web/live/page_live_test.exs)
+	 (test/live_view_studio_web/views/error_view_test.exs)
+	 (test/live_view_studio_web/views/layout_view_test.exs)
+	 (test/support/channel_case.ex)
+	 (test/support/conn_case.ex)
+	 (test/support/data_case.ex)
+	 (test/test_helper.exs))))
+  (loop for (fn code) in l
+	do
+	   (write-source
+	    (format nil "~a/~a" *path* fn)
+	    code)))

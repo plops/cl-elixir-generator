@@ -220,7 +220,9 @@
 		   (is_atom which)
 		   (progn
 		     (apply __MODULE which (list))))))
-	 ;; (lib/q_web/gettext.ex)
+	 (lib/q_web/gettext.ex
+	  (defmodule QWeb.Gettext
+	    (import QWeb.Gettext)))
 	 ;; (lib/q_web/live/page_live.ex)
 	 ;; (lib/q_web/router.ex)
 	 ;; (lib/q_web/telemetry.ex)

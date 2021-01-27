@@ -9,17 +9,17 @@
        `((config/config.exs
 	  (do0
 	   (use Mix.Config)
-	   (config @live_view_studio
-		   :ecto_repos (list LiveViewStudio.Repo))
-	   (config @live_view_studio
-		   LiveViewStudioWeb.Endpoint
+	   (config @q
+		   :ecto_repos (list Q.Repo))
+	   (config @q
+		   QWeb.Endpoint
 		   :url (plist host (string "localhost"))
 		   :secret_key_base (string "Wy+j/oXYSmC2gLpNSuAz8XCEbUhLc0s4YoBTjx9aI9vRJsTPcemst6T6pu0BFp5A")
 		   :render_errors (plist
-				   view LiveViewStudioWeb.ErrorView
+				   view QWeb.ErrorView
 				   accepts (~w "html json")
 				   layout false)
-		   :pubsub_server LiveViewStudio.PubSub
+		   :pubsub_server Q.PubSub
 		   :live_view (plist signing_salt (string "gu7elorQ")))
 	   (config @logger
 		   @console
@@ -31,16 +31,16 @@
 	   (import_config (string "#{Mix.env()}.exs"))))
 	 (config/dev.exs
 	  (do0
-	   (config @live_view_studio
-		   LiveViewStudio.Repo
+	   (config @q
+		   Q.Repo
 		   :username (string "postgres")
 		   :password (string "postgres")
-		   :database (string "live_view_studio_dev")
+		   :database (string "q_dev")
 		   :hostname (string "localhost")
 		   :show_sensitive_data_on_connection_error true
 		   :pool_size 10)
-	   (config @live_view_studio
-		   LiveViewStudioWeb.Endpoint
+	   (config @q
+		   QWeb.Endpoint
 		   :http (plist port 4000)
 		   :debug_errors true
 		   :code_reloader true
@@ -51,14 +51,14 @@
 					       (string "--watch-stdin")
 					       "cd: Patch.expand(\"../assets\",__DIR__)")))
 	   ;; https cert config would go here
-	   (config @live_view_studio
-		   LiveViewStudioWeb.EndPoint
+	   (config @q
+		   QWeb.EndPoint
 		   :live_reload (plist patterns
 				       (list
 					"~r\"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$\""
 					"~r\"priv/gettext/.*(po)$\""
-					"~r\"lib/live_view_studio_web/(live|views)/.*(ex)$\""
-					"~r\"lib/live_view_studio_web/templatex/.*(eex)$\""
+					"~r\"lib/q_web/(live|views)/.*(ex)$\""
+					"~r\"lib/q_web/templatex/.*(eex)$\""
 
 					)))
 	   (config @logger
@@ -74,52 +74,52 @@
 	 ;; (config/prod.secret.exs)
 	 (config/test.exs
 	  (do0
-	   (config @live_view_studio
-		   LiveViewStudio.Repo
+	   (config @q
+		   Q.Repo
 		   :username (string "postgres")
 		   :password (string "postgres")
-		   :database (string "live_view_studio_test#{System.get_env(\"MIX_TEST_PARTITION\")}")
+		   :database (string "q_test#{System.get_env(\"MIX_TEST_PARTITION\")}")
 		   :hostname (string "localhost")
 		   :pool Ecto.Adapters.SQL.Sandbox)
-	   (config @live_view_studio
-		   LiveViewStudioWeb.Endpoint
+	   (config @q
+		   QWeb.Endpoint
 		   :http (plist port 4002)
 		   :server false)
 	   (config @logger :level @warn)
 	   ))
-	 (lib/live_view_studio/application.ex
+	 (lib/q/application.ex
 	  (do0
-	   (defmodule LiveViewStudio.Application
+	   (defmodule Q.Application
 	     "@moduledoc false"
 	     (use Application)
 	     (def start (_type _args)
-	       (setf children (list LiveViewStudio.Repo
-				    LiveViewStudio.Telemetry
-				    (curly Phoenix.PubSub "name: LiveViewStudio.PubSub")
-				    LiveViewStudio.EndPoint))
+	       (setf children (list Q.Repo
+				    Q.Telemetry
+				    (curly Phoenix.PubSub "name: Q.PubSub")
+				    Q.EndPoint))
 	       (setf opts (plist strategy @one_for_one
-				 name LiveViewStudio.Supervisor))
+				 name Q.Supervisor))
 	       (Supervisor.start_link children opts))
 	     (def ))
 	   ))
-	 ;; (lib/live_view_studio.ex)
-	 ;; (lib/live_view_studio/repo.ex)
-	 ;; (lib/live_view_studio_web/channels/user_socket.ex)
-	 ;; (lib/live_view_studio_web/endpoint.ex)
-	 ;; (lib/live_view_studio_web.ex)
-	 ;; (lib/live_view_studio_web/gettext.ex)
-	 ;; (lib/live_view_studio_web/live/page_live.ex)
-	 ;; (lib/live_view_studio_web/router.ex)
-	 ;; (lib/live_view_studio_web/telemetry.ex)
-	 ;; (lib/live_view_studio_web/views/error_helpers.ex)
-	 ;; (lib/live_view_studio_web/views/error_view.ex)
-	 ;; (lib/live_view_studio_web/views/layout_view.ex)
+	 ;; (lib/q.ex)
+	 ;; (lib/q/repo.ex)
+	 ;; (lib/q_web/channels/user_socket.ex)
+	 ;; (lib/q_web/endpoint.ex)
+	 ;; (lib/q_web.ex)
+	 ;; (lib/q_web/gettext.ex)
+	 ;; (lib/q_web/live/page_live.ex)
+	 ;; (lib/q_web/router.ex)
+	 ;; (lib/q_web/telemetry.ex)
+	 ;; (lib/q_web/views/error_helpers.ex)
+	 ;; (lib/q_web/views/error_view.ex)
+	 ;; (lib/q_web/views/layout_view.ex)
 	 ;; (mix.exs)
 	 ;; (priv/repo/migrations/.formatter.exs)
 	 ;; (priv/repo/seeds.exs)
-	 ;; (test/live_view_studio_web/live/page_live_test.exs)
-	 ;; (test/live_view_studio_web/views/error_view_test.exs)
-	 ;; (test/live_view_studio_web/views/layout_view_test.exs)
+	 ;; (test/q_web/live/page_live_test.exs)
+	 ;; (test/q_web/views/error_view_test.exs)
+	 ;; (test/q_web/views/layout_view_test.exs)
 	 ;; (test/support/channel_case.ex)
 	 ;; (test/support/conn_case.ex)
 	 ;; (test/support/data_case.ex)

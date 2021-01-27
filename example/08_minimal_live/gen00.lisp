@@ -109,9 +109,59 @@
 	  (defmodule Q))
 	 (lib/q/repo.ex
 	  (defmodule Q.Repo
-	      ("use" Ecto.Repo)))
-	 ;; (lib/q_web/channels/user_socket.ex)
-	 ;; (lib/q_web/endpoint.ex)
+	      ("use" Ecto.Repo
+		     :otp_app @q
+		     :adapter Ecto.Adapters.Postgres)))
+	 (lib/q_web/channels/user_socket.ex
+	  (defmodule QWeb.UserSocket
+	      (use Phoenix.Socket)
+	    "@impl true"
+	    (def connect (_params socket _connect_info)
+	      (tuple @ok
+		     socket))
+	    "@impl true"
+	    (def id (_socket)
+	      "nil")))
+	 (lib/q_web/endpoint.ex
+	  (defmodule QWeb.Endpoint
+	      ("use" Phoenix.Endpoint
+		     :otp_app @q)
+	    (space "@ession_options"
+		   (plist store @cookie
+			  key (string "_q_key")
+			  signing_salt (string "r0i/aYVY")))
+	    (socket (string "/socket")
+		    QWeb.UserSocket
+		    :websocket true
+		    :longpoll false)
+	    (socket (string "/live")
+		    Phoenix.LiveView.Socket
+		    :websocket (plist connect_info (plist session "@session_options")))
+
+	    (plug Plug.Static
+		  :at (string "/")
+		  :from @q
+		  :gzip false ;; FIXME: true in production
+		  :only (~w "css fonts images js favicon.ico robots.txt"))
+	    (when code_reloading?
+	      (socket (string "/phoenix/live_reload/socket")
+		      Phoenix.LiveReloader.Socket)
+	      (plug Phoenix.LiveReloader)
+	      (plug Phoenix.CodeReloader)
+	      (plug Phoenix.Ecto.CheckRepoStatus :otp_app @q))
+	    (plug Phoenix.LiveDashboard.RequestLogger
+		  :param_key (string "request_logger")
+		  :cookie_key (string "request_logger"))
+	    (plug Plug.RequestId)
+	    (plug Plug.Telemetry :eventprefix (list @phoenix @endpoint))
+	    (plug Plug.Parsers
+		  :parsers (list @urlencoded @multipart @json)
+		  :pass (list (string "*/*"))
+		  :json_decoder (Phoenix.json_library))
+	    (plug Plug.MethodOverride)
+	    (plug Plug.Head)
+	    (plug Plug.Session "@session_options")
+	    (plug QWeb.Router)))
 	 ;; (lib/q_web.ex)
 	 ;; (lib/q_web/gettext.ex)
 	 ;; (lib/q_web/live/page_live.ex)

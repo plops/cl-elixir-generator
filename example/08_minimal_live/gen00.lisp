@@ -9,9 +9,9 @@
        `((config/config.exs
 	  (do0
 	   (use Mix.Config)
-	   (config ":live_view_studio"
+	   (config @live_view_studio
 		   :ecto_repos (list LiveViewStudio.Repo))
-	   (config ":live_view_studio"
+	   (config @live_view_studio
 		   LiveViewStudioWeb.Endpoint
 		   :url (plist host (string "localhost"))
 		   :secret_key_base (string "Wy+j/oXYSmC2gLpNSuAz8XCEbUhLc0s4YoBTjx9aI9vRJsTPcemst6T6pu0BFp5A")
@@ -21,10 +21,10 @@
 				   layout false)
 		   :pubsub_server LiveViewStudio.PubSub
 		   :live_view (plist signing_salt (string "gu7elorQ")))
-	   (config ":logger"
-		   ":console"
+	   (config @logger
+		   @console
 		   :format (string "$time $metadata[$level] $messag\\n")
-		   :metadata (list ":request_id"))
+		   :metadata (list @request_id))
 	   (config ":phoenix")))
 	 ;; (config/dev.exs)
 	 ;; (config/prod.exs)

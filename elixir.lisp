@@ -660,14 +660,11 @@ return the body without them and a hash table with an environment"
 				  (emit condition)
 				  (emit `(do0 ,@forms)))
 			  )))
-	      (import (destructuring-bind (args) (cdr code)
-			(if (listp args)
-			    (format nil "import ~a as ~a~%" (second args) (first args))
-			    (format nil "import ~a~%" args))))
-	      (imports (destructuring-bind (args) (cdr code)
-			 (format nil "~{~a~}" (mapcar #'(lambda (x) (emit `(import ,x))) args))))
+
 	      (use (destructuring-bind (&rest args) (cdr code)
-			 (format nil "~{use ~a~%~}" (mapcar #'emit args))))
+		     (format nil "~{use ~a~%~}" (mapcar #'emit args))))
+	      (import (destructuring-bind (&rest args) (cdr code)
+			 (format nil "~{import ~a~%~}" (mapcar #'emit args))))
 	      (with (destructuring-bind (form &rest body) (cdr code)
 		      (with-output-to-string (s)
 			(format s "~a~a:~%~a"

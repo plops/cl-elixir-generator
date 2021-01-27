@@ -162,7 +162,15 @@
 	    (plug Plug.Head)
 	    (plug Plug.Session "@session_options")
 	    (plug QWeb.Router)))
-	 ;; (lib/q_web.ex)
+	 (lib/q_web.ex
+	  (defmodule QWeb
+	      (def controller ()
+		  (space quote
+			 (progn
+			   ("use" Phoenix.Controller :namespace QWeb)
+			   (import Plug.Conn
+				   QWeb.Gettext)))
+		)))
 	 ;; (lib/q_web/gettext.ex)
 	 ;; (lib/q_web/live/page_live.ex)
 	 ;; (lib/q_web/router.ex)

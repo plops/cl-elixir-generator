@@ -16,8 +16,16 @@
 		   :url (plist host (string "localhost"))
 		   :secret_key_base (string "Wy+j/oXYSmC2gLpNSuAz8XCEbUhLc0s4YoBTjx9aI9vRJsTPcemst6T6pu0BFp5A")
 		   :render_errors (plist
-				   view
-				   LiveViewStudioWeb.ErrorView))))
+				   view LiveViewStudioWeb.ErrorView
+				   accepts (~w "html json")
+				   layout false)
+		   :pubsub_server LiveViewStudio.PubSub
+		   :live_view (plist signing_salt (string "gu7elorQ")))
+	   (config ":logger"
+		   ":console"
+		   :format (string "$time $metadata[$level] $messag\\n")
+		   :metadata (list ":request_id"))
+	   (config ":phoenix")))
 	 ;; (config/dev.exs)
 	 ;; (config/prod.exs)
 	 ;; (config/prod.secret.exs)

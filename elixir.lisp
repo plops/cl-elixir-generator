@@ -730,7 +730,10 @@ return the body without them and a hash table with an environment"
 	      ((keywordp code) ;; print an atom
 	       (format nil ":~a" code))
 	      ((symbolp code) ;; print variable
-	       (format nil "~a" code))
+	       (let ((str (format nil "~a" code)))
+		 (if (eq #\@ (aref str 0)) ;; symbols starting with @ are converted to elixir keywords
+		     (format nil ":~a" (subseq str 1))
+		     (format nil "~a" code))))
 	      ((stringp code)
 	       code
 	       #+nil (substitute #\: #\- (format nil "~a" code)))
@@ -743,3 +746,5 @@ return the body without them and a hash table with an environment"
 			      (print-sufficient-digits-f64 (realpart code))
 			      (print-sufficient-digits-f64 (imagpart code))))))))
 	"")))
+
+

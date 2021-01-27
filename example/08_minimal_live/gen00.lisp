@@ -29,11 +29,79 @@
 		   @json_library
 		   Jason)
 	   (import_config (string "#{Mix.env()}.exs"))))
-	 ;; (config/dev.exs)
+	 (config/dev.exs
+	  (do0
+	   (config @live_view_studio
+		   LiveViewStudio.Repo
+		   :username (string "postgres")
+		   :password (string "postgres")
+		   :database (string "live_view_studio_dev")
+		   :hostname (string "localhost")
+		   :show_sensitive_data_on_connection_error true
+		   :pool_size 10)
+	   (config @live_view_studio
+		   LiveViewStudioWeb.Endpoint
+		   :http (plist port 4000)
+		   :debug_errors true
+		   :code_reloader true
+		   :check_origin false
+		   :watchers (plist node (list (string "node_modules/webpack/bin/webpack.js")
+					       (string "--mode")
+					       (string "development")
+					       (string "--watch-stdin")
+					       "cd: Patch.expand(\"../assets\",__DIR__)")))
+	   ;; https cert config would go here
+	   (config @live_view_studio
+		   LiveViewStudioWeb.EndPoint
+		   :live_reload (plist patterns
+				       (list
+					"~r\"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$\""
+					"~r\"priv/gettext/.*(po)$\""
+					"~r\"lib/live_view_studio_web/(live|views)/.*(ex)$\""
+					"~r\"lib/live_view_studio_web/templatex/.*(eex)$\""
+
+					)))
+	   (config @logger
+		   @console
+		   :format (string "[$level] $message\\n"))
+	   (config @phoenix
+		   @stacktrace_depth 20)
+	   (config @phoenix
+		   @plug_init_mode
+		   @runtime)
+	   ))
 	 ;; (config/prod.exs)
 	 ;; (config/prod.secret.exs)
-	 ;; (config/test.exs)
-	 ;; (lib/live_view_studio/application.ex)
+	 (config/test.exs
+	  (do0
+	   (config @live_view_studio
+		   LiveViewStudio.Repo
+		   :username (string "postgres")
+		   :password (string "postgres")
+		   :database (string "live_view_studio_test#{System.get_env(\"MIX_TEST_PARTITION\")}")
+		   :hostname (string "localhost")
+		   :pool Ecto.Adapters.SQL.Sandbox)
+	   (config @live_view_studio
+		   LiveViewStudioWeb.Endpoint
+		   :http (plist port 4002)
+		   :server false)
+	   (config @logger :level @warn)
+	   ))
+	 (lib/live_view_studio/application.ex
+	  (do0
+	   (defmodule LiveViewStudio.Application
+	     "@moduledoc false"
+	     (use Application)
+	     (def start (_type _args)
+	       (setf children (list LiveViewStudio.Repo
+				    LiveViewStudio.Telemetry
+				    (curly Phoenix.PubSub "name: LiveViewStudio.PubSub")
+				    LiveViewStudio.EndPoint))
+	       (setf opts (plist strategy @one_for_one
+				 name LiveViewStudio.Supervisor))
+	       (Supervisor.start_link children opts))
+	     (def ))
+	   ))
 	 ;; (lib/live_view_studio.ex)
 	 ;; (lib/live_view_studio/repo.ex)
 	 ;; (lib/live_view_studio_web/channels/user_socket.ex)

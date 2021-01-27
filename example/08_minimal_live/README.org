@@ -29,4 +29,5 @@ test/support/channel_case.ex
 test/support/conn_case.ex
 test/support/data_case.ex
 test/test_helper.exs
+lib/live_view_studio_web/templates/layout/app.html.eex
 #+end_example

@@ -94,12 +94,15 @@
 	     (use Application)
 	     (def start (_type _args)
 	       (setf children (list Q.Repo
-				    Q.Telemetry
+				    QWeb.Telemetry
 				    (curly Phoenix.PubSub "name: Q.PubSub")
-				    Q.EndPoint))
+				    QWeb.EndPoint))
 	       (setf opts (plist strategy @one_for_one
 				 name Q.Supervisor))
 	       (Supervisor.start_link children opts))
+	     (def config_change (changed _new removed)
+	       (QWeb.Endpoint.config_change changed removed)
+	       @ok)
 	    )
 	   ))
 	 ;; (lib/q.ex)

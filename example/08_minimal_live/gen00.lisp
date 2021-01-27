@@ -100,7 +100,7 @@
 	       (setf opts (plist strategy @one_for_one
 				 name Q.Supervisor))
 	       (Supervisor.start_link children opts))
-	     (def ))
+	    )
 	   ))
 	 ;; (lib/q.ex)
 	 ;; (lib/q/repo.ex)

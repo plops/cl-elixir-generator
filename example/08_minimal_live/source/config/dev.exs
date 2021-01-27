@@ -1,13 +1,13 @@
-config(:live_view_studio, LiveViewStudio.Repo,
+config(:q, Q.Repo,
   username: "postgres",
   password: "postgres",
-  database: "live_view_studio_dev",
+  database: "q_dev",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 )
 
-config(:live_view_studio, LiveViewStudioWeb.Endpoint,
+config(:q, QWeb.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,
@@ -23,13 +23,13 @@ config(:live_view_studio, LiveViewStudioWeb.Endpoint,
   ]
 )
 
-config(:live_view_studio, LiveViewStudioWeb.EndPoint,
+config(:q, QWeb.EndPoint,
   live_reload: [
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/live_view_studio_web/(live|views)/.*(ex)$",
-      ~r"lib/live_view_studio_web/templatex/.*(eex)$"
+      ~r"lib/q_web/(live|views)/.*(ex)$",
+      ~r"lib/q_web/templatex/.*(eex)$"
     ]
   ]
 )

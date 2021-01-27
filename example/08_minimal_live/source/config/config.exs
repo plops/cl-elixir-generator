@@ -1,11 +1,11 @@
 use Mix.Config
-config(:live_view_studio, ecto_repos: [LiveViewStudio.Repo])
+config(:q, ecto_repos: [Q.Repo])
 
-config(:live_view_studio, LiveViewStudioWeb.Endpoint,
+config(:q, QWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "Wy+j/oXYSmC2gLpNSuAz8XCEbUhLc0s4YoBTjx9aI9vRJsTPcemst6T6pu0BFp5A",
-  render_errors: [view: LiveViewStudioWeb.ErrorView, accepts: ~w(html json), layout: false],
-  pubsub_server: LiveViewStudio.PubSub,
+  render_errors: [view: QWeb.ErrorView, accepts: ~w(html json), layout: false],
+  pubsub_server: Q.PubSub,
   live_view: [signing_salt: "gu7elorQ"]
 )
 

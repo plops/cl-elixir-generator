@@ -205,7 +205,22 @@ return the body without them and a hash table with an environment"
 	      #+nil (atom (let ((args (cdr code)))
 			    (format nil ":~a" (emit (car args)))))
 	      (tuple (let ((args (cdr code)))
-		       (format nil "{~{~a~^,~}}" (mapcar #'emit args))))
+		       (format nil "{~{~a~^,~}}"
+					;(mapcar #'emit args)
+			       (let ((res ()))
+				 (loop for i below (length args) do
+				   (let ((arg (elt args i)))
+				     (if (keywordp arg)
+					 (progn
+					  (push (format nil "~a: ~a" arg
+							(emit (elt args (+ 1 i))))
+						res
+						)
+					  (incf i))
+					 (push (emit arg) res)))
+				       )
+				 (reverse res))
+			       )))
 	      (paren (let ((args (cdr code)))
 		       (format nil "(~{~a~^, ~})" (mapcar #'emit args))))
 	      (space

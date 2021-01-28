@@ -298,8 +298,27 @@
 	      (pipe_through @browser)
 	      (live (string "/")
 		    PageLive
-		    @index))))
-	 ;; (lib/q_web/telemetry.ex)
+		    @index))
+	    (when (in (Mix.env)
+		      (list @dev @test))
+	      (import Phoenix.LiveDashboard.Router)
+	      (scope (string "/")
+		     )
+	      (progn (pipe_through @browser)
+		     (live_dashboard (string "/dashboard")
+				     :metrics QWeb.Telemetry)))))
+	 (lib/q_web/telemetry.ex
+	  (defmodule QWeb.Telemetry
+	      (use Supervisor)
+	    (import Telemetry.Metrics)
+	    (def start_link (arg)
+	      (Supervisor.start_link __MODULE__ args :name __MODULE__))
+	    "@impl true"
+	    (def init (_arg)
+	      (setf children (list (tuple
+				    @telemetry_poller
+				    :measurements (periodic_measurements)
+				    :period 10_000))))))
 	 ;; (lib/q_web/views/error_helpers.ex)
 	 ;; (lib/q_web/views/error_view.ex)
 	 ;; (lib/q_web/views/layout_view.ex)

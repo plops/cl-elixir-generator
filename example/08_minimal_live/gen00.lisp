@@ -318,11 +318,71 @@
 	      (setf children (list (tuple
 				    @telemetry_poller
 				    :measurements (periodic_measurements)
-				    :period 10_000))))))
-	 ;; (lib/q_web/views/error_helpers.ex)
-	 ;; (lib/q_web/views/error_view.ex)
-	 ;; (lib/q_web/views/layout_view.ex)
-	 ;; (mix.exs)
+				    :period 10_000)))
+	      (Supervisor.init children :strategy @one_for_one))
+	    (def metrics
+		(list (summary (string "phoenix.endpoint.stop.duration")
+			       :unit (tuple @native @millisecond))
+		      (summary (string "phoenix.router_dispatch.stop.duration")
+			       :tags (list @route)
+			       :unit (tuple @native @millisecond))
+		      ,@(loop for e in `(total decode query queue idle)
+			      collect
+			      `(summary (string ,(format nil "q.repo.query.~a_time" e))
+					:unit (tuple @native @millisecond)))
+		      (summary (string "vm.memory.total")
+			       :unit (tuple @byte @kilobyte))
+		      ,@(loop for e in `(total cpu io)
+			      collect
+			      `(summary (string ,(format nil "vm.total_run_queue_length.~a" e))))
+		      ))
+	    (defp periodic_measurements ()
+	      (list)))
+	  )
+	 (lib/q_web/views/error_helpers.ex
+	  (defmodule QWeb.ErrorHelpers
+	      (use Phoenix.HTML)
+	    (def error_tag (form field)
+	      (Enum.map
+	       (Keyword.get_values form.errors field)
+	       (lambda (error)
+		 (content_tag @span (translate_error error)
+			      :class (string "invalid-feedback")
+			      :phx_feedback_for (input_id form field)))))
+	    (def translate_error ((tuple msg opts))
+	      (if (= count (aref opts @count))
+		  (Gettext.dngettext QWeb.Gettext (string "errors")
+				     msg msg count opts)
+		  (Gettext.dngettext QWeb.Gettext (string "errors")
+				     msg opts)))))
+	 (lib/q_web/views/error_view.ex
+	  (defmodule QWeb.ErrorView
+	      ("use" QWeb @view)
+	    (def template_not_found (template _assigns)
+	      (Phoenix.Controller.status_message_from_template template))))
+	 (lib/q_web/views/layout_view.ex
+	  (defmodule QWeb.LayoutView
+	    ("use" QWeb @view)))
+	 (mix.exs
+	  (defmodule Q.MixProject
+	      (use Mix.Project)
+	    (def project ()
+	      (list
+	       :app @q
+	       :version (string "0.1.0")
+	       :elixir (string "~> 1.7")
+	       :elixirc_paths (elixirc_paths (Mix.env))
+	       :compilers (++ (list @phoenix
+				    @gettext)
+			      (Mix.compilers))
+	       :start_permanent (== (Mix.env)
+				    @prod)
+	       :aliases (aliases)
+	       :deps (deps)))
+	    (def application ()
+	      (list :mod (tuple Q.Application (list))
+		    :extra_applications (list @logger
+					      @runtime_tools)))))
 	 ;; (priv/repo/migrations/.formatter.exs)
 	 ;; (priv/repo/seeds.exs)
 	 ;; (test/q_web/live/page_live_test.exs)

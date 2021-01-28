@@ -230,7 +230,20 @@ return the body without them and a hash table with an environment"
 	      (ntuple (let ((args (cdr code)))
 			(format nil "~{~a~^, ~}" (mapcar #'emit args))))
 	      (list (let ((args (cdr code)))
-		      (format nil "[~{~a~^, ~}]" (mapcar #'emit args))))
+		      (format nil "[~{~a~^, ~}]" #+nil (mapcar #'emit args)
+						 (let ((res ()))
+				 (loop for i below (length args) do
+				   (let ((arg (elt args i)))
+				     (if (keywordp arg)
+					 (progn
+					  (push (format nil "~a: ~a" arg
+							(emit (elt args (+ 1 i))))
+						res
+						)
+					  (incf i))
+					 (push (emit arg) res)))
+				       )
+				 (reverse res)))))
 	      (cons (let ((args (cdr code)))
 		      (format nil "[~a | ~a]"
 			      (emit (first args))

@@ -382,7 +382,23 @@
 	    (def application ()
 	      (list :mod (tuple Q.Application (list))
 		    :extra_applications (list @logger
-					      @runtime_tools)))))
+					      @runtime_tools)))
+	    (defp elixirc_paths (@test)
+	      (list (string "lib")
+		    (string "test/support")))
+	    (defp elixirc_paths (_)
+	      (list (string "lib")))
+	    (defp deps ()
+	      (list
+	       ,@(loop for e in
+		       `((phoenix 1.5.7)
+			 (phoenix_ecto 4.1)
+			 (ecto_sql 3.4)
+			 (postgrex 0.0.0 >=))
+		       collect
+		       (destructuring-bind (name version &optional (op '~>)) e
+			`(tuple ,(format nil ":~a" name)
+				(string ,(format nil "~a ~a" op version)))))))))
 	 ;; (priv/repo/migrations/.formatter.exs)
 	 ;; (priv/repo/seeds.exs)
 	 ;; (test/q_web/live/page_live_test.exs)

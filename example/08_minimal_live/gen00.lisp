@@ -557,9 +557,9 @@
        (:section :class "phx-hero"
 		 (:h1 "welcome to phoenix")
 		 (:p "peace of mind from prototype tor production")
-		 (:form ;:phx-change "suggest"
-			;:phx-submit "search"
-			#+nil (:input :type "text"
+		 (:form :attrs (list :phx-change "suggest"
+				     :phx-submit "search")
+			(:input :type "text"
 				:name "q"
 				:value "<%= @query %>"
 				:placeholder "live dependency search"
@@ -567,8 +567,8 @@
 				:autocomplete "off")
 			(:datalist :id "results"
 				   )
-			(:button :type "submit"
-				 :phx-disable-with "searching..."
+			(:button :attrs (list :type "submit"
+					      :phx-disable-with "searching...")
 				 "go to hexdocs"))))
      s)
     (write-sequence

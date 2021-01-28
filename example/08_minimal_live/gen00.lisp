@@ -222,8 +222,62 @@
 		     (apply __MODULE which (list))))))
 	 (lib/q_web/gettext.ex
 	  (defmodule QWeb.Gettext
-	    (import QWeb.Gettext)))
-	 ;; (lib/q_web/live/page_live.ex)
+	      ("use" Gettext :otp_app @q)
+	    #+nil (do0
+		   (import QWeb.Gettext)
+		   (gettext (string "here is the string to translate"))
+		 (ngettext (string "here is the string to translate")
+			   (string "here are the strings to translate")
+			   3)
+		 (degttext (string "errors")
+			   (string "here is the error message to translate")))
+	    ))
+	 
+	 (lib/q_web/live/page_live.ex
+	  (defmodule QWeb.PageLive
+	      ("use" QWeb @liveview)
+	    "@impl true"
+	    (def mount (_params _session socket)
+	      (tuple @ok
+		     (assign socket
+			     :results (map)
+			     :query (string ""))))
+	    "@impl true"
+	    (def handle_event ((string "suggest")
+			       (map (string "q")
+				    query)
+			       socket)
+	      (tuple @noreply
+		     (assign socket
+			     :results (search query)
+			     :query query)))
+	    "@impl true"
+	    (def handle_event ((string "search")
+			       (map (string "q")
+				    query)
+			       socket)
+	      (case (search query)
+		((map ^query vsn)
+		 (tuple @noreply
+			(redirect socket @external (string "https://hexdocs.pm/#{query}/#{vsn}"))))
+		(_ (tuple @noreply
+			  (pipe socket
+				(put_flash @error
+					   (string "no dependencies found matching '#{query}'"))
+				(assign :results (map)
+					:query query))))))
+	    (defp search (query)
+	      (unless (QWeb.Endpoint.config @code_reloader)
+		(raise (string "action disabled when not in development")))
+	      (for ((tuple app desc vsn)
+		    (Application.started_applications)
+		    (setf app (to_string app))
+		    (and (String.starts_with? app query)
+			 (not (List.starts_with? desc "~c\"ERTS\"")))
+		    (space "into:" (map)))
+		   (tuple app vsn)
+		   
+		   ))))
 	 ;; (lib/q_web/router.ex)
 	 ;; (lib/q_web/telemetry.ex)
 	 ;; (lib/q_web/views/error_helpers.ex)

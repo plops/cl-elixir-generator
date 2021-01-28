@@ -321,7 +321,7 @@
 				    :measurements (periodic_measurements)
 				    :period 10_000)))
 	      (Supervisor.init children :strategy @one_for_one))
-	    (def metrics
+	    (def metrics ()
 		(list (summary (string "phoenix.endpoint.stop.duration")
 			       :unit (tuple @native @millisecond))
 		      (summary (string "phoenix.router_dispatch.stop.duration")

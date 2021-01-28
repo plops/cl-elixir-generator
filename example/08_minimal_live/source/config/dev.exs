@@ -20,7 +20,7 @@ config(:q, QWeb.Endpoint,
       "--mode",
       "development",
       "--watch-stdin",
-      cd: Patch.expand("../assets", __DIR__)
+      cd: Path.expand("../assets", __DIR__)
     ]
   ]
 )

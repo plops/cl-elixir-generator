@@ -50,7 +50,7 @@
 					       (string "--mode")
 					       (string "development")
 					       (string "--watch-stdin")
-					       "cd: Patch.expand(\"../assets\",__DIR__)")))
+					       "cd: Path.expand(\"../assets\",__DIR__)")))
 	   ;; https cert config would go here
 	   (config @q
 		   QWeb.EndPoint

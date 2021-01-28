@@ -37,3 +37,6 @@ test/support/data_case.ex
 test/test_helper.exs
 lib/q_web/templates/layout/app.html.eex
 #+end_example
+
+- after all the files are generated: `mix deps.get`
+- setup database `mix ecto.setup`

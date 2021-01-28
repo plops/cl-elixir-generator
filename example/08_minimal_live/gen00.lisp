@@ -127,7 +127,7 @@
 	  (defmodule QWeb.Endpoint
 	      ("use" Phoenix.Endpoint
 		     :otp_app @q)
-	    (space "@ession_options"
+	    (space "@session_options"
 		   (plist store @cookie
 			  key (string "_q_key")
 			  signing_salt (string "r0i/aYVY")))
@@ -220,7 +220,7 @@
 		   when
 		   (is_atom which)
 		   (progn
-		     (apply __MODULE which (list))))))
+		     (apply __MODULE__ which (list))))))
 	 (lib/q_web/gettext.ex
 	  (defmodule QWeb.Gettext
 	      ("use" Gettext :otp_app @q)
@@ -236,7 +236,7 @@
 	 
 	 (lib/q_web/live/page_live.ex
 	  (defmodule QWeb.PageLive
-	      ("use" QWeb @liveview)
+	      ("use" QWeb @live_view)
 	    "@impl true"
 	    (def mount (_params _session socket)
 	      (tuple @ok
@@ -313,7 +313,7 @@
 	      (use Supervisor)
 	    (import Telemetry.Metrics)
 	    (def start_link (arg)
-	      (Supervisor.start_link __MODULE__ args :name __MODULE__))
+	      (Supervisor.start_link __MODULE__ arg :name __MODULE__))
 	    "@impl true"
 	    (def init (_arg)
 	      (setf children (list (tuple

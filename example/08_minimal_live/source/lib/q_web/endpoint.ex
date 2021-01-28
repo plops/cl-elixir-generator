@@ -1,6 +1,6 @@
 defmodule QWeb.Endpoint do
   use(Phoenix.Endpoint, otp_app: :q)
-  @ession_options [store: :cookie, key: "_q_key", signing_salt: "r0i/aYVY"]
+  @session_options [store: :cookie, key: "_q_key", signing_salt: "r0i/aYVY"]
   socket("/socket", QWeb.UserSocket, websocket: true, longpoll: false)
   socket("/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]])
 

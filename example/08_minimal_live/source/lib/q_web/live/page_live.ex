@@ -1,5 +1,5 @@
 defmodule QWeb.PageLive do
-  use(QWeb, :liveview)
+  use(QWeb, :live_view)
   @impl true
   def mount(_params, _session, socket) do
     {:ok, assign(socket, results: %{}, query: "")}

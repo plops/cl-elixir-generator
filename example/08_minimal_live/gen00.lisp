@@ -57,7 +57,7 @@
 					       "cd: Path.expand(\"../assets\",__DIR__)")))
 	   ;; https cert config would go here
 	   (config @q
-		   QWeb.EndPoint
+		   QWeb.Endpoint
 		   :live_reload (plist patterns
 				       (list
 					"~r\"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$\""
@@ -100,8 +100,8 @@
 	     (def start (_type _args)
 	       (setf children (list Q.Repo
 				    QWeb.Telemetry
-				    (curly Phoenix.PubSub "name: Q.PubSub")
-				    QWeb.EndPoint))
+				    (tuple Phoenix.PubSub :name Q.PubSub)
+				    QWeb.Endpoint))
 	       (setf opts (plist strategy @one_for_one
 				 name Q.Supervisor))
 	       (Supervisor.start_link children opts))

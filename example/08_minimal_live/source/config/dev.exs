@@ -25,7 +25,7 @@ config(:q, QWeb.Endpoint,
   ]
 )
 
-config(:q, QWeb.EndPoint,
+config(:q, QWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",

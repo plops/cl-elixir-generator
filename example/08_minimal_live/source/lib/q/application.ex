@@ -3,7 +3,7 @@ defmodule Q.Application do
   use Application
 
   def start(_type, _args) do
-    children = [Q.Repo, QWeb.Telemetry, {Phoenix.PubSub, name: Q.PubSub}, QWeb.EndPoint]
+    children = [Q.Repo, QWeb.Telemetry, {Phoenix.PubSub, name: Q.PubSub}, QWeb.Endpoint]
     opts = [strategy: :one_for_one, name: Q.Supervisor]
     Supervisor.start_link(children, opts)
   end

@@ -43,5 +43,8 @@ lib/q_web/templates/layout/app.html.eex
 #+begin_example
 mix deps.get
 mix ecto.setup
+cd assets
+npm install
+cd ..
 mix phx.server
 #+end_example

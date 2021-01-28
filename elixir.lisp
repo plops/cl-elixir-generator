@@ -212,7 +212,10 @@ return the body without them and a hash table with an environment"
 				   (let ((arg (elt args i)))
 				     (if (keywordp arg)
 					 (progn
-					  (push (format nil "~a: ~a" arg
+					   (push (format nil "~a: ~a"
+							 (if (find #\. (format nil "~a" arg))
+							     (format nil "\"~a\"" arg)
+							     arg)
 							(emit (elt args (+ 1 i))))
 						res
 						)
@@ -236,7 +239,10 @@ return the body without them and a hash table with an environment"
 				   (let ((arg (elt args i)))
 				     (if (keywordp arg)
 					 (progn
-					  (push (format nil "~a: ~a" arg
+					   (push (format nil "~a: ~a"
+							 (if (find #\. (format nil "~a" arg)) ;; quote dot
+							     (format nil "\"~a\"" arg)
+							     arg)
 							(emit (elt args (+ 1 i))))
 						res
 						)
@@ -755,7 +761,12 @@ return the body without them and a hash table with an environment"
 	    
 	    (cond
 	      ((keywordp code) ;; print an atom
-	       (format nil ":~a" code))
+	       (format nil ":~a" code)
+	       #+nil
+	       (if (find #\. (format nil "~a" code))
+		   (format nil ":\"~a\"" code) ;; surround with " if contains dot character
+		   (format nil ":~a" code))
+	       )
 	      ((symbolp code) ;; print variable
 	       (let ((str (format nil "~a" code)))
 		 (if (eq #\@ (aref str 0)) ;; symbols starting with @ are converted to elixir keywords

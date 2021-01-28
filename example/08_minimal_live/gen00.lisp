@@ -422,7 +422,7 @@
 		 ;; if the following keyword is invalid, add code in elixir.lisp to write it as :"ecto.setup"
 		 :ecto.setup (list (string "ecto.create")
 				   (string "ecto.migrate")
-				   (stirng "run priv/repo/seeds.exs"))
+				   (string "run priv/repo/seeds.exs"))
 		 :ecto.reset (list (string "ecto.drop")
 				   (string "ecto.setup")
 				   )
@@ -485,9 +485,60 @@
 		       (Ecto.Adapters.SQL.Sandbox.mode Q.Repo
 						       (tuple @shared (self))))
 		     @ok))))
-	 ;; (test/support/conn_case.ex)
-	 ;; (test/support/data_case.ex)
-	 ;; (test/test_helper.exs)
+	 (test/support/conn_case.ex
+	  (defmodule QWeb.ConnCase
+	      (use ExUnit.CaseTemplate)
+	    (space "using"
+		   (progn
+		     (space "quote"
+			    (progn
+			      (import Phoenix.Conn
+				      Phoenix.ConnTest
+				      QWeb.ConnCase)
+			      (alias QWeb.Router.Helpers :as Routes)
+			      "@endpoint QWeb.Endpoint"))))
+	    (space setup tags
+		   (progn
+		     (setf @ok (Ecto.Adapters.SQL.Sandbox.checkout Q.Repo))
+		     (unless (aref tags @async)
+		       (Ecto.Adapters.SQL.Sandbox.mode Q.Repo
+						       (tuple @shared (self))))
+		     (tuple @ok :conn (Phoenix.ConnTest.build_conn))))))
+	 (test/support/data_case.ex
+	  (defmodule QWeb.DataCase
+	      (use ExUnit.CaseTemplate)
+	    (space "using"
+		   (progn
+		     (space "quote"
+			    (progn
+			      (alias Q.Repo)
+			      (import Ecto
+				      Ecto.Changeset
+				      Ecto.Query
+				      Q.DataCase)
+			      ))))
+	    (space setup tags
+		   (progn
+		     (setf @ok (Ecto.Adapters.SQL.Sandbox.checkout Q.Repo))
+		     (unless (aref tags @async)
+		       (Ecto.Adapters.SQL.Sandbox.mode Q.Repo
+						       (tuple @shared (self))))
+		     @ok))
+	    (def error_on (changeset)
+	      (Ecto.Changeset.traverse_errors
+	       changeset
+	       (lambda ((tuple message opts))
+		 (Regex.replace "~r\"%{(\\w+)}\""
+				message
+				(lambda (_ key)
+				  (pipe opts
+					(Keyword.get (String.to_existing_atom key)
+						     key)
+					(to_string)))))))))
+	 (test/test_helper.exs
+	  (do0
+	   (ExUnit.Start)
+	   (Ecto.Adapters.SQL.Sandbox.mode Q.Repo @manual)))
 	 )
        ))
   (loop for (fn code) in l

@@ -1,0 +1,22 @@
+<section class=phx-hero>
+ <h1>welcome to phoenix</h1>
+ <p>peace of mind from prototype tor production
+ <form phx-change=suggest phx-submit=search>
+  <input type=text name=q value="<%= @query %>"
+         placeholder="live dependency search"
+         list=results autocomplete=off>
+  <datalist id=results><%= for {app, _vsn} <- @results do %>
+   <option value="<%= app %>"><%= app %><% end %>
+  </datalist>
+  <button type=submit phx-disable-with=searching...>go to hexdocs</button>
+ </form>
+</section>
+
+<section class=row>
+ <article class=column>
+  <h2>resources</h2>
+  <ul>
+   <li><a href=https://hexdocs.pm/phoenix/overview.html>guides</a>
+  </ul>
+ </article>
+</section>

@@ -414,12 +414,21 @@
 			    `(tuple ,(format nil ":~a" name)
 				 (string ,(format nil "~a ~a" op version))
 				 ))))))
-	    (defp aliases
+	    (defp aliases ()
 		(list
 		 :setup (list (string "deps.get")
 			      (string "ecto.setup")
 			      (string "cmd npm install --prefix assets"))
-		 
+		 ;; if the following keyword is invalid, add code in elixir.lisp to write it as :"ecto.setup"
+		 :ecto.setup (list (string "ecto.create")
+				   (string "ecto.migrate")
+				   (stirng "run priv/repo/seeds.exs"))
+		 :ecto.reset (list (string "ecto.drop")
+				   (string "ecto.setup")
+				   )
+		 :test (list (string "ecto.create --quiet")
+			     (string "ecto.migrate --quiet")
+			     (string "test"))
 		 ))))
 	 ;; (priv/repo/migrations/.formatter.exs)
 	 ;; (priv/repo/seeds.exs)

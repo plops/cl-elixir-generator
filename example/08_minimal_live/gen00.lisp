@@ -3,6 +3,9 @@
   (ql:quickload "spinneret"))
 (in-package :cl-elixir-generator)
 
+(pushnew "phx-" spinneret:*unvalidated-attribute-prefixes* :test #'equal)
+#+nil (setf *unvalidated-attribute-prefixes* '(""))
+
 (defparameter *path* "/home/martin/stage/cl-elixir-generator/example/08_minimal_live/source")
 
 (let
@@ -557,8 +560,8 @@
        (:section :class "phx-hero"
 		 (:h1 "welcome to phoenix")
 		 (:p "peace of mind from prototype tor production")
-		 (:form :attrs (list :phx-change "suggest"
-				     :phx-submit "search")
+		 (:form  :phx-change "suggest"
+			 :phx-submit "search"
 			(:input :type "text"
 				:name "q"
 				:value "<%= @query %>"
@@ -567,8 +570,8 @@
 				:autocomplete "off")
 			(:datalist :id "results"
 				   )
-			(:button :attrs (list :type "submit"
-					      :phx-disable-with "searching...")
+			(:button  :type "submit"
+				  :phx-disable-with "searching..."
 				 "go to hexdocs"))))
      s)
     (write-sequence

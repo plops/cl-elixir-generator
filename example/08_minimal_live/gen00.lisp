@@ -553,7 +553,7 @@
 	    code))
   (let ((*html-style* :tree)
 	(*print-pretty* t))
-   (with-open-file (s (format nil "~a/lib/q_web/live/page_live.html.leex" *path*)
+    (with-open-file (s (format nil "~a/lib/q_web/live/page_live.html.leex" *path*)
 		      :direction :output
 		      :if-exists :supersede
 		      :if-does-not-exist :create)
@@ -593,4 +593,26 @@
 	  (:ul
 	   (:li (:a :href "https://hexdocs.pm/phoenix/overview.html" "guides"))))
 	 ))
+      s))
+    (with-open-file (s (format nil "~a/lib/q_web/templates/layout/root.html.leex" *path*)
+		      :direction :output
+		      :if-exists :supersede
+		      :if-does-not-exist :create)
+     
+     (write-sequence
+      (spinneret:with-html-string
+	(:doctype)
+	(:head (:meta :charset "utf-8")
+	       (:meta :http-equiv "X-UA-Compatible"
+		      :content "IE=edge")
+	       (:meta :name "viewport"
+		      :content "width=device-width, initial-scale=1.0")
+	       (:raw "<%= csrf_meta_tag() %>")
+	       (:raw "<%= live_title_tag assigns[:page_title] || \"Q\", suffix: \" . phoenix framework %>")
+	       (:link :phx-track-static t
+		:rel "stylesheet"
+		;:href (:raw "=\"<%= Routes.static_path(@conn,\"/css/app.css\") %>\"")
+		)
+	      ; (:script :defer "" :phx-track-static "" )
+	       ))
       s))))

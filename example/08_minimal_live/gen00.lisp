@@ -278,7 +278,27 @@
 		   (tuple app vsn)
 		   
 		   ))))
-	 ;; (lib/q_web/router.ex)
+	 (lib/q_web/router.ex
+	  (defmodule QWeb.Router
+	      ("use" QWeb @router)
+	    (space pipeline @browser
+		   (progn
+		     (plug @accepts (list (string "html")))
+		     (plug @fetch_session)
+		     (plug @fetch_live_flash)
+		     (plug @put_root_layout (tuple QWeb.LayoutView @root))
+		     (plug @protect_from_forgery)
+		     (plug @put_secure_browser_headers)))
+	    (space pipeline @api
+		   (progn
+		     (plug @accepts (list (string "json")))))
+	    (scope (string "/")
+		   QWeb)
+	    (progn
+	      (pipe_through @browser)
+	      (live (string "/")
+		    PageLive
+		    @index))))
 	 ;; (lib/q_web/telemetry.ex)
 	 ;; (lib/q_web/views/error_helpers.ex)
 	 ;; (lib/q_web/views/error_view.ex)

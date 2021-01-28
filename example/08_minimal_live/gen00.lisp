@@ -31,6 +31,7 @@
 	   (import_config (string "#{Mix.env()}.exs"))))
 	 (config/dev.exs
 	  (do0
+	   (use Mix.Config)
 	   (config @q
 		   Q.Repo
 		   :username (string "postgres")

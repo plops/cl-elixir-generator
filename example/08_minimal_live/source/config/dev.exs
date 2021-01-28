@@ -1,3 +1,5 @@
+use Mix.Config
+
 config(:q, Q.Repo,
   username: "postgres",
   password: "postgres",

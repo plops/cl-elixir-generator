@@ -452,9 +452,39 @@
 	      (assert (=~ (render page_live)
 			  (string "Welcome to Phoenix!"))))
 	   ))
-	 ;; (test/q_web/views/error_view_test.exs)
-	 ;; (test/q_web/views/layout_view_test.exs)
-	 ;; (test/support/channel_case.ex)
+	 (test/q_web/views/error_view_test.exs
+	  (defmodule QWeb.ErrorViewTest
+	      ("use" QWeb.ConnCase
+		     :async true)
+	    (import Phoenix.View)
+	    (do0 (test (string "renders 404.html")
+		       )
+		 (progn (assert (== (render_to_string (QWeb.ErrorView (string "404.html") (list)))
+				    (string "Notfound")))))
+	    (do0 (test (string "renders 500.html")
+		       )
+		 (progn (assert (== (render_to_string (QWeb.ErrorView (string "500.html") (list)))
+				    (string "Internal Server Error")))))))
+	 (test/q_web/views/layout_view_test.exs
+	  (defmodule QWeb.LayoutViewTest
+	    ("use" QWeb.ConnCase :async true)))
+	 (test/support/channel_case.ex
+	  (defmodule QWeb.ChannelCase
+	      (use ExUnit.CaseTemplate)
+	    (space "using"
+		   (progn
+		     (space "quote"
+			    (progn
+			      (import Phoenix.ChannelTest
+				      QWeb.ChannelCase)
+			      "@endpoint QWeb.Endpoint"))))
+	    (space setup tags
+		   (progn
+		     (setf @ok (Ecto.Adapters.SQL.Sandbox.checkout Q.Repo))
+		     (unless (aref tags @async)
+		       (Ecto.Adapters.SQL.Sandbox.mode Q.Repo
+						       (tuple @shared (self))))
+		     @ok))))
 	 ;; (test/support/conn_case.ex)
 	 ;; (test/support/data_case.ex)
 	 ;; (test/test_helper.exs)

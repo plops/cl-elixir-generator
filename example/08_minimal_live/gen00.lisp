@@ -430,9 +430,28 @@
 			     (string "ecto.migrate --quiet")
 			     (string "test"))
 		 ))))
-	 ;; (priv/repo/migrations/.formatter.exs)
-	 ;; (priv/repo/seeds.exs)
-	 ;; (test/q_web/live/page_live_test.exs)
+	 (priv/repo/migrations/.formatter.exs
+	  (list :import_deps (list @ecto_sql)
+		:inputs (list (string "*.exs"))))
+	 (priv/repo/seeds.exs
+	  (do0
+	   ))
+	 (test/q_web/live/page_live_test.exs
+	  (defmodule QWeb.PageLiveTest
+	      (use QWeb.ConnCase)
+	    (import Phoenix.LiveViewTest)
+	    (test (string "disconnected and connected render")
+		  (map :conn conn))
+	    (progn
+	      (setf (tuple @ok
+			   page_live
+			   disconnected_html)
+		    (live conn (string "/")))
+	      (assert (=~ disconnected_html
+			  (string "Welcome to Phoenix!")))
+	      (assert (=~ (render page_live)
+			  (string "Welcome to Phoenix!"))))
+	   ))
 	 ;; (test/q_web/views/error_view_test.exs)
 	 ;; (test/q_web/views/layout_view_test.exs)
 	 ;; (test/support/channel_case.ex)

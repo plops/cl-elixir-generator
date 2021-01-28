@@ -1,5 +1,6 @@
 (eval-when (:compile-toplevel :execute :load-toplevel)
-  (ql:quickload "cl-elixir-generator"))
+  (ql:quickload "cl-elixir-generator")
+  (ql:quickload "spinneret"))
 (in-package :cl-elixir-generator)
 
 (defparameter *path* "/home/martin/stage/cl-elixir-generator/example/08_minimal_live/source")
@@ -546,4 +547,48 @@
 	do
 	   (write-source
 	    (format nil "~a/~a" *path* fn)
-	    code)))
+	    code))
+  (with-open-file (s (format nil "~a/lib/q_web/live/page_live.html.leex" *path*)
+		       :direction :output
+		       :if-exists :supersede
+		       :if-does-not-exist :create)
+    (write-sequence
+     (spinneret:with-html-string
+       (:section :class "phx-hero"
+		 (:h1 "welcome to phoenix")
+		 (:p "peace of mind from prototype tor production")
+		 (:form ;:phx-change "suggest"
+			;:phx-submit "search"
+			#+nil (:input :type "text"
+				:name "q"
+				:value "<%= @query %>"
+				:placeholder "live dependency search"
+				:list "results"
+				:autocomplete "off")
+			(:datalist :id "results"
+				   )
+			(:button :type "submit"
+				 :phx-disable-with "searching..."
+				 "go to hexdocs"))))
+     s)
+    (write-sequence
+     (spinneret:with-html-string
+       (:section :class "phx-hero"
+		 (:h1 "welcome to phoenix")))
+     s)
+    #+nil 
+    (write-sequence
+       (spinneret:with-html-string
+	 (:div
+	  (:form :action "#"
+		 :phx-submit "add"
+		 (:raw "<%= text_input(:todo, :title, placeholder: \"what do you want to get done?\")%>")
+		 (:raw "<%= submit(\"Add\", phx_disable_with: \"Adding...\") %>"))
+	  (:raw "<%= for todo <- @todos do %>")
+	  (:div
+	   (:raw "<%= todo.title %>"))
+	  ;; <%= ?
+	  (:raw "<% end %>"))
+	 #+nil
+	 (:div :class "phx-hero"
+	       (:h2 "hello " (:raw " <%= @messenger %>")))) s)))

@@ -264,7 +264,7 @@
 	      (case (search query)
 		((map ^query vsn)
 		 (tuple @noreply
-			(redirect socket @external (string "https://hexdocs.pm/#{query}/#{vsn}"))))
+			(redirect socket :external (string "https://hexdocs.pm/#{query}/#{vsn}"))))
 		(_ (tuple @noreply
 			  (pipe socket
 				(put_flash @error
@@ -358,7 +358,7 @@
 	      (if (= count (aref opts @count))
 		  (Gettext.dngettext QWeb.Gettext (string "errors")
 				     msg msg count opts)
-		  (Gettext.dngettext QWeb.Gettext (string "errors")
+		  (Gettext.dgettext QWeb.Gettext (string "errors")
 				     msg opts)))))
 	 (lib/q_web/views/error_view.ex
 	  (defmodule QWeb.ErrorView
@@ -551,47 +551,46 @@
 	   (write-source
 	    (format nil "~a/~a" *path* fn)
 	    code))
-  (with-open-file (s (format nil "~a/lib/q_web/live/page_live.html.leex" *path*)
-		       :direction :output
-		       :if-exists :supersede
-		       :if-does-not-exist :create)
-    (write-sequence
-     (spinneret:with-html-string
-       (:section :class "phx-hero"
-		 (:h1 "welcome to phoenix")
-		 (:p "peace of mind from prototype tor production")
-		 (:form  :phx-change "suggest"
-			 :phx-submit "search"
-			(:input :type "text"
-				:name "q"
-				:value "<%= @query %>"
-				:placeholder "live dependency search"
-				:list "results"
-				:autocomplete "off")
-			(:datalist :id "results"
-				   )
-			(:button  :type "submit"
-				  :phx-disable-with "searching..."
-				 "go to hexdocs"))))
-     s)
-    (write-sequence
-     (spinneret:with-html-string
-       (:section :class "phx-hero"
-		 (:h1 "welcome to phoenix")))
-     s)
-    #+nil 
-    (write-sequence
-       (spinneret:with-html-string
-	 (:div
-	  (:form :action "#"
-		 :phx-submit "add"
-		 (:raw "<%= text_input(:todo, :title, placeholder: \"what do you want to get done?\")%>")
-		 (:raw "<%= submit(\"Add\", phx_disable_with: \"Adding...\") %>"))
-	  (:raw "<%= for todo <- @todos do %>")
-	  (:div
-	   (:raw "<%= todo.title %>"))
-	  ;; <%= ?
-	  (:raw "<% end %>"))
-	 #+nil
-	 (:div :class "phx-hero"
-	       (:h2 "hello " (:raw " <%= @messenger %>")))) s)))
+  (let ((*html-style* :tree)
+	(*print-pretty* t))
+   (with-open-file (s (format nil "~a/lib/q_web/live/page_live.html.leex" *path*)
+		      :direction :output
+		      :if-exists :supersede
+		      :if-does-not-exist :create)
+     ;; tag.hero  => <tag class=hero..
+     ;; tag#bla   => <tag id=bla ..
+     (write-sequence
+      (spinneret:with-html-string
+	(:section :class "phx-hero"
+		  (:h1 "welcome to phoenix")
+		  (:p "peace of mind from prototype tor production")
+		  (:form  :phx-change "suggest"
+			  :phx-submit "search"
+			  (:input :type "text"
+				  :name "q"
+				  :value "<%= @query %>"
+				  :placeholder "live dependency search"
+				  :list "results"
+				  :autocomplete "off")
+			  (:datalist#results
+				     (:raw "<%= for {app, _vsn} <- @results do %>")
+				     (:option :value "<%= app %>"
+					       (:raw "<%= app %>") 
+					      )
+				     (:raw "<% end %>")
+				     )
+			  (:button  :type "submit"
+				    :phx-disable-with "searching..."
+				    "go to hexdocs"))))
+      s)
+     (terpri s)
+     (terpri s)
+     (write-sequence
+      (spinneret:with-html-string
+	(:section.row
+	 (:article.column
+	  (:h2 "resources")
+	  (:ul
+	   (:li (:a :href "https://hexdocs.pm/phoenix/overview.html" "guides"))))
+	 ))
+      s))))

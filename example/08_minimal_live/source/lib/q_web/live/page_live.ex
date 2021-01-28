@@ -14,7 +14,7 @@ defmodule QWeb.PageLive do
   def handle_event("search", %{"q" => query}, socket) do
     case search(query) do
       %{^query => vsn} ->
-        {:noreply, redirect(socket, :external, "https://hexdocs.pm/#{query}/#{vsn}")}
+        {:noreply, redirect(socket, external: "https://hexdocs.pm/#{query}/#{vsn}")}
 
       _ ->
         {:noreply,

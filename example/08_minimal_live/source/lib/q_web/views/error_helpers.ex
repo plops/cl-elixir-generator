@@ -14,7 +14,7 @@ defmodule QWeb.ErrorHelpers do
     if count = opts[:count] do
       Gettext.dngettext(QWeb.Gettext, "errors", msg, msg, count, opts)
     else
-      Gettext.dngettext(QWeb.Gettext, "errors", msg, opts)
+      Gettext.dgettext(QWeb.Gettext, "errors", msg, opts)
     end
   end
 end

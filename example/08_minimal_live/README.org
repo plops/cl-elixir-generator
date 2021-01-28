@@ -40,3 +40,8 @@ lib/q_web/templates/layout/app.html.eex
 
 - after all the files are generated: `mix deps.get`
 - setup database `mix ecto.setup`
+#+begin_example
+mix deps.get
+mix ecto.setup
+mix phx.server
+#+end_example

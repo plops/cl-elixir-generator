@@ -413,7 +413,14 @@
 				 :only ,only)
 			    `(tuple ,(format nil ":~a" name)
 				 (string ,(format nil "~a ~a" op version))
-				 ))))))))
+				 ))))))
+	    (defp aliases
+		(list
+		 :setup (list (string "deps.get")
+			      (string "ecto.setup")
+			      (string "cmd npm install --prefix assets"))
+		 
+		 ))))
 	 ;; (priv/repo/migrations/.formatter.exs)
 	 ;; (priv/repo/seeds.exs)
 	 ;; (test/q_web/live/page_live_test.exs)

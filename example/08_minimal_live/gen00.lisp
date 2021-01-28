@@ -158,7 +158,7 @@
 		  :param_key (string "request_logger")
 		  :cookie_key (string "request_logger"))
 	    (plug Plug.RequestId)
-	    (plug Plug.Telemetry :eventprefix (list @phoenix @endpoint))
+	    (plug Plug.Telemetry :event_prefix (list @phoenix @endpoint))
 	    (plug Plug.Parsers
 		  :parsers (list @urlencoded @multipart @json)
 		  :pass (list (string "*/*"))

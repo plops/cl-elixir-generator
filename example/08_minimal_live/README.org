@@ -40,11 +40,13 @@ lib/q_web/templates/layout/app.html.eex
 
 - on arch linux
 #+begin_example
-sudo pacman -S postgresql
+sudo pacman -S postgresql inotify-tools
 su - postgres -c "initdb --locale en_US.UTF-8 -D '/var/lib/postgres/data'"
 sudo systemctl start postgresql.service
 sudo -u postgres psql postgres
 ALTER USER postgres PASSWORD 'postgres'
+\password postgres
+# enter prostgres twice
 sudo emacs /var/lib/postgres/data/pg_hba.conf
 # enable md5 password login
 # change the line for local ipv4 connection from ident to md5

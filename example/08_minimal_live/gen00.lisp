@@ -607,12 +607,26 @@
 		      :content "IE=edge")
 	       (:meta :name "viewport"
 		      :content "width=device-width, initial-scale=1.0")
-	       (:raw "<%= csrf_meta_tag() %>")
-	       (:raw "<%= live_title_tag assigns[:page_title] || \"Q\", suffix: \" . phoenix framework %>")
-	       (:link :phx-track-static t
-		:rel "stylesheet"
-		;:href (:raw "=\"<%= Routes.static_path(@conn,\"/css/app.css\") %>\"")
-		)
-	      ; (:script :defer "" :phx-track-static "" )
-	       ))
+	       (:raw "
+<%= csrf_meta_tag() %>")
+	       (:raw "
+<%= live_title_tag assigns[:page_title] || \"Q\", suffix: \" . phoenix framework\" %>")
+	       (:raw "
+<link phx-track-static rel=stylesheet href=\" <%= Routes.static_path(@conn,\"/js/app.css\") %>\"\"/>")
+	       (:raw "
+<script defer phx-track-static type=text/javascript src=\"<%= Routes.static_path(@conn,\"/js/app.js\") %>\"\"/></script> ")
+	       
+	       
+	       )
+	(:body
+	 (:header
+	  (:section.container
+	   (:nav :role "navigation"
+		 (:ul
+		  (:li (:a :href "https://hexdocs.pm/phoenix/overview.html" "get started"))
+		  (:raw "
+<%= if function_exported?(Routes,:live_dashboard_path,2) do %>")
+		  (:li (:raw "<%= link \"livedashboard\", to: Routes.live_dashboard_path(@conn,:home) %>"))
+		  (:raw "
+<% end %>")))))))
       s))))

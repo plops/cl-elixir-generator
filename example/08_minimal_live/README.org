@@ -1,10 +1,16 @@
 - try to emit all the files required for a full live project
 - https://pragmaticstudio.com/tutorials/getting-started-with-phoenix-liveview
 
+- install tools
+#+begin_example
+mix archive.install hex phx_new 
+#+end_example
+
 #+begin_example
 cd /dev/shm/
 mix phx.new q --live
 #+end_example
+- convert all the files in this project to s-expressions (and copy a few assets)
 #+begin_example
 [martin@localhost live_view_studio]$ find * -type f -printf "%p\n"|grep \\.ex|sort -n
 config/config.exs
@@ -69,3 +75,19 @@ cd ..
 mix phx.server
 #+end_example
 
+- spinneret issue:
+
+#+begin_example
+; caught ERROR:
+;   during macroexpansion of
+;   (TRIVIA.LEVEL2:MATCH2*+ (SPEC)
+;       (T)
+;     ...).
+;   Use *BREAK-ON-SIGNALS* to intercept.
+;   
+;    The variable TYPE-I::|*inference-rules-table*| is unbound.
+#+end_example
+
+- fix by downcaseing *inference-rules-table*
+ emacs ~/quicklisp/dists/quicklisp/software/type-i-20191227-git/src/package.lisp
+- clear lisp files `rm -rf ~/.cache/common-lisp`

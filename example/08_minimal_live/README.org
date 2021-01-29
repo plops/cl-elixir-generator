@@ -38,6 +38,14 @@ test/test_helper.exs
 lib/q_web/templates/layout/app.html.eex
 #+end_example
 
+- on arch linux
+#+begin_example
+sudo pacman -S postgresql
+su - postgres -c "initdb --locale en_US.UTF-8 -D '/var/lib/postgres/data'"
+sudo systemctl start postgresql.service
+#+end_example
+
+
 - after all the files are generated: `mix deps.get`
 - setup database `mix ecto.setup`
 #+begin_example
@@ -48,3 +56,4 @@ npm install
 cd ..
 mix phx.server
 #+end_example
+

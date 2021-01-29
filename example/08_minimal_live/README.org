@@ -91,3 +91,12 @@ mix phx.server
 - fix by downcaseing *inference-rules-table*
  emacs ~/quicklisp/dists/quicklisp/software/type-i-20191227-git/src/package.lisp
 - clear lisp files `rm -rf ~/.cache/common-lisp`
+
+
+#+begin_example
+npm install brunch
+cd assets
+#brunch build
+/home/martin/stage/cl-elixir-generator/example/08_minimal_live/source/node_modules/.bin/brunch build
+
+#+end_example

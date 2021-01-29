@@ -563,7 +563,7 @@
       (spinneret:with-html-string
 	(:section :class "phx-hero"
 		  (:h1 "welcome to phoenix")
-		  (:p "peace of mind from prototype tor production")
+		  (:p "peace of mind from prototype to production")
 		  (:form  :phx-change "suggest"
 			  :phx-submit "search"
 			  (:input :type "text"
@@ -648,6 +648,29 @@
 	 (:p :class "alert alert-danger"
 			     :role "alert"
 			     (:raw "<%= get_flash(@conn,:error) %></p>"))
+	 (:raw "
+<%= @inner_content %>")))
+      s))
+    (with-open-file (s (format nil "~a/lib/q_web/templates/layout/live.html.leex" *path*)
+		      :direction :output
+		      :if-exists :supersede
+		      :if-does-not-exist :create)
+     
+     (write-sequence
+      (spinneret:with-html-string
+	(:main.container
+	 :role "main"
+	 (:p :class "alert alert-info"
+	     :role "alert"
+	     :phx-click "lv:clear-flash"
+	     :phx-value-key "info"
+	     (:raw "<%= live_flash(@flash,:info) %></p>"))
+	 (:p :class "alert alert-danger"
+	     :role "alert"
+	     :phx-click "lv:clear-flash"
+	     :phx-value-key "error"
+	     (:raw "<%= live_flash(@flash,:error) %></p>"))
+	 
 	 (:raw "
 <%= @inner_content %>")))
       s))))

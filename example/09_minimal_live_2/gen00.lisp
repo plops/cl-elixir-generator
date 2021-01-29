@@ -548,131 +548,118 @@
   (loop for (fn code) in l
 	do
 	   (let ((dir (directory-namestring (format nil "~a/~a" *path* fn))))
-	     ;(format t "creat dir ~a~%" dir)
+	     ;(format t "create dir ~a~%" dir)
 	    (ensure-directories-exist dir)
 	    (write-source
 	     (format nil "~a/~a" *path* fn)
 	     code)))
-  (let ((*html-style* :tree)
-	(*print-pretty* t))
+
+  (defun emit-leex (fn str)
+    (let ((*html-style* :tree)
+	  (*print-pretty* t))
+      (let ((dir (directory-namestring fn)))
+					;(format t "create dir ~a~%" dir)
+	    (ensure-directories-exist dir))
     (with-open-file (s (format nil "~a/lib/q_web/live/page_live.html.leex" *path*)
-		      :direction :output
-		      :if-exists :supersede
-		      :if-does-not-exist :create)
-     ;; tag.hero  => <tag class=hero..
-     ;; tag#bla   => <tag id=bla ..
-     (write-sequence
-      (spinneret:with-html-string
-	(:section :class "phx-hero"
-		  (:h1 "welcome to phoenix")
-		  (:p "peace of mind from prototype to production")
-		  (:form  :phx-change "suggest"
-			  :phx-submit "search"
-			  (:input :type "text"
-				  :name "q"
-				  :value "<%= @query %>"
-				  :placeholder "live dependency search"
-				  :list "results"
-				  :autocomplete "off")
-			  (:datalist#results
-				     (:raw "<%= for {app, _vsn} <- @results do %>")
-				     (:option :value "<%= app %>"
-					       (:raw "<%= app %>") 
-					      )
-				     (:raw "<% end %>")
-				     )
-			  (:button  :type "submit"
-				    :phx-disable-with "searching..."
-				    "go to hexdocs"))))
-      s)
-     (terpri s)
-     (terpri s)
-     (write-sequence
-      (spinneret:with-html-string
-	(:section.row
-	 (:article.column
-	  (:h2 "resources")
-	  (:ul
-	   (:li (:a :href "https://hexdocs.pm/phoenix/overview.html" "guides"))))
-	 ))
-      s))
-    (with-open-file (s (format nil "~a/lib/q_web/templates/layout/root.html.leex" *path*)
-		      :direction :output
-		      :if-exists :supersede
-		      :if-does-not-exist :create)
-     
-     (write-sequence
-      (spinneret:with-html-string
-	(:doctype)
-	(:html :lang "en"
-	 (:head (:meta :charset "utf-8")
-		(:meta :http-equiv "X-UA-Compatible"
-		       :content "IE=edge")
-		(:meta :name "viewport"
-		       :content "width=device-width, initial-scale=1.0")
-		(:raw "
+		       :direction :output
+		       :if-exists :supersede
+		       :if-does-not-exist :create)
+      (write-sequence
+       str s))))
+  (emit-leex
+   (format nil "~a/lib/q_web/live/page_live.html.leex" *path*)
+   (concatenate
+    'string
+    (spinneret:with-html-string
+      (:section :class "phx-hero"
+		(:h1 "welcome to phoenix")
+		(:p "peace of mind from prototype to production")
+		(:form  :phx-change "suggest"
+			:phx-submit "search"
+			(:input :type "text"
+				:name "q"
+				:value "<%= @query %>"
+				:placeholder "live dependency search"
+				:list "results"
+				:autocomplete "off")
+			(:datalist#results
+			 (:raw "<%= for {app, _vsn} <- @results do %>")
+			 (:option :value "<%= app %>"
+				  (:raw "<%= app %>") 
+				  )
+			 (:raw "<% end %>")
+			 )
+			(:button  :type "submit"
+				  :phx-disable-with "searching..."
+				  "go to hexdocs"))))
+    (spinneret:with-html-string
+	 (:section.row
+	  (:article.column
+	   (:h2 "resources")
+	   (:ul
+	    (:li (:a :href "https://hexdocs.pm/phoenix/overview.html" "guides"))))
+	  ))))
+  (emit-leex
+   (format nil "~a/lib/q_web/templates/layout/root.html.leex" *path*)
+   (spinneret:with-html-string
+	 (:doctype)
+	 (:html :lang "en"
+		(:head (:meta :charset "utf-8")
+		       (:meta :http-equiv "X-UA-Compatible"
+			      :content "IE=edge")
+		       (:meta :name "viewport"
+			      :content "width=device-width, initial-scale=1.0")
+		       (:raw "
 <%= csrf_meta_tag() %>")
-		(:raw "
+		       (:raw "
 <%= live_title_tag assigns[:page_title] || \"Q\", suffix: \" . phoenix framework\" %>")
-		(:raw "
+		       (:raw "
 <link phx-track-static rel=stylesheet href=\" <%= Routes.static_path(@conn,\"/css/app.css\") %>\"\"/>")
-		(:raw "
+		       (:raw "
 <script defer phx-track-static type=text/javascript src=\"<%= Routes.static_path(@conn,\"/js/app.js\") %>\"\"/></script> ")
-	       
-	       
-		)
-	 (:body
-	  (:header
-	   (:section.container
-	    (:nav :role "navigation"
-		  (:ul
-		   (:li (:a :href "https://hexdocs.pm/phoenix/overview.html" "get started"))
-		   (:raw "
+		       
+		       
+		       )
+		(:body
+		 (:header
+		  (:section.container
+		   (:nav :role "navigation"
+			 (:ul
+			  (:li (:a :href "https://hexdocs.pm/phoenix/overview.html" "get started"))
+			  (:raw "
 <%= if function_exported?(Routes,:live_dashboard_path,2) do %>")
-		   (:li (:raw "<%= link \"livedashboard\", to: Routes.live_dashboard_path(@conn,:home) %>"))
-		   (:raw "
+			  (:li (:raw "<%= link \"livedashboard\", to: Routes.live_dashboard_path(@conn,:home) %>"))
+			  (:raw "
 <% end %>")))))
+		 (:raw "
+<%= @inner_content %>")))))
+  (emit-leex (format nil "~a/lib/q_web/templates/layout/app.html.leex" *path*)
+	      (spinneret:with-html-string
+	 (:main.container
+	  :role "main"
+	  (:p :class "alert alert-info"
+	      :role "alert"
+	      (:raw "<%= get_flash(@conn,:info) %></p>"))
+	  (:p :class "alert alert-danger"
+	      :role "alert"
+	      (:raw "<%= get_flash(@conn,:error) %></p>"))
 	  (:raw "
 <%= @inner_content %>"))))
-      s))
-    (with-open-file (s (format nil "~a/lib/q_web/templates/layout/app.html.leex" *path*)
-		      :direction :output
-		      :if-exists :supersede
-		      :if-does-not-exist :create)
-     
-     (write-sequence
-      (spinneret:with-html-string
-	(:main.container
-	 :role "main"
-	 (:p :class "alert alert-info"
-			     :role "alert"
-			     (:raw "<%= get_flash(@conn,:info) %></p>"))
-	 (:p :class "alert alert-danger"
-			     :role "alert"
-			     (:raw "<%= get_flash(@conn,:error) %></p>"))
-	 (:raw "
-<%= @inner_content %>")))
-      s))
-    (with-open-file (s (format nil "~a/lib/q_web/templates/layout/live.html.leex" *path*)
-		      :direction :output
-		      :if-exists :supersede
-		      :if-does-not-exist :create)
-     
-     (write-sequence
-      (spinneret:with-html-string
-	(:main.container
-	 :role "main"
-	 (:p :class "alert alert-info"
-	     :role "alert"
-	     :phx-click "lv:clear-flash"
-	     :phx-value-key "info"
-	     (:raw "<%= live_flash(@flash,:info) %></p>"))
-	 (:p :class "alert alert-danger"
-	     :role "alert"
-	     :phx-click "lv:clear-flash"
-	     :phx-value-key "error"
-	     (:raw "<%= live_flash(@flash,:error) %></p>"))
-	 
-	 (:raw "
-<%= @inner_content %>")))
-      s))))
+  (emit-leex (format nil "~a/lib/q_web/templates/layout/live.html.leex" *path*)
+	      (spinneret:with-html-string
+	 (:main.container
+	  :role "main"
+	  (:p :class "alert alert-info"
+	      :role "alert"
+	      :phx-click "lv:clear-flash"
+	      :phx-value-key "info"
+	      (:raw "<%= live_flash(@flash,:info) %></p>"))
+	  (:p :class "alert alert-danger"
+	      :role "alert"
+	      :phx-click "lv:clear-flash"
+	      :phx-value-key "error"
+	      (:raw "<%= live_flash(@flash,:error) %></p>"))
+	  
+	  (:raw "
+<%= @inner_content %>"))))
+  )

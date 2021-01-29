@@ -94,9 +94,10 @@ mix phx.server
 
 
 #+begin_example
-npm install brunch
-cd assets
-#brunch build
-/home/martin/stage/cl-elixir-generator/example/08_minimal_live/source/node_modules/.bin/brunch build
 
+cd assets
+npm install brunch
+# /home/martin/stage/cl-elixir-generator/example/08_minimal_live/source/node_modules/.bin/brunch build
+sudo pacman -S sassc
+sassc app.scss app.css
 #+end_example

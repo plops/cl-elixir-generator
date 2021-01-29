@@ -613,7 +613,7 @@
 		(:raw "
 <%= live_title_tag assigns[:page_title] || \"Q\", suffix: \" . phoenix framework\" %>")
 		(:raw "
-<link phx-track-static rel=stylesheet href=\" <%= Routes.static_path(@conn,\"/js/app.css\") %>\"\"/>")
+<link phx-track-static rel=stylesheet href=\" <%= Routes.static_path(@conn,\"/css/app.css\") %>\"\"/>")
 		(:raw "
 <script defer phx-track-static type=text/javascript src=\"<%= Routes.static_path(@conn,\"/js/app.js\") %>\"\"/></script> ")
 	       

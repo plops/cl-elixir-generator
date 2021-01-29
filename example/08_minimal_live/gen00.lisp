@@ -632,4 +632,22 @@
 <% end %>")))))
 	  (:raw "
 <%= @inner_content %>"))))
+      s))
+    (with-open-file (s (format nil "~a/lib/q_web/templates/layout/app.html.leex" *path*)
+		      :direction :output
+		      :if-exists :supersede
+		      :if-does-not-exist :create)
+     
+     (write-sequence
+      (spinneret:with-html-string
+	(:main.container
+	 :role "main"
+	 (:p :class "alert alert-info"
+			     :role "alert"
+			     (:raw "<%= get_flash(@conn,:info) %></p>"))
+	 (:p :class "alert alert-danger"
+			     :role "alert"
+			     (:raw "<%= get_flash(@conn,:error) %></p>"))
+	 (:raw "
+<%= @inner_content %>")))
       s))))

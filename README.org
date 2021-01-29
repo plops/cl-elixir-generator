@@ -35,3 +35,37 @@ sudo dnf install elixir
 |          |                                                                                    |
 | 20210123 | incompatible change in receive semantics, old behaviour available as semantics_old |
 |          |                                                                                    |
+|          |                                                                                    |
+
+
+
+
+* Examples
+
+|              | comment                         | link                                                                            |
+| 01_first     | learn about semantics           |                                                                                 |
+| 02_mix_intro | try mix with bucket             | https://elixir-lang.org/getting-started/mix-otp/supervisor-and-application.html |
+| 03_phx_intro | start phoenix example (no live) | https://hexdocs.pm/phoenix/up_and_running.html                                  |
+| 04_book      |                                 | several books                                                                   |
+|              |                                 |                                                                                 |
+|              |                                 |                                                                                 |
+|              |                                 |                                                                                 |
+|              |                                 |                                                                                 |
+|              |                                 |                                                                                 |
+|              |                                 |                                                                                 |
+|              |                                 |                                                                                 |
+|              |                                 |                                                                                 |
+|              |                                 |                                                                                 |
+|              |                                 |                                                                                 |
+|              |                                 |                                                                                 |
+|              |                                 |                                                                                 |
+
+
+* Reminder
+
+- these are the same, I always forget this:
+#+begin_example
+render(conn, "world.html", name: name)
+render(conn, "world.html", [name: name])
+render(conn, "world.html", [{:name, name}])
+#+end_example

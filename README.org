@@ -42,23 +42,23 @@ sudo dnf install elixir
 
 * Examples
 
-|              | comment                         | link                                                                            |
-| 01_first     | learn about semantics           |                                                                                 |
-| 02_mix_intro | try mix with bucket             | https://elixir-lang.org/getting-started/mix-otp/supervisor-and-application.html |
-| 03_phx_intro | start phoenix example (no live) | https://hexdocs.pm/phoenix/up_and_running.html                                  |
-| 04_book      |                                 | several books                                                                   |
-|              |                                 |                                                                                 |
-|              |                                 |                                                                                 |
-|              |                                 |                                                                                 |
-|              |                                 |                                                                                 |
-|              |                                 |                                                                                 |
-|              |                                 |                                                                                 |
-|              |                                 |                                                                                 |
-|              |                                 |                                                                                 |
-|              |                                 |                                                                                 |
-|              |                                 |                                                                                 |
-|              |                                 |                                                                                 |
-|              |                                 |                                                                                 |
+|                   | comment                                                                   | link                                                                            |
+| 01_first          | learn about semantics                                                     |                                                                                 |
+| 02_mix_intro      | try mix with bucket                                                       | https://elixir-lang.org/getting-started/mix-otp/supervisor-and-application.html |
+| 03_phx_intro      | start phoenix example (no live)                                           | https://hexdocs.pm/phoenix/up_and_running.html                                  |
+| 04_book           | failing to find interesting example, some emacs                           | several books                                                                   |
+| 05_todo           | How to Create a Todo List with Phoenix LiveView (Updated for Phoenix 1.5) | https://www.youtube.com/watch?v=xgz-HTot3R8                                     |
+| 06_live           | Chris McCord - Keynote: Phoenix LiveView                                  | https://www.youtube.com/watch?v=8xJzHq8ru0M                                     |
+| 07_excercise      | some basic examples                                                       | https://github.com/seven1m/30-days-of-elixir                                    |
+| 08_minimal_live   | translate live app that mix generates into s-expressions                  |                                                                                 |
+| 09_minimal_live_2 | modify 08 to do something useful                                          |                                                                                 |
+|                   |                                                                           |                                                                                 |
+|                   |                                                                           |                                                                                 |
+|                   |                                                                           |                                                                                 |
+|                   |                                                                           |                                                                                 |
+|                   |                                                                           |                                                                                 |
+|                   |                                                                           |                                                                                 |
+|                   |                                                                           |                                                                                 |
 
 
 * Reminder

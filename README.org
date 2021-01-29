@@ -63,7 +63,8 @@ sudo dnf install elixir
 
 * Reminder
 
-- these are the same, I always forget this:
+- these are the same, I always forget this. a list of tuples in elixir
+  is like an alist in common lisp.
 #+begin_example
 render(conn, "world.html", name: name)
 render(conn, "world.html", [name: name])

@@ -602,31 +602,34 @@
      (write-sequence
       (spinneret:with-html-string
 	(:doctype)
-	(:head (:meta :charset "utf-8")
-	       (:meta :http-equiv "X-UA-Compatible"
-		      :content "IE=edge")
-	       (:meta :name "viewport"
-		      :content "width=device-width, initial-scale=1.0")
-	       (:raw "
+	(:html :lang "en"
+	 (:head (:meta :charset "utf-8")
+		(:meta :http-equiv "X-UA-Compatible"
+		       :content "IE=edge")
+		(:meta :name "viewport"
+		       :content "width=device-width, initial-scale=1.0")
+		(:raw "
 <%= csrf_meta_tag() %>")
-	       (:raw "
+		(:raw "
 <%= live_title_tag assigns[:page_title] || \"Q\", suffix: \" . phoenix framework\" %>")
-	       (:raw "
+		(:raw "
 <link phx-track-static rel=stylesheet href=\" <%= Routes.static_path(@conn,\"/js/app.css\") %>\"\"/>")
-	       (:raw "
+		(:raw "
 <script defer phx-track-static type=text/javascript src=\"<%= Routes.static_path(@conn,\"/js/app.js\") %>\"\"/></script> ")
 	       
 	       
-	       )
-	(:body
-	 (:header
-	  (:section.container
-	   (:nav :role "navigation"
-		 (:ul
-		  (:li (:a :href "https://hexdocs.pm/phoenix/overview.html" "get started"))
-		  (:raw "
+		)
+	 (:body
+	  (:header
+	   (:section.container
+	    (:nav :role "navigation"
+		  (:ul
+		   (:li (:a :href "https://hexdocs.pm/phoenix/overview.html" "get started"))
+		   (:raw "
 <%= if function_exported?(Routes,:live_dashboard_path,2) do %>")
-		  (:li (:raw "<%= link \"livedashboard\", to: Routes.live_dashboard_path(@conn,:home) %>"))
-		  (:raw "
-<% end %>")))))))
+		   (:li (:raw "<%= link \"livedashboard\", to: Routes.live_dashboard_path(@conn,:home) %>"))
+		   (:raw "
+<% end %>")))))
+	  (:raw "
+<%= @inner_content %>"))))
       s))))

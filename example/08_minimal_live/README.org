@@ -92,12 +92,3 @@ mix phx.server
  emacs ~/quicklisp/dists/quicklisp/software/type-i-20191227-git/src/package.lisp
 - clear lisp files `rm -rf ~/.cache/common-lisp`
 
-
-#+begin_example
-
-cd assets
-npm install brunch
-# /home/martin/stage/cl-elixir-generator/example/08_minimal_live/source/node_modules/.bin/brunch build
-sudo pacman -S sassc
-sassc app.scss app.css
-#+end_example

@@ -1,0 +1,2 @@
+- https://www.youtube.com/watch?v=AiN4r8E9qKg
+ - Maciej Kaszubowski - Discovering distributed systems in Elixir - Code Elixir LDN 2018

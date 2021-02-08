@@ -1,0 +1,2 @@
+- https://github.com/benjamintanweihao/the-little-elixir-otp-guidebook-code
+- https://www.manning.com/books/the-little-elixir-and-otp-guidebook

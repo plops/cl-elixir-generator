@@ -15,7 +15,10 @@
     ((project 'Chucky)
      
      (l
-       `((test/cucky_test.exs
+       `((test/test_helper.exs
+	  (do0
+	   (ExUnit.start)))
+	 (test/cucky_test.exs
 	  (defmodule ,(format nil "~aTest" project)
 	    "use ExUnit.Case"
 	    (space doctest ,project)

@@ -19,7 +19,9 @@
 	  (defmodule Chucky.Server
 	    "use GenServer"
 	    (def start_link ()
-	      ;; globally register genserver in the cluster
+	      ;; globally register genserver in the cluster in the
+	      ;; global_name_server process, each node will have a
+	      ;; replica of the name tables
 	      (GenServer.start_link
 	       __MODULE__
 	       (list)
@@ -43,8 +45,7 @@
 				      List.first))
 	      (tuple @reply
 		     random_fact
-		     facts)))
-	  )
+		     facts))))
 	 (test/test_helper.exs
 	     (do0
 	      (ExUnit.start)))

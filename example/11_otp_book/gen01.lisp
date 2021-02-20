@@ -58,11 +58,27 @@
 				      (hello))
 				 @world))))))
 	 (lib/chucky.ex
-	  (defmodule ,project
-	      (space "@moduledoc"
-		     (string3 "Documentation for `Chucky`."))
-	    (def hello ()
-	      @world)))
+	  (defmodule Chucky
+	    "use Application"
+	    "require Logger"
+	    (def start (type _args)
+	      "import Supervision.Spec"
+	      (setf children (list (worker Chucky.Server)
+				   (list)))
+	      (case type
+		(@normal (Logger.info (string "Application is started on #{node}.")))
+		((tuple @takeover
+			old_node)
+		 (Logger.info (string "#{node} is taking over #{old_node}.")))
+		((tuple @failover
+			old_node)
+		 (Logger.info (string "#{old_node} is failing over to #{node}."))))
+	      (setf opts (keyword-list strategy
+				       @one_for_one
+				       name (tuple @global Chucky.Supervisor)))
+	      (Supervisor.start_link children opts))
+	    (def fact ()
+	      Chucky.Server.fact)))
 	 (mix.exs
 	  (do0
 	   (defmodule (dot ,project MixProject)

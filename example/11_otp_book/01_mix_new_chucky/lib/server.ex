@@ -10,7 +10,7 @@ defmodule Chucky.Server do
   end
 
   def init([]) do
-    @random.seed(@os.timestamp())
+    :random.seed(:os.timestamp())
     facts = "facts.txt" |> File.read!() |> String.split("\n")
     {:ok, facts}
   end

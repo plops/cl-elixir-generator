@@ -32,7 +32,7 @@
 	      (GenServer.call (tuple @global __MODULE__)
 			      @fact))
 	    (def init ((list))
-	      (@random.seed (@os.timestamp))
+	      (":random.seed" (":os.timestamp"))
 	      ;; https://github.com/benjamintanweihao/the-little-elixir-otp-guidebook-code/blob/master/chapter_9/chucky/facts.txt
 	      (setf facts (pipe (string "facts.txt")
 				File.read!
@@ -62,17 +62,17 @@
 	    "use Application"
 	    "require Logger"
 	    (def start (type _args)
-	      "import Supervision.Spec"
-	      (setf children (list (worker Chucky.Server)
-				   (list)))
+	      "import Supervisor.Spec"
+	      (setf children (list (worker Chucky.Server
+					   (list))))
 	      (case type
-		(@normal (Logger.info (string "Application is started on #{node}.")))
+		(@normal (Logger.info (string "Application is started on <node>."))) ;; #{node}.
 		((tuple @takeover
 			old_node)
-		 (Logger.info (string "#{node} is taking over #{old_node}.")))
+		 (Logger.info (string "<node> is taking over #{old_node}."))) ;; #{node}.
 		((tuple @failover
 			old_node)
-		 (Logger.info (string "#{old_node} is failing over to #{node}."))))
+		 (Logger.info (string "#{old_node} is failing over to <node>.")))) ;;  #{node}.
 	      (setf opts (keyword-list strategy
 				       @one_for_one
 				       name (tuple @global Chucky.Supervisor)))

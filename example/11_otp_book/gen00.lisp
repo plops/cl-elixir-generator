@@ -15,7 +15,16 @@
     ((project 'Chucky)
      
      (l
-       `((lib/chucky.ex
+       `((test/cucky_test.exs
+	  (defmodule ,(format nil "~aTest" project)
+	    "use ExUnit.Case"
+	    (space doctest ,project)
+	    (space test (string "greets the world")
+		   (progn
+		     (assert (== (dot ,project
+				      (hello))
+				 @world))))))
+	 (lib/chucky.ex
 	  (defmodule ,project
 	      (space "@moduledoc"
 		     (string3 "Documentation for `Chucky`."))

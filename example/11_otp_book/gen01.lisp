@@ -3,7 +3,7 @@
 (in-package :cl-elixir-generator)
 
 
-(defparameter *path* "/home/martin/stage/cl-elixir-generator/example/11_otp_book/mix_new_chucky")
+(defparameter *path* "/home/martin/stage/cl-elixir-generator/example/11_otp_book/01_mix_new_chucky")
 
 ;; generate the following files
 ;; mix.exs
@@ -15,9 +15,39 @@
     ((project 'Chucky)
      
      (l
-       `((test/test_helper.exs
-	  (do0
-	   (ExUnit.start)))
+       `((lib/server.ex
+	  (defmodule Chucky.Server
+	    "use GenServer"
+	    (def start_link ()
+	      ;; globally register genserver in the cluster
+	      (GenServer.start_link
+	       __MODULE__
+	       (list)
+	       (list :name
+		     (tuple @global
+			    __MODULE__))))
+	    ;; calls and casts to a globally registered genserver have
+	    ;; an extra :global
+	    (def fact ()
+	      (GenServer.call (tuple @global __MODULE__)
+			      @fact))
+	    (def init ((list))
+	      (@random.seed (@os.timestamp))
+	      (setf facts (pipe (string "facts.txt")
+				File.read!
+				(String.split (string "\\n"))))
+	      (tuple @ok facts))
+	    (def handle_call (@fact _from facts)
+	      (setf random_fact (pipe facts
+				      Enum.shuffle
+				      List.first))
+	      (tuple @reply
+		     random_fact
+		     facts)))
+	  )
+	 (test/test_helper.exs
+	     (do0
+	      (ExUnit.start)))
 	 (test/cucky_test.exs
 	  (defmodule ,(format nil "~aTest" project)
 	    "use ExUnit.Case"

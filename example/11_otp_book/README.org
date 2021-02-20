@@ -1,7 +1,8 @@
 - https://github.com/benjamintanweihao/the-little-elixir-otp-guidebook-code
 - https://www.manning.com/books/the-little-elixir-and-otp-guidebook
 
-| file  | description                                 |
-|-------+---------------------------------------------|
-| gen00 | create same boilerplate as `mix new chucky` |
-|       |                                             |
+| file  |                   | description                                 |
+|-------+-------------------+---------------------------------------------|
+| gen00 | mix_new_chucky    | create same boilerplate as `mix new chucky` |
+| gen01 | 01_mix_new_chucky | add distribution code from the book         |
+|       |                   |                                             |

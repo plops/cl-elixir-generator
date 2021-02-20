@@ -5,11 +5,9 @@
 
 (defparameter *path* "/home/martin/stage/cl-elixir-generator/example/11_otp_book/01_mix_new_chucky")
 
-;; generate the following files
-;; mix.exs
-;; lib/chucky.ex
-;; test/chucky_test.exs
-;; test/test_helper.exs
+;; code from chapter 9 of little elixir otp guidebook
+
+
 
 (let*
     ((project 'Chucky)
@@ -35,6 +33,7 @@
 			      @fact))
 	    (def init ((list))
 	      (@random.seed (@os.timestamp))
+	      ;; https://github.com/benjamintanweihao/the-little-elixir-otp-guidebook-code/blob/master/chapter_9/chucky/facts.txt
 	      (setf facts (pipe (string "facts.txt")
 				File.read!
 				(String.split (string "\\n"))))

@@ -15,7 +15,13 @@
     ((project 'Chucky)
      
      (l
-       `((mix.exs
+       `((lib/chucky.ex
+	  (defmodule ,project
+	      (space "@moduledoc"
+		     (string3 "Documentation for `Chucky`."))
+	    (def hello ()
+	      @world)))
+	 (mix.exs
 	  (do0
 	   (defmodule (dot ,project MixProject)
 	      (use Mix.Project)
@@ -51,8 +57,7 @@
 				 (string ,(format nil "~a ~a" op version))
 				 ))))))
 	   ))
-	 )
-	 )
+	 ))
        ))
   (loop for (fn code) in l
 	do

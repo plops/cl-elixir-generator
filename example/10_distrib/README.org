@@ -1,4 +1,30 @@
 - https://www.youtube.com/watch?v=AiN4r8E9qKg
  - Maciej Kaszubowski - Discovering distributed systems in Elixir - Code Elixir LDN 2018
+ - 30min
  - `#PID<0.94.1>`  0..node identifier relative to current node 
  - erlang finds node (routes), serializes, deserializes, delivers to mailbox
+ - erlang delivers at most once (no guarantee of delivery of messages)
+ - ordering is preserved (for a pair of processes), not between more
+   than two processes
+ - delays
+ - :global register name
+ - global nameserver under kernel supervision tree
+   - distributed transaction
+#+begin_example
+:global.register_name("global", p1)
+:global.whereis_name("global")
+#+end_example
+   - ensures only one name
+   - deregisters when node goes down
+   - problem partition: erlang kills one process
+ - process groups :pg2
+#+begin_example
+:pg2.join("my_group", p1)
+#+end_example
+   - during partition state can be inconsistent
+   - nodes can loose messages
+   - raft, paxos, zab
+   - use a single database
+   - async message passing
+
+  

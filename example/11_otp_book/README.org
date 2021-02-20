@@ -6,3 +6,11 @@
 | gen00 | mix_new_chucky    | create same boilerplate as `mix new chucky` |
 | gen01 | 01_mix_new_chucky | add distribution code from the book         |
 |       |                   |                                             |
+
+* distributed application
+
+#+begin_example
+iex --sname a -pa _build/dev/lib/chucky/ebin --app chucky --erl "-config config/a.config" &
+iex --sname a -pa _build/dev/lib/chucky/ebin --app chucky --erl "-config config/b.config" &
+iex --sname a -pa _build/dev/lib/chucky/ebin --app chucky --erl "-config config/c.config" &
+#+end_example

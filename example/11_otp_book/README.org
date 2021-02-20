@@ -14,3 +14,8 @@ iex --sname a -pa _build/dev/lib/chucky/ebin --app chucky --erl "-config config/
 iex --sname a -pa _build/dev/lib/chucky/ebin --app chucky --erl "-config config/b.config" &
 iex --sname a -pa _build/dev/lib/chucky/ebin --app chucky --erl "-config config/c.config" &
 #+end_example
+
+get file
+#+begin_example
+wget https://raw.githubusercontent.com/benjamintanweihao/the-little-elixir-otp-guidebook-code/master/chapter_9/chucky/facts.txt
+#+end_example

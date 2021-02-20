@@ -81,7 +81,7 @@
 	      Chucky.Server.fact)))
 	 (mix.exs
 	  (do0
-	   (defmodule (dot ,project MixProject)
+	   (defmodule Chucky.MixProject
 	      (use Mix.Project)
 	    (def project ()
 	      (list
@@ -115,8 +115,49 @@
 				 (string ,(format nil "~a ~a" op version))
 				 ))))))
 	   ))
-	 ))
-       ))
+	  )
+	 (config/a.config
+	  (do0
+	   (space (list (tuple kernel
+			 (list (tuple distributed
+				      (list (tuple chucky
+						   5000
+						   (list "a@manticore"
+							 (tuple "b@manticore"
+								"c@manticore")))))
+			       (tuple sync_nodes_mandatory (list
+							    "b@manticore"
+							    "c@manticore"))
+			       (tuple sync_nodes_timeout 30000))))
+		  ".")))
+	 (config/b.config
+	  (do0
+	   (space (list (tuple kernel
+			 (list (tuple distributed
+				      (list (tuple chucky
+						   5000
+						   (list "a@manticore"
+							 (tuple "b@manticore"
+								"c@manticore")))))
+			       (tuple sync_nodes_mandatory (list
+							    "a@manticore"
+							    "c@manticore"))
+			       (tuple sync_nodes_timeout 30000))))
+		  ".")))
+	 (config/c.config
+	  (do0
+	   (space (list (tuple kernel
+			 (list (tuple distributed
+				      (list (tuple chucky
+						   5000
+						   (list "a@manticore"
+							 (tuple "b@manticore"
+								"c@manticore")))))
+			       (tuple sync_nodes_mandatory (list
+							    "a@manticore"
+							    "b@manticore"))
+			       (tuple sync_nodes_timeout 30000))))
+		  "."))))))
   (loop for (fn code) in l
 	do
 	   (let ((dir (directory-namestring (format nil "~a/~a" *path* fn))))

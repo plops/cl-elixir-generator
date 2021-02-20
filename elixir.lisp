@@ -389,7 +389,7 @@ return the body without them and a hash table with an environment"
 				 (format nil ":")
 				 (format nil "~{~a~^:~}" (mapcar #'emit args)))))
 	      (dot (let ((args (cdr code)))
-		     (format nil "~{~a~^.~}" (mapcar #'emit args))))
+		     (format nil "~{~a^.~}" (mapcar #'emit args))))
 	      (+ (let ((args (cdr code)))
 		   (format nil "(~{(~a)~^+~})" (mapcar #'emit args))))
 	      (- (let ((args (cdr code)))
